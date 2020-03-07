@@ -6,7 +6,7 @@
             </div>
 
             <div id="chead-right">
-                <div class="circle" style="margin-right: 8px; margin-top: 5px;"></div>
+                <div class="circle" style="margin-right: 8px; margin-top: 3px;"></div>
                 <div>Live</div>
             </div>
         </div>
@@ -88,6 +88,12 @@ export default {
 
     #chead-logo img {
         width: 160px;
+    }
+
+    
+    #chead-right{
+        right: 24px;
+        margin-top: 40px;
     }
 }
 </style>

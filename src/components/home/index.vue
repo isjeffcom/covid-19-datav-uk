@@ -64,8 +64,8 @@
 
       </div>
 
-      <div id="chart">
-        <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData" v-if="chartLoaded"></apexchart>
+      <div id="chart" v-if="chartLoaded">
+        <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData"></apexchart>
       </div>
 
 
@@ -194,6 +194,7 @@ export default {
         
         chart: {
           id: 'main-chart',
+          foreColor: '#8D9EAA',
           toolbar:{
             show: false
           }
@@ -217,16 +218,8 @@ export default {
   },
 
   mounted(){
-    var that = this
     this.getData(this.api)
 
-    setTimeout(()=>{
-      that.getHistory(this.api_history)
-    }, 200)
-
-    setTimeout(()=>{
-      that.getLocations(this.api_locations)
-    }, 400)
   },
   methods:{
     getData(api){
@@ -237,10 +230,13 @@ export default {
         this.update = getDateFromTs(this.allData[0].ts)
 
         this.loaded = true
+
+        this.getHistory(this.api_history)
       })
     },
 
     getHistory(api){
+
 
       var that = this
 
@@ -268,14 +264,10 @@ export default {
           this.chartData[0].data = confirm
           this.chartData[1].data = death
 
-          setTimeout(()=>{
-            that.chartLoaded = true
-          }, 400)
-
-        } else {
-          this.getHistory()
         }
 
+        this.chartLoaded = true
+        this.getLocations(this.api_locations)
         
       })
     },
@@ -319,7 +311,7 @@ export default {
       }
 
       this.hiddenData = {
-        tested: this.renderData.confirmed + this.renderData.negative,
+        tested: this.renderData.negative != "---" ? this.renderData.confirmed + this.renderData.negative : "---",
         serious: all.icu == 0 ? "---" : all.icu,
         suspected: all.suspect == 0 ? "---" : all.suspect,
       }
@@ -395,6 +387,7 @@ tr:nth-child(even) {
 .ds-single{
   cursor: pointer;
   text-align: center;
+  border-bottom: 1px solid #2D3133;
 }
 
 .ds-ids{
@@ -497,8 +490,8 @@ tr:nth-child(even) {
   margin-left: auto;
   margin-right: auto;
   color: #CED3D6;
-  font-weight: bold;
-  font-size: 16px;
+  font-size: 24px;
+  line-height: 36px;
 }
 
 
@@ -506,6 +499,7 @@ tr:nth-child(even) {
   color: #3F8BBE;
   text-decoration: underline;
   font-size: 16px;
+  font-weight: bold;
 }
 
 #sources a:active{
@@ -515,12 +509,15 @@ tr:nth-child(even) {
 
 @media only screen and (max-width: 800px) {
 
-    #area-map{
-      width: 100%;
-      height: 450px;
-    }
 
-   
+  #area-map{
+    width: 100%;
+    height: 450px;
+  }
+
+  #sources{
+    height: 320px;
+  }
 }
 
 </style>

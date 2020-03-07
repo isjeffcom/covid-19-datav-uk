@@ -6,7 +6,7 @@
             </div>
 
             <div id="chead-right">
-                <div class="circle" style="margin-right: 8px; margin-top: 2px;"></div>
+                <div class="circle" style="margin-right: 8px; margin-top: 5px;"></div>
                 <div>Live</div>
             </div>
         </div>

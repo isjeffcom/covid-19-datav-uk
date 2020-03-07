@@ -74,4 +74,20 @@ export default {
 #chead-logo img{
     width: 200px;
 }
+
+@media only screen and (max-width: 800px) {
+
+    #chead{
+        height: 100%;
+    }
+
+    #chead-logo {
+        margin-top: 16px;
+        margin-left: 14px;
+    }
+
+    #chead-logo img {
+        width: 160px;
+    }
+}
 </style>

@@ -1,11 +1,11 @@
 <template>
-  <div id="home">
+  <div id="home" v-if="loaded">
 
     <div id="update">
       <span>Last Update: {{update}}</span>
     </div>
 
-    <div id="data-switcher">
+    <div class="tab-switcher data-switcher">
       <div 
         class="ds-single" 
         v-for="(item, index) in allData" 
@@ -64,8 +64,19 @@
 
       </div>
 
+      <div id="chart">
+
+        <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData" v-if="chartLoaded"></apexchart>
+      </div>
+
 
       <div id="area">
+        <div id="area-title">
+          <span>By Region</span><br>
+          <span style="font-size: 12px; opacity: 0.5;">* Reginal data might not be update in real-time (at least 1 day in arrears) due to the local government data publish plan.</span><br>
+          <span style="font-size: 12px; opacity: 0.5;">* England and Scotland only</span>
+        </div>
+        
         <table>
           <tr>
             <th>Location</th>
@@ -95,7 +106,7 @@
 
 <script>
 import { genGet } from '../../request'
-import { numAddZero } from '../../utils'
+import { numAddZero, getDateFromTs } from '../../utils'
 
 export default {
   name: 'home',
@@ -104,17 +115,22 @@ export default {
   },
   data(){
     return{
+      loaded: false,
+      chartLoaded: false,
       api: "/",
+      api_history: "/history",
       selected: 0,
+      selectedChart: "confirm",
       allData: [],
       renderData: {},
       hiddenData: {},
       renderArea: {},
+      historyData: [],
       update:"",
       sourceList: [],
       colors:[
         {
-          txt: "confirm",
+          txt: "confirmed",
           color: "#F62E3A"
         },
         {
@@ -145,11 +161,31 @@ export default {
         ["icu", "重症"],
         ["suspect", "疑似"],
         ["area", "区域"],
+      ],
+      chartOptions: {
+        chart: {
+          id: 'main-chart'
+        },
+        colors:["#F62E3A", "#949BB5"],
+        xaxis: {
+          categories: [0, 0, 0, 0, 0, 0, 0, 0]
+        }
+      },
+      chartData: [
+        {
+          name: 'Confirmed',
+          data: [0,0,0,0,0,0,0]
+        },
+        {
+          name: 'Death',
+          data: [0,0,0,0,0,0,0]
+        },
       ]
     }
   },
   created(){
     this.getData(this.api)
+    this.getHistory(this.api_history)
   },
   methods:{
     getData(api){
@@ -157,18 +193,40 @@ export default {
         this.allData = res.data.data
         this.renderArea = JSON.parse(this.allData[0].area)
         this.produceRenderData()
-        this.update = this.getDateFromTs(this.allData[0].ts)
+        this.update = getDateFromTs(this.allData[0].ts)
 
         this.allData.forEach(el => {
           this.sourceList.push(el.link)
         })
+
+        this.loaded = true
+      })
+    },
+
+    getHistory(api){
+      genGet(api, {}, (res)=>{
+
+        let confirm = []
+        let death = []
+
+        this.historyData = res.data.data
+
+        this.historyData.forEach(el => {
+          el.date = getDateFromTs(el.date, "datesimple")
+          confirm.push(el.confirm)
+          death.push(el.death)
+        })
+
+        this.chartData[0].data = confirm
+        this.chartData[1].data = death
+        this.chartLoaded = true
       })
     },
 
     produceRenderData(){
       const all = this.allData[this.selected]
       this.renderData = {
-        confirm: all.confirm,
+        confirmed: all.confirm,
         death: all.death,
         cured: all.cured == 0 ? this.allData[1].cured : all.cured,
         nagative: all.nagative == 0 ? "---" : all.nagative,
@@ -195,10 +253,10 @@ export default {
       this.produceRenderData()
     },
 
-    getDateFromTs(ts){
+    /*getDateFromTs(ts){
       const d = new Date(ts)
       return d.getFullYear() + '-' + numAddZero(d.getMonth() + 1) + '-' + numAddZero(d.getDate()) + ' ' + numAddZero(d.getHours()) + ':' + numAddZero(d.getMinutes()) + ':' + numAddZero(d.getSeconds())
-    },
+    },*/
 
     
   }
@@ -232,7 +290,7 @@ tr:nth-child(even) {
   opacity: 0.2;
 }
 
-#data-switcher{
+.tab-switcher{
   width: 100%;
   display: flex;
   color: #CED3D6;
@@ -242,6 +300,7 @@ tr:nth-child(even) {
 }
 
 .ds-single{
+  cursor: pointer;
   text-align: center;
 }
 
@@ -306,8 +365,23 @@ tr:nth-child(even) {
   z-index:2;
 }
 
+#chart{
+  width: 90%;
+  margin-left:auto;
+  margin-right: auto;
+}
+
 #area{
   width: 100%;
+}
+
+#area-title{
+  width: 90%;
+  font-size: 24px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #area table{

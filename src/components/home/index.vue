@@ -351,18 +351,26 @@ export default {
       var that = this
       genGet(api, {}, (res)=>{
         let d = res.data.data
+         
         var markers = []
         this.renderArea.forEach((el, index) => {
           
+          // Match location from location cases list
           let idx = indexOfObjArr(el.location, d, 'name')
 
+          // If matched
 
-          if(el.number != 0){
+          if(idx == -1){
+            console.log(el.location)
+          }
+          if(el.number != 0 && idx != -1){
             d[idx].confirm = parseInt(el.number)
             markers.push(d[idx])
           }
           
         })
+
+       
 
         this.mapData = markers
 

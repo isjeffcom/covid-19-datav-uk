@@ -18,7 +18,7 @@
                 color="blue">
 
                 <div slot="marker">
-                    <img src="http://playground.isjeff.com/marker.svg" alt="point" :style="'width:' + (item.confirm*10) + 'px;'">
+                    <img src="http://playground.isjeff.com/marker.svg" alt="point" :style="'width:' + (item.confirm*7) + 'px;'">
                 </div>
 
                 <MglPopup>

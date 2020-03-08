@@ -31,19 +31,27 @@
             :key="name">
 
             <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
+              
               <span v-if="value=='---'">{{value}}</span>
+
               <ICountUp
                 :delay="100"
                 :endVal="value"
                 :options="countUpOptions"
                 v-else
-              />
+              ></ICountUp>
               
             </div>
 
             <div class="overall-single-title">
               <span>{{name}}</span>
             </div>
+
+            <div class="overall-single-compare">
+              <span :style="'color:' + getColor(name) + ';font-weight: bold; font-size: 14px;opacity: 0.8;'">{{  compare(value, name) }}</span>
+            </div>
+
+            
 
           </div>
 
@@ -178,9 +186,14 @@ export default {
       api_locations: "/locations",
       selected: 0,
       selectedChart: "confirm",
+      rematchWording: [
+        ['confirmed', 'confirm'],
+        ['negative', 'nagative']
+      ],
       allData: [],
       renderData: {},
       hiddenData: {},
+      compareData: {},
       renderArea: {},
       mapData: [],
       historyData: [],
@@ -307,11 +320,15 @@ export default {
 
           this.historyData = res.data.data
 
-          this.historyData.forEach(el => {
+          this.historyData.forEach((el, index) => {
+            
             el.date = getDateFromTs(el.date, "datesimple")
             categories.push(el.date)
             confirm.push(el.confirm)
             death.push(el.death)
+
+            
+
           })
 
           confirm.push(this.allData[0].confirm)
@@ -402,6 +419,21 @@ export default {
       this.currentAreaView = idx
     },
 
+    compare(value, name){
+      if(this.historyData.length > 0){
+        let res = parseInt(value - this.historyData[this.historyData.length - 1][this.correctWording(name)])
+        if(isNaN(res)){
+          return '---'
+        } else {
+          return res >= 0 ? '+' + res : '-' + res
+        }
+        
+      } else {
+        return '+0'
+      }
+      
+    },
+
     sourcePopup(){
       let source = this.allData[this.selected]
       this.sourceAlert.content = "<br><br>Source Name: " + source.source + ". <br><br> Link:" + "<a href='" + source.link + " style='color:#3F8BBE;'>" + source.link + "</a>"
@@ -409,6 +441,19 @@ export default {
         this.sourceAlertEnabled = true
       })
       
+    },
+
+    correctWording(str){
+
+      var res = false
+
+      for(let i=0;i<this.rematchWording.length; i++){
+        if(str == this.rematchWording[i][0]){
+          res =  this.rematchWording[i][1]
+        }
+      }
+
+      return res ? res : str
     }
 
     /*getDateFromTs(ts){
@@ -548,6 +593,7 @@ tr:nth-child(even) {
 
 .overall-source img{
   width: 26px;
+  height: 26px;
 }
 
 #chart{

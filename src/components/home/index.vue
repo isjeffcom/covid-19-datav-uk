@@ -31,18 +31,22 @@
             :key="name">
 
             <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
-              <span>{{value}}</span>
+              <span v-if="value=='---'">{{value}}</span>
+              <ICountUp
+                :delay="100"
+                :endVal="value"
+                :options="countUpOptions"
+                v-else
+              />
               
             </div>
 
             <div class="overall-single-title">
               <span>{{name}}</span>
-              <!--span style="opacity: 0.7;font-size: 12px;text-transform:lowercase;font-weight:normal;" v-if="name=='cured'"><br>Third-Party Data</span-->
             </div>
 
-              
-
           </div>
+
         </div>
 
         <div id="overall-more">
@@ -52,7 +56,13 @@
             :key="name">
 
             <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
-              <span>{{value}}</span>
+              <span v-if="value=='---'">{{value}}</span>
+              <ICountUp
+                :delay="300"
+                :endVal="value"
+                :options="countUpOptions"
+                v-else
+              />
             </div>
 
             <div class="overall-single-title">
@@ -64,6 +74,13 @@
 
       </div>
 
+      <div class="overall-source" v-on:click="sourcePopup()">
+        <div class="overall-source-inner">
+          <div style="margin-top: 6px;margin-right: 8px;">Source</div>
+          <img src="https://i.ibb.co/7XMdBfH/info.png" alt="source info">
+        </div>
+      </div>
+
       <div id="chart" v-if="chartLoaded">
         <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData"></apexchart>
       </div>
@@ -73,8 +90,8 @@
 
         <div id="area-title">
           <span>By Region</span><br>
-          <span style="font-size: 12px; opacity: 0.5;">* Reginal data might not be update in real-time (at least 1 day in arrears) due to the local government data publish plan.</span><br>
-          <span style="font-size: 12px; opacity: 0.5;">* Current data only covered England and Scotland area, FOR REFERENCE ONLY </span>
+          <span style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> Unknown Locations</span><br>
+          <span style="font-size: 12px; opacity: 0.5;">* Current data only covered England and Scotland (at least 1 day in arrears). </span>
         </div>
 
         <div class="tab-switcher data-switcher">
@@ -123,19 +140,33 @@
       <li><a href="https://www.gov.scot/coronavirus-covid-19/" target="_blank">Coronavirus in Scotland (Scotland Gov)</a></li>
     </div>
 
+    <alert 
+      :title="sourceAlert.title" 
+      :content="sourceAlert.content" 
+      :submit="sourceAlert.submit" 
+      :topColor="sourceAlert.topColor" 
+      :bgColor="sourceAlert.bgColor" 
+      v-if="sourceAlertEnabled">
+    </alert>
+
     
   </div>
 </template>
 
 <script>
 import { genGet } from '../../request'
-import { numAddZero, getDateFromTs } from '../../utils'
+import { numAddZero, getDateFromTs, indexOfObjArr } from '../../utils'
+import alert from '../widgets/alert'
 import cmap from '../widgets/cmap'
+import ICountUp from 'vue-countup-v2'
+import { EventBus } from '../../bus'
 
 export default {
   name: 'home',
   components:{
-    cmap
+    cmap,
+    alert,
+    ICountUp
   },
   data(){
     return{
@@ -154,8 +185,23 @@ export default {
       mapData: [],
       historyData: [],
       update:"",
+      unknown: 0,
       areaViews: ["map", "list"],
       currentAreaView: "map",
+      countUpOptions:{
+        useEasing: true,
+        useGrouping: true,
+        separator: ',',
+        decimal: '.'
+      },
+      sourceAlertEnabled: false,
+      sourceAlert:{
+        title:"Source",
+        content: "",
+        submit: "OK",
+        topColor: "#2D3133",
+        bgColor: "#8FA8B8",
+      },
       colors:[
         {
           txt: "confirmed",
@@ -181,14 +227,6 @@ export default {
           txt: "suspected",
           color: "#A98AFF"
         },
-      ],
-      wording:[
-        ["confirmed", "确诊"],
-        ["death", "死亡"],
-        ["cured", "治愈"],
-        ["icu", "重症"],
-        ["suspect", "疑似"],
-        ["area", "区域"],
       ],
       chartOptions: {
         
@@ -221,18 +259,38 @@ export default {
     this.getData(this.api)
 
   },
+
+  created(){
+    EventBus.$on("alert-clicked", ()=>{
+      setTimeout(()=>{
+        this.sourceAlertEnabled = false
+      }, 500)
+    })
+  },
   methods:{
     getData(api){
       genGet(api, {}, (res)=>{
         this.allData = res.data.data
         this.renderArea = JSON.parse(this.allData[0].area)
         this.produceRenderData()
+        this.calUnknown()
         this.update = getDateFromTs(this.allData[0].ts)
 
         this.loaded = true
 
         this.getHistory(this.api_history)
       })
+    },
+
+    calUnknown(){
+
+      let all = 0
+      this.renderArea.forEach(el => {
+        all = all + parseInt(el.number)
+      })
+
+      this.unknown = this.allData[0].confirm - all
+
     },
 
     getHistory(api){
@@ -276,16 +334,24 @@ export default {
       var that = this
       genGet(api, {}, (res)=>{
         let d = res.data.data
-        d.forEach((el, index) => {
-          let confirm = this.findAreaData(el.name, this.renderArea)
-          d[index].confirm = parseInt(confirm)
+        var markers = []
+        this.renderArea.forEach((el, index) => {
+          
+          let idx = indexOfObjArr(el.location, d, 'name')
+
+
+          if(el.number != 0){
+            d[idx].confirm = parseInt(el.number)
+            markers.push(d[idx])
+          }
+          
         })
 
-        this.mapData = d
+        this.mapData = markers
 
         setTimeout(()=>{
           that.areaLoaded = true
-        }, 400)
+        }, 200)
         
       })
     },
@@ -334,6 +400,15 @@ export default {
 
     switchAreaView(idx){
       this.currentAreaView = idx
+    },
+
+    sourcePopup(){
+      let source = this.allData[this.selected]
+      this.sourceAlert.content = "<br><br>Source Name: " + source.source + ". <br><br> Link:" + "<a href='" + source.link + " style='color:#3F8BBE;'>" + source.link + "</a>"
+      this.$nextTick(()=>{
+        this.sourceAlertEnabled = true
+      })
+      
     }
 
     /*getDateFromTs(ts){
@@ -424,7 +499,7 @@ tr:nth-child(even) {
 .overall-single{
   width: calc(100%/4);
   height: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   text-transform: uppercase;
 }
 
@@ -449,6 +524,30 @@ tr:nth-child(even) {
   font-size: 24px;
   font-weight: bold;
   z-index:2;
+}
+
+.overall-source{
+  width: 92%;
+  height: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: right;
+}
+
+.overall-source-inner{
+  width: 100px;
+  position: absolute;
+  right: 5.5%;
+  color: #51606A;
+  font-size: 16px;
+  font-weight: bold;
+  opacity: 0.6;
+  display: flex;
+  cursor: pointer;
+}
+
+.overall-source img{
+  width: 26px;
 }
 
 #chart{
@@ -517,6 +616,10 @@ tr:nth-child(even) {
 
   #sources{
     height: 320px;
+  }
+
+  .overall-source-inner{
+    right: 10px;
   }
 }
 

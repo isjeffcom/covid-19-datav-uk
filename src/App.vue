@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <chead/>
-    <home/>
+    <alert :title="firstAlert.title" :content="firstAlert.content" :submit="firstAlert.submit" v-if="needAlert"></alert>
+    <chead></chead>
+    <home></home>
+    
 
     <div id="github" v-on:click="toGithub">
       <img src="https://i.ibb.co/27tC8pd/github.png" alt="to github">
@@ -12,12 +14,40 @@
 <script>
 import chead from './components/widgets/chead'
 import home from './components/home'
+import alert from './components/widgets/alert'
+import { EventBus } from './bus'
+
+const ls = require('local-storage')
 
 export default {
   name: 'App',
   components: {
     chead,
-    home
+    home,
+    alert
+  },
+  data(){
+    return{
+      firstAlert:{
+        title: "You need to know",
+        content: "<br>This is a data visualisation for <b>COVID-19</b> in the UK, but just <b>as a reference</b>. <br><br> Here is a couple of things you need to understand: <br><br> 1. These data might <b>NOT</b> be completely accurate or updated. <br> 2. All centre points on the 'Regional Map' represent an area, <b>NOT building or street</b>. <br> 3. The website developer takes <b>NO responsibility</b> for data accuracy and service stability. <br><br> Please double check with <b>official channel</b> before act on it.",
+        submit: "I consent"
+      },
+      needAlert: false
+    }
+  },
+
+  created(){
+    if(!ls.get("first")){
+      this.needAlert = true
+    }
+
+
+    EventBus.$on("alert-clicked", (data)=>{
+      if(data == "I consent"){
+        ls.set("first", "1")
+      }
+    })
   },
 
   methods:{

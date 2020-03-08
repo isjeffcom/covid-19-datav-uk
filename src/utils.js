@@ -24,3 +24,14 @@ export function getDateFromTs(ts, mode){
     }
     return res
 }
+
+export function indexOfObjArr(target, arr, id){
+    var res = -1
+    for(let i=0;i<arr.length;i++){
+        if(target == arr[i][id]){
+            res = i
+        }
+    }
+
+    return res
+}

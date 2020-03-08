@@ -11,6 +11,8 @@
     "apexcharts": "^3.16.1",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "countup.js": "^2.0.4",
+    "local-storage": "^2.0.0",
     "mapbox-gl": "^1.8.1",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.5.2",

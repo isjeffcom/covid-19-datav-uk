@@ -359,10 +359,6 @@ export default {
           let idx = indexOfObjArr(el.location, d, 'name')
 
           // If matched
-
-          if(idx == -1){
-            console.log(el.location)
-          }
           if(el.number != 0 && idx != -1){
             d[idx].confirm = parseInt(el.number)
             markers.push(d[idx])

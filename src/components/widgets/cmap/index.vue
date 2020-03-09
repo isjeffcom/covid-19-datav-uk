@@ -18,11 +18,11 @@
                 color="blue">
 
                 <div slot="marker">
-                    <img src="http://playground.isjeff.com/marker.svg" alt="point" :style="'width:' + (item.confirm*7) + 'px;'">
+                    <img src="http://playground.isjeff.com/marker.svg" alt="point" :style="'width:' + (item.confirmed*7) + 'px;'">
                 </div>
 
                 <MglPopup>
-                    <div style="color: #F62E3A; font-weight: bold;">Area: {{item.name}}<br>Confirmed Cases: {{item.confirm}}</div>
+                    <div style="color: #F62E3A; font-weight: bold;">Area: {{item.name}}<br>Confirmed Cases: {{item.confirmed}}</div>
                 </MglPopup>
 
             </MglMarker>

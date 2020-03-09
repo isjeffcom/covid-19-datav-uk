@@ -119,7 +119,7 @@
           </div>
         </div>
 
-        <div id="area-map" v-if="currentAreaView == 'map'">
+        <div id="area-map" v-show="currentAreaView == 'map'">
           <cmap :mapData="mapData"></cmap>
         </div>
 

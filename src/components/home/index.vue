@@ -302,20 +302,17 @@ export default {
         all = all + parseInt(el.number)
       })
 
-      this.unknown = this.allData[0].confirm - all
+      this.unknown = this.allData[0].confirmed - all
 
     },
 
     getHistory(api){
 
-
-      var that = this
-
       genGet(api, {}, (res)=>{
 
         if(res.status){
           let categories = []
-          let confirm = []
+          let confirmed = []
           let death = []
 
           this.historyData = res.data.data
@@ -324,19 +321,19 @@ export default {
             
             el.date = getDateFromTs(el.date, "datesimple")
             categories.push(el.date)
-            confirm.push(el.confirm)
+            confirmed.push(el.confirmed)
             death.push(el.death)
 
             
 
           })
 
-          confirm.push(this.allData[0].confirm)
+          confirmed.push(this.allData[0].confirmed)
           death.push(this.allData[0].death)
           categories.push(getDateFromTs(Date.parse( new Date()), "datesimple"))
 
           this.chartOptions.xaxis.categories = categories
-          this.chartData[0].data = confirm
+          this.chartData[0].data = confirmed
           this.chartData[1].data = death
 
         }
@@ -360,7 +357,7 @@ export default {
 
           // If matched
           if(el.number != 0 && idx != -1){
-            d[idx].confirm = parseInt(el.number)
+            d[idx].confirmed = parseInt(el.number)
             markers.push(d[idx])
           }
           
@@ -391,16 +388,16 @@ export default {
     produceRenderData(){
       const all = this.allData[this.selected]
       this.renderData = {
-        confirmed: all.confirm,
+        confirmed: all.confirmed,
         death: all.death,
         cured: all.cured == 0 ? this.allData[1].cured : all.cured,
-        negative: all.nagative == 0 ? "---" : all.nagative,
+        negative: all.negative == 0 ? "---" : all.negative,
       }
 
       this.hiddenData = {
         tested: this.renderData.negative != "---" ? this.renderData.confirmed + this.renderData.negative : "---",
-        serious: all.icu == 0 ? "---" : all.icu,
-        suspected: all.suspect == 0 ? "---" : all.suspect,
+        serious: all.serious == 0 ? "---" : all.serious,
+        suspected: all.suspected == 0 ? "---" : all.suspected,
       }
     },
 
@@ -425,7 +422,7 @@ export default {
 
     compare(value, name){
       if(this.historyData.length > 0){
-        let res = parseInt(value - this.historyData[this.historyData.length - 1][this.correctWording(name)])
+        let res = parseInt(value - this.historyData[this.historyData.length - 1][name])
         if(isNaN(res)){
           return '---'
         } else {
@@ -459,11 +456,6 @@ export default {
 
       return res ? res : str
     }
-
-    /*getDateFromTs(ts){
-      const d = new Date(ts)
-      return d.getFullYear() + '-' + numAddZero(d.getMonth() + 1) + '-' + numAddZero(d.getDate()) + ' ' + numAddZero(d.getHours()) + ':' + numAddZero(d.getMinutes()) + ':' + numAddZero(d.getSeconds())
-    },*/
 
     
   }

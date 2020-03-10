@@ -148,6 +148,19 @@
       <li><a href="https://www.gov.scot/coronavirus-covid-19/" target="_blank">Coronavirus in Scotland (Scotland Gov)</a></li>
     </div>
 
+    <div id="donation" v-if="areaLoaded">
+      <div id="d-inner">
+        <div id="d-cont">
+          <div id="d-title">Support Us</div>
+          <div id="d-sub">This is a free product, however, maintaining this service has costs and it's not cheap.</div>
+        </div>
+        
+        <div id="d-btn"> 
+          <button v-on:click="openDonate(true)">SUPPORT</button> 
+        </div>
+      </div>
+    </div>
+
     <alert 
       :title="sourceAlert.title" 
       :content="sourceAlert.content" 
@@ -156,6 +169,8 @@
       :bgColor="sourceAlert.bgColor" 
       v-if="sourceAlertEnabled">
     </alert>
+
+    <donate v-if="donate"></donate>
 
     
   </div>
@@ -166,6 +181,7 @@ import { genGet } from '../../request'
 import { numAddZero, getDateFromTs, indexOfObjArr } from '../../utils'
 import alert from '../widgets/alert'
 import cmap from '../widgets/cmap'
+import donate from '../widgets/donate'
 import ICountUp from 'vue-countup-v2'
 import { EventBus } from '../../bus'
 
@@ -174,6 +190,7 @@ export default {
   components:{
     cmap,
     alert,
+    donate,
     ICountUp
   },
   data(){
@@ -264,7 +281,8 @@ export default {
           name: 'Death',
           data: [0,0,0,0,0,0,0]
         },
-      ]
+      ],
+      donate: false
     }
   },
 
@@ -278,6 +296,10 @@ export default {
       setTimeout(()=>{
         this.sourceAlertEnabled = false
       }, 500)
+    })
+
+    EventBus.$on("donate-close", ()=>{
+      this.donate = false
     })
   },
   methods:{
@@ -455,6 +477,10 @@ export default {
       }
 
       return res ? res : str
+    },
+
+    openDonate(bol){
+      this.donate = bol
     }
 
     
@@ -624,6 +650,67 @@ tr:nth-child(even) {
   margin-right: auto;
 }
 
+#d-title{
+  font-size: 24px; 
+  font-weight: bold;
+}
+
+#donation{
+  width: 100%; 
+  height: 100px;
+  margin-top: 40px;
+}
+
+#d-inner{
+  width: 100%; 
+  height: 100%;
+  background: #FFC634;
+  border-bottom: 8px solid #152DFF;
+  margin-left: auto;
+  margin-right:auto; 
+  display: flex;
+}
+
+#d-cont{
+  width: 90%;
+}
+
+#d-title{
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 24px;
+  margin-left: 24px;
+}
+
+#d-sub{
+  font-size: 16px; 
+  font-weight: bold;
+  margin-top: 4px; 
+  margin-left: 24px;
+}
+
+#d-btn{
+  width: 10%; 
+  margin-top: 28px;
+}
+
+#d-btn button{
+  position: relative; 
+  background: #FFC634; 
+  border: 2px solid #000; 
+  border-radius: 100px; 
+  cursor:pointer; 
+  padding: 12px;
+  color: #000;
+  font-weight: bold;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+#d-btn button:hover{
+  background: #000; 
+  color: #fff;
+}
+
 #sources{
   width: 90%;
   height: 220px;
@@ -662,6 +749,23 @@ tr:nth-child(even) {
 
   .overall-source-inner{
     right: 10px;
+  }
+
+  #donation{
+    height: 240px;
+  }
+
+  #d-cont{
+    width: 100%;
+    padding-top: 2px;
+  }
+
+  #d-btn{
+    margin-left: 20px;
+  }
+
+  #d-inner{
+    display: block;
   }
 }
 

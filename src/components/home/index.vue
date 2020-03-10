@@ -119,8 +119,9 @@
           </div>
         </div>
 
-        <div id="area-map" v-show="currentAreaView == 'map'">
-          <cmap :mapData="mapData"></cmap>
+        <div id="area-map" v-if="currentAreaView == 'map'">
+          <ccmap :mapData="mapData"></ccmap>
+          <!--cmap :mapData="mapData"></cmap-->
         </div>
 
         <div v-if="currentAreaView == 'list'">
@@ -178,17 +179,20 @@
 
 <script>
 import { genGet } from '../../request'
-import { numAddZero, getDateFromTs, indexOfObjArr } from '../../utils'
+import { getDateFromTs, indexOfObjArr } from '../../utils'
 import alert from '../widgets/alert'
 import cmap from '../widgets/cmap'
 import donate from '../widgets/donate'
+//import cmap from '../widgets/cmap'
+import ccmap from '../widgets/ccmap'
 import ICountUp from 'vue-countup-v2'
 import { EventBus } from '../../bus'
 
 export default {
   name: 'home',
   components:{
-    cmap,
+    //cmap,
+    ccmap,
     alert,
     donate,
     ICountUp

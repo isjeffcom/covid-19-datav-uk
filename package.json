@@ -12,12 +12,15 @@
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "countup.js": "^2.0.4",
+    "leaflet": "^1.6.0",
     "local-storage": "^2.0.0",
     "mapbox-gl": "^1.8.1",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.5.2",
     "vue-countup-v2": "^4.0.0",
-    "vue-mapbox": "^0.4.1"
+    "vue-mapbox": "^0.4.1",
+    "vue2-leaflet": "^2.5.2",
+    "vue2-leaflet-vectorgrid": "^1.0.6"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.2.0",

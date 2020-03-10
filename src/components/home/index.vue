@@ -84,7 +84,7 @@
 
       <div class="overall-source" v-on:click="sourcePopup()">
         <div class="overall-source-inner">
-          <div style="margin-top: 6px;margin-right: 8px;">Source</div>
+          <div style="margin-top: 2px;margin-right: 8px;">Source</div>
           <img src="https://i.ibb.co/7XMdBfH/info.png" alt="source info">
         </div>
       </div>
@@ -591,8 +591,8 @@ tr:nth-child(even) {
 }
 
 .overall-source img{
-  width: 26px;
-  height: 26px;
+  width: 20px;
+  height: 20px;
 }
 
 #chart{

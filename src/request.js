@@ -1,5 +1,5 @@
 const axios = require('axios')
-const baseUrl = "http://coronauk.isjeff.com"
+const baseUrl = "https://coronauk.isjeff.com"
 
 export function genGet (api, param, callback) {
 

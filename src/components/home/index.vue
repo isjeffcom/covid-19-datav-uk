@@ -181,7 +181,7 @@
 import { genGet } from '../../request'
 import { getDateFromTs, indexOfObjArr } from '../../utils'
 import alert from '../widgets/alert'
-import cmap from '../widgets/cmap'
+//import cmap from '../widgets/cmap'
 import donate from '../widgets/donate'
 //import cmap from '../widgets/cmap'
 import ccmap from '../widgets/ccmap'
@@ -207,10 +207,6 @@ export default {
       api_locations: "/locations",
       selected: 0,
       selectedChart: "confirm",
-      rematchWording: [
-        ['confirmed', 'confirm'],
-        ['negative', 'nagative']
-      ],
       allData: [],
       renderData: {},
       hiddenData: {},
@@ -350,8 +346,6 @@ export default {
             confirmed.push(el.confirmed)
             death.push(el.death)
 
-            
-
           })
 
           confirmed.push(this.allData[0].confirmed)
@@ -468,19 +462,6 @@ export default {
         this.sourceAlertEnabled = true
       })
       
-    },
-
-    correctWording(str){
-
-      var res = false
-
-      for(let i=0;i<this.rematchWording.length; i++){
-        if(str == this.rematchWording[i][0]){
-          res =  this.rematchWording[i][1]
-        }
-      }
-
-      return res ? res : str
     },
 
     openDonate(bol){

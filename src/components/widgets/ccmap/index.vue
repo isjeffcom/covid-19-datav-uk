@@ -69,7 +69,7 @@ export default {
         currentCenter: L.latLng(54.275967, -3.234891),
         showParagraph: false,
         icon: L.icon({
-            iconUrl: 'http://playground.isjeff.com/marker.svg',
+            iconUrl: 'https://playground.isjeff.com/marker.svg',
             iconSize: [32, 37],
             iconAnchor: [16, 37]
         }),
@@ -102,7 +102,7 @@ export default {
     setIcon(num){
         let size = num*this.iconResize
         return L.icon({
-            iconUrl: 'http://playground.isjeff.com/marker.svg',
+            iconUrl: 'https://playground.isjeff.com/marker.svg',
             iconSize: [size, size],
             iconAnchor: [16, 37]
         })

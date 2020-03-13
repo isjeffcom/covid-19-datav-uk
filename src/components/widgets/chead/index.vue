@@ -6,7 +6,7 @@
             </div>
 
             <div id="chead-right">
-                <div class="circle" style="margin-right: 8px; margin-top: 3px;"></div>
+                <div class="circle circle-c"></div>
                 <div>Live</div>
             </div>
         </div>
@@ -39,9 +39,14 @@ export default {
     border-radius: 100px;
     background:#CED3D6;
     animation-name: flashing;
-    animation-duration: 2s;
+    animation-duration: 2.7s;
     animation-iteration-count: infinite;
     animation-direction: normal;
+}
+
+.circle-c{
+    margin-right: 8px; 
+    margin-top: 5px;
 }
 
 #chead{
@@ -58,7 +63,7 @@ export default {
 }
 
 #chead-logo{
-    margin-top: 12px;
+    margin-top: 18px;
     margin-left: 24px;
 }
 
@@ -68,11 +73,11 @@ export default {
     display: flex;
     font-size: 18px;
     font-weight: bold;
-    margin-top: 44px;
+    margin-top: 48px;
 }
 
 #chead-logo img{
-    width: 200px;
+    width: 160px;
 }
 
 @media only screen and (max-width: 800px) {
@@ -81,19 +86,38 @@ export default {
         height: 100%;
     }
 
+    .circle{
+        width: 10px;
+        height: 10px;
+    }
+
+    .circle-c{
+        margin-top: 7px;
+    }
+
     #chead-logo {
-        margin-top: 16px;
+        margin-top: 9px;
+        margin-bottom: 9px;
         margin-left: 14px;
+        font-size: 16px;
+        right: 16px;
+        margin-top: 12px;
     }
 
     #chead-logo img {
-        width: 160px;
+        width: 120px;
+    }
+
+    #chead-inner{
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 
     
     #chead-right{
         right: 24px;
-        margin-top: 40px;
+        margin-top: 30px;
+        font-weight: normal;
     }
 }
 </style>

@@ -2,8 +2,12 @@
     <div id="donate">
         <div id="donate-inner">
 
-            <div id="donate-title">THANK YOU</div>
-            <div id="donate-subtitle">Your donation will be use for server maintenance, pay for data services(eg. Map), and team members health protection.</div>
+            <div id="donate-title">
+                {{ getLang("THANK YOU") }}
+            </div>
+            <div id="donate-subtitle">
+                {{ getLang("Donation will be use for server maintenance, pay for data services(eg. Map), and team members health protection.") }}
+            </div>
             
             <div id="donate-cont">
                 <div id="paypal">
@@ -46,6 +50,7 @@
 <script>
 
 import { EventBus } from '../../../bus'
+import { putCN } from '../../../translate'
 
 export default {
     name:"donate",
@@ -61,7 +66,15 @@ export default {
         },
         close(){
             EventBus.$emit('donate-close', true)
-        }
+        },
+        getLang(str){
+            
+            if(window.navigator.language != "zh-CN"){
+                return str
+            } else {
+                return putCN(str)
+            }
+        },
     }
 
 }
@@ -83,7 +96,7 @@ export default {
         text-align: center;
         font-weight: bold;
         color: #fff;
-        z-index: 999;
+        z-index: 9999;
     }
 
     #donate-inner{

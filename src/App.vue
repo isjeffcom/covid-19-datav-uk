@@ -17,6 +17,8 @@ import home from './components/home'
 import alert from './components/widgets/alert'
 import { EventBus } from './bus'
 
+import { getAlert } from './translate'
+
 const ls = require('local-storage')
 
 export default {
@@ -30,7 +32,7 @@ export default {
     return{
       firstAlert:{
         title: "You need to know",
-        content: "<br>This is a data visualisation for <b>COVID-19</b> in the UK, but just <b>as a reference</b>. <br><br> Here is a couple of things you need to understand: <br><br> 1. These data might <b>NOT</b> be completely accurate or updated. <br> 2. All centre points on the 'Regional Map' represent an area, <b>NOT building or street</b>. <br> 3. The website developer takes <b>NO responsibility</b> for data accuracy and service stability. <br><br> Please double check with <b>official channel</b> before act on it.",
+        content: "<br>This is a data visualisation for <b>COVID-19</b> in the UK, but just <b>as a reference</b>. <br><br> You need to understand: <br><br> 1. These data might <b>NOT</b> be completely accurate or updated. <br> 2. All marker on the map represent an area, <b>NOT building or street</b>. <br> 3. The developer takes <b>NO responsibility</b> for data accuracy and service stability. <br><br> Please double check with <b>official channel</b> before act on it. Cookie in used for statistical purposes.",
         submit: "I consent"
       },
       needAlert: false
@@ -38,14 +40,16 @@ export default {
   },
 
   created(){
-    if(!ls.get("first")){
+    if(!ls.get("first") || ls.get("first") != "2"){
       this.needAlert = true
     }
+
+    this.firstAlert.content = getAlert(window.navigator.language)
 
 
     EventBus.$on("alert-clicked", (data)=>{
       if(data == "I consent"){
-        ls.set("first", "1")
+        ls.set("first", "2")
       }
     })
   },
@@ -74,9 +78,15 @@ export default {
   user-select: none;
 }
 
-#home{
-  margin-top: 40px;
+
+.apexcharts-tooltip {
+  color: #505C65;
 }
+
+.apexcharts-theme-light{
+  color: #505C65;
+}
+
 
 #github{
   position: fixed;

@@ -6,7 +6,6 @@
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
-      style="height: 100%"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
     >
@@ -57,8 +56,9 @@ export default {
   },
   data() {
     return {
-        iconResize: 6,
-        zoom: 5,
+        iconResize: 3,
+        minSize: 16,
+        zoom: 5.6,
         center: L.latLng(54.275967, -3.234891),
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution:
@@ -69,9 +69,9 @@ export default {
         currentCenter: L.latLng(54.275967, -3.234891),
         showParagraph: false,
         icon: L.icon({
-            iconUrl: 'https://playground.isjeff.com/marker.svg',
-            iconSize: [32, 37],
-            iconAnchor: [16, 37]
+            iconUrl: 'https://playground.isjeff.com/marker.svg?v=2',
+            iconSize: [32, 32],
+            iconAnchor: [16, 16]
         }),
         mapOptions: {
             zoomSnap: 0.5,
@@ -84,7 +84,6 @@ export default {
     };
   },
   mounted(){
-
   },
   methods: {
     zoomUpdate(zoom) {
@@ -100,12 +99,12 @@ export default {
         return L.latLng(lo, la)
     },
     setIcon(num){
-        let size = num*this.iconResize
-        return L.icon({
-            iconUrl: 'https://playground.isjeff.com/marker.svg',
-            iconSize: [size, size],
-            iconAnchor: [16, 37]
-        })
+      let size = num * this.iconResize > this.minSize ? num * this.iconResize : this.minSize
+      return L.icon({
+          iconUrl: 'https://playground.isjeff.com/marker.svg',
+          iconSize: [size, size],
+          iconAnchor: [size/2, size/2]
+      })
     }
   }
 };

@@ -1,8 +1,10 @@
 <template>
-  <div id="home" v-if="loaded">
+  <div id="home">
 
-    <div id="update">
-      <span>Last Update: {{update}}</span>
+    <div v-if="error">
+      Fail to connect API, please report to:
+      <li>https://github.com/isjeffcom/coronvirusFigureUK</li>
+      <li>https://spectrum.chat/covid-19-uk-update?tab=posts</li>
     </div>
 
     <div class="tab-switcher data-switcher">
@@ -21,7 +23,7 @@
       </div>
     </div>
 
-    <div id="overall">
+    <div id="overall" v-if="loaded">
       <div id="overall-inner">
 
         <div id="overall-show">
@@ -32,19 +34,20 @@
 
             <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
               
-              <span v-if="value=='---'">{{value}}</span>
+              <span v-if="value == '---'">{{value}}</span>
+              <span v-if="value != '---' && isNaN(value)">{{value}}</span>
 
               <ICountUp
                 :delay="100"
                 :endVal="value"
                 :options="countUpOptions"
-                v-else
+                v-if="value!='---' && !isNaN(value)"
               ></ICountUp>
               
             </div>
 
             <div class="overall-single-title">
-              <span>{{name}}</span>
+              <span>{{getLang(name)}}</span>
             </div>
 
             <div class="overall-single-compare">
@@ -57,49 +60,58 @@
 
         </div>
 
-        <div id="overall-more">
-          <div
-            class="overall-single" 
-            v-for="(value, name) in hiddenData" 
-            :key="name">
-
-            <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
-              <span v-if="value=='---'">{{value}}</span>
-              <ICountUp
-                :delay="300"
-                :endVal="value"
-                :options="countUpOptions"
-                v-else
-              />
+        <div id="update">
+              <div>{{getLang("Update")}}: {{update}}</div>
+              <!--div class="overall-source" v-on:click="sourcePopup()">
+                <div class="overall-source-inner">
+                  <img src="https://i.ibb.co/7XMdBfH/info.png" alt="source info">
+                  <div style="margin-top: 2px;margin-right: 8px;">Source</div>
+                </div>
+              </div-->
             </div>
-
-            <div class="overall-single-title">
-              <span>{{name}}</span>
-            </div>
-            
-          </div>
-        </div>
 
       </div>
 
-      <div class="overall-source" v-on:click="sourcePopup()">
-        <div class="overall-source-inner">
-          <div style="margin-top: 2px;margin-right: 8px;">Source</div>
-          <img src="https://i.ibb.co/7XMdBfH/info.png" alt="source info">
-        </div>
+      
+
+      
+
+      <div class="title">
+        <span>{{getLang("Confirmed")}}</span><br>
       </div>
 
-      <div id="chart" v-if="chartLoaded">
-        <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData"></apexchart>
+      <div class="chart" v-if="chartLoaded">
+        <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData_trend"></apexchart>
+      </div>
+
+      <div class="title">
+        <span>{{getLang("Increment")}}</span><br>
+      </div>
+
+      <div class="chart" v-if="chartLoaded">
+        <apexchart width="100%" height="320px" type="bar" :options="chartOptions" :series="chartData_growth"></apexchart>
+      </div>
+
+      <div class="title">
+        <span>{{getLang("Tested")}}</span><br>
+        <div style="font-size: 12px; opacity: 0.5;">{{getLang("Tested = Confirmed + Negative")}}</div>
+        <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Data Incomplete")}}</div>
+      </div>
+
+      <div class="chart" v-if="chartLoaded">
+        <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData_tested"></apexchart>
       </div>
 
 
       <div id="area" v-if="areaLoaded">
 
-        <div id="area-title">
-          <span>By Region</span><br>
-          <span style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> Unknown Locations</span><br>
-          <span style="font-size: 12px; opacity: 0.5;">* Current data only covered England and Scotland (at least 1 day in arrears). </span>
+        <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
+          <div class="title-area inner" style="width: 90%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
+            <span>{{getLang("Regions")}}</span><br>
+            <div style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> {{getLang("Unknown Locations")}}</div>
+            <div style="font-size: 12px; opacity: 0.5;">* {{getLang("At least 1 day in arrears")}}</div>
+          </div>
+          
         </div>
 
         <div class="tab-switcher data-switcher">
@@ -111,7 +123,7 @@
             v-on:click="switchAreaView(item)">
 
             <div class="ds-text">
-              <span>{{item}}</span>
+              <span>{{getLang(item)}}</span>
             </div>
 
             <div class="ds-ids" v-if="item == currentAreaView"></div>
@@ -124,11 +136,11 @@
           <!--cmap :mapData="mapData"></cmap-->
         </div>
 
-        <div v-if="currentAreaView == 'list'">
+        <div v-if="currentAreaView == 'list'" style="margin-top:40px;">
           <table>
             <tr>
-              <th>Location</th>
-              <th>Cases</th>
+              <th>{{getLang("Location")}}</th>
+              <th>{{getLang("Cases")}}</th>
             </tr>
 
             <tr v-for="item in renderArea" :key="item.location">
@@ -138,26 +150,34 @@
           </table>
         </div>
       </div>
+    </div>
 
+    <div id="more">
+      <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank">
+        <img src="https://i.ibb.co/RNJTwnx/btn2.png" alt="to NHS official website for more help and information">
+      </a>
     </div>
 
     <div id="sources">
-      <span>Sources</span>
-      <li><a href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-the-public" target="_blank">COVID-19: latest information and advice (UK Gov)</a></li>
-      <li><a href="https://www.worldometers.info/coronavirus/" target="_blank">COVID-19 CORONAVIRUS OUTBREAK (Worldometers)</a></li>
-      <li><a href="https://www.gov.uk/government/publications/coronavirus-covid-19-number-of-cases-in-england/coronavirus-covid-19-number-of-cases-in-england" target="_blank">COVID-19: number of cases in England (UK Gov)</a></li>
-      <li><a href="https://www.gov.scot/coronavirus-covid-19/" target="_blank">Coronavirus in Scotland (Scotland Gov)</a></li>
+      <span>{{getLang("References")}}</span>
+      <li><a href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-the-public" target="_blank">[Gov]COVID-19: latest information and advice</a></li>
+      <li><a href="https://www.gov.uk/government/publications/coronavirus-covid-19-number-of-cases-in-england/coronavirus-covid-19-number-of-cases-in-england" target="_blank">[Gov]COVID-19: number of cases in England</a></li>
+      <li><a href="https://www.gov.scot/coronavirus-covid-19/" target="_blank">[Gov]Coronavirus in Scotland</a></li>
+      <li><a href="https://www.arcgis.com/apps/opsdashboard/index.html#/f94c3c90da5b4e9f9a0b19484dd4bb14" target="_blank">[Gov]UK GIS Dashboard</a></li>
+      <li><a href="https://www.gov.uk/search/news-and-communications" target="_blank">[Gov]UK Gov Announcement (search CMO for history data)</a></li>
+      <li><a href="https://twitter.com/DHSCgovuk" target="_blank">[Gov]DHSCgovuk Official Twitter</a></li>
+      <li><a href="https://www.worldometers.info/coronavirus/" target="_blank">[Media]COVID-19 CORONAVIRUS OUTBREAK (Worldometers)</a></li>
     </div>
 
     <div id="donation" v-if="areaLoaded">
       <div id="d-inner">
         <div id="d-cont">
-          <div id="d-title">Support Us</div>
-          <div id="d-sub">This is a free product, however, maintaining this service has costs and it's not cheap.</div>
+          <div id="d-title">{{getLang("Support Us")}}</div>
+          <div id="d-sub">{{getLang("We promise free access, however, maintaining this server has costs and it's not cheap.")}}</div>
         </div>
         
         <div id="d-btn"> 
-          <button v-on:click="openDonate(true)">SUPPORT</button> 
+          <button v-on:click="openDonate(true)">{{getLang("SUPPORT")}}</button> 
         </div>
       </div>
     </div>
@@ -181,12 +201,13 @@
 import { genGet } from '../../request'
 import { getDateFromTs, indexOfObjArr } from '../../utils'
 import alert from '../widgets/alert'
-//import cmap from '../widgets/cmap'
 import donate from '../widgets/donate'
-//import cmap from '../widgets/cmap'
 import ccmap from '../widgets/ccmap'
 import ICountUp from 'vue-countup-v2'
 import { EventBus } from '../../bus'
+
+import { putColor } from './color'
+import { putCN } from '../../translate'
 
 export default {
   name: 'home',
@@ -199,11 +220,13 @@ export default {
   },
   data(){
     return{
+      error: false,
+      lang: "",
       loaded: false,
       chartLoaded: false,
       areaLoaded: false,
       api: "/",
-      api_history: "/history",
+      api_history: "/historyfigures",
       api_locations: "/locations",
       selected: 0,
       selectedChart: "confirm",
@@ -214,6 +237,7 @@ export default {
       renderArea: {},
       mapData: [],
       historyData: [],
+      growthData: [],
       update:"",
       unknown: 0,
       areaViews: ["map", "list"],
@@ -232,47 +256,34 @@ export default {
         topColor: "#2D3133",
         bgColor: "#8FA8B8",
       },
-      colors:[
-        {
-          txt: "confirmed",
-          color: "#F62E3A"
-        },
-        {
-          txt: "death",
-          color: "#949BB5"
-        },
-        {
-          txt: "cured",
-          color: "#31DA93"
-        },
-        {
-          txt: "negative",
-          color: "#46DEFF"
-        },
-        {
-          txt: "serious",
-          color: "#D21414"
-        },
-        {
-          txt: "suspected",
-          color: "#A98AFF"
-        },
-      ],
+      
       chartOptions: {
         
         chart: {
-          id: 'main-chart',
           foreColor: '#8D9EAA',
           toolbar:{
-            show: false
+            show: false,
           }
         },
         colors:["#F62E3A", "#949BB5"],
+        
         xaxis: {
-          categories: [0, 0, 0, 0, 0, 0, 0, 0]
+          categories: [0, 0, 0, 0, 0, 0, 0, 0],
+          labels:{
+            style: {
+              fontSize:  '8px',
+            },
+          },
+        },
+        taxis:{
+          abels:{
+            style: {
+              fontSize:  '8px',
+            },
+          },
         }
       },
-      chartData: [
+      chartData_trend: [
         {
           name: 'Confirmed',
           data: [0,0,0,0,0,0,0]
@@ -282,13 +293,30 @@ export default {
           data: [0,0,0,0,0,0,0]
         },
       ],
+
+      chartData_growth: [
+        {
+          name: 'New Cases',
+          data: [0,0,0,0,0,0,0]
+        }
+      ],
+      chartData_tested: [
+        {
+          name: 'All',
+          data: [0,0,0,0,0,0,0]
+        },
+        {
+          name: 'Increment',
+          data: [0,0,0,0,0,0,0]
+        }
+      ],
       donate: false
     }
   },
 
   mounted(){
     this.getData(this.api)
-
+    this.lang = window.navigator.language
   },
 
   created(){
@@ -304,27 +332,42 @@ export default {
   },
   methods:{
     getData(api){
+
       genGet(api, {}, (res)=>{
-        this.allData = res.data.data
-        this.renderArea = JSON.parse(this.allData[0].area)
-        this.produceRenderData()
-        this.calUnknown()
-        this.update = getDateFromTs(this.allData[0].ts)
 
-        this.loaded = true
+        if(res.status){
+          this.allData = res.data.data
 
-        this.getHistory(this.api_history)
+          if(this.allData[0].area && this.allData[0].area != ""){
+            this.renderArea = JSON.parse(this.allData[0].area)
+          }
+          
+          this.produceRenderData()
+          this.calUnknown()
+          this.update = getDateFromTs(this.allData[0].ts)
+
+          this.loaded = true
+
+          this.getHistory(this.api_history)
+        } else {
+          this.error = true
+        }
+        
+        
       })
     },
 
     calUnknown(){
 
       let all = 0
-      this.renderArea.forEach(el => {
-        all = all + parseInt(el.number)
-      })
+      if(this.renderArea){
+        this.renderArea.forEach(el => {
+          all = all + parseInt(el.number)
+        })
+      }
 
       this.unknown = this.allData[0].confirmed - all
+      
 
     },
 
@@ -348,18 +391,28 @@ export default {
 
           })
 
+          // Push latest data as its not belong to the history
           confirmed.push(this.allData[0].confirmed)
           death.push(this.allData[0].death)
+
+          // Push last one
           categories.push(getDateFromTs(Date.parse( new Date()), "datesimple"))
 
           this.chartOptions.xaxis.categories = categories
-          this.chartData[0].data = confirmed
-          this.chartData[1].data = death
+          this.chartData_trend[0].data = confirmed
+          this.chartData_trend[1].data = death
 
         }
 
-        this.chartLoaded = true
+        
         this.getLocations(this.api_locations)
+
+        this.chartData_growth[0].data = this.calGrowthRate(this.historyData)
+
+        let testedOverall = this.calTested(this.historyData)
+        this.chartData_tested[0].data = testedOverall.all
+        this.chartData_tested[1].data = testedOverall.growth
+        this.chartLoaded = true
         
       })
     },
@@ -383,8 +436,6 @@ export default {
           
         })
 
-       
-
         this.mapData = markers
 
         setTimeout(()=>{
@@ -405,30 +456,100 @@ export default {
       return res
     },
 
+    getColor(str){
+      return putColor(str)
+    },
+
+    getLang(str){
+      if(this.lang != "zh-CN"){
+        return str
+      } else {
+        return putCN(str)
+      }
+      
+    },
+
+    calGrowthRate(data){
+      var res = []
+
+      let today = parseInt(this.allData[0].confirmed)
+
+      data.forEach((el, index) => {
+
+        // If first one
+        if(index == 0){
+          res.push(el.confirmed - 0)
+        } 
+
+        // If last one
+        else if(index == data.length - 1){
+          // Do nothing...
+          res.push(today - el.confirmed)
+        }
+        
+        //
+        else {
+          res.push(el.confirmed - data[index-1].confirmed)
+        }
+      })
+
+      res.unshift(0)
+
+      return res
+    },
+
+    calTested(data){
+      var all = []
+      var growth = []
+
+      let today = parseInt(this.allData[0].confirmed + this.allData[0].negative)
+
+
+      data.forEach((el,index) => {
+        if(el.confirmed == 0 || el.negative == 0){
+          
+          all.push(0)
+          growth.push(0)
+          
+        } else {
+          let tested = el.confirmed + el.negative
+          all.push(tested)
+
+          if(index - 1 > 0){
+            growth.push(tested - (data[index-1].confirmed + data[index-1].negative))
+          } else {
+            growth.push(0)
+          }
+        }
+
+        // Today
+        if(index == data.length - 1){
+          let today = this.allData[0].confirmed + this.allData[0].negative
+          let lastDay = (data[data.length-1].confirmed + data[data.length-1].negative)
+          all.push(today)
+          growth.push(today - lastDay)
+        }
+        
+      })
+      
+      return {all: all, growth: growth}
+    },
+
     produceRenderData(){
       const all = this.allData[this.selected]
-      this.renderData = {
+      let data = {
         confirmed: all.confirmed,
         death: all.death,
         cured: all.cured == 0 ? this.allData[1].cured : all.cured,
         negative: all.negative == 0 ? "---" : all.negative,
-      }
-
-      this.hiddenData = {
-        tested: this.renderData.negative != "---" ? this.renderData.confirmed + this.renderData.negative : "---",
+        tested: all.negative != 0 ? all.confirmed + all.negative : "---",
+        "Co./Te.": all.negative != 0 ? Number.parseFloat(((all.confirmed / (all.confirmed + all.negative))).toFixed(2) * 100) + "%" : "---",
         serious: all.serious == 0 ? "---" : all.serious,
         suspected: all.suspected == 0 ? "---" : all.suspected,
       }
-    },
 
-    getColor(str){
-      
-      const colors = this.colors
-      for(let i=0;i<colors.length;i++){
-        if(str == colors[i].txt){
-          return colors[i].color
-        }
-      }
+      this.renderData = data
+
     },
 
     switchData(idx){
@@ -441,8 +562,15 @@ export default {
     },
 
     compare(value, name){
+
       if(this.historyData.length > 0){
         let res = parseInt(value - this.historyData[this.historyData.length - 1][name])
+
+        // HARD FIX
+        if(name == "tested"){
+          res = parseInt(value - (this.historyData[this.historyData.length - 1].confirmed + this.historyData[this.historyData.length - 1].negative))
+        }
+
         if(isNaN(res)){
           return '---'
         } else {
@@ -476,7 +604,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-
+#home{
+  color: #CED3D6;
+}
 
 table {
   font-family: arial, sans-serif;
@@ -494,12 +624,14 @@ tr:nth-child(even) {
   background-color: #2D3133;
 }
 
+
 #update{
   width: 100%;
   text-align: center;
-  margin-bottom: 30px;
+  padding-bottom: 20px;
   color: #CED3D6;
   opacity: 0.2;
+  margin-top: -10px;
 }
 
 .tab-switcher{
@@ -507,45 +639,60 @@ tr:nth-child(even) {
   display: flex;
   color: #CED3D6;
   text-align: center;
-  margin-bottom: 40px;
-  font-size: 24px;
+  margin-bottom: 0px;
+  font-size: 18px;
+  background: #1D1F21;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .ds-single{
+  padding-top: 14px;
+  padding-bottom: 0px;
   cursor: pointer;
   text-align: center;
-  border-bottom: 1px solid #2D3133;
+}
+
+.ds-single:active{
+  background: rgba(0,0,0,0.1);
 }
 
 .ds-ids{
   height: 4px;
-  width: 50%;
-  background: #51606A;
-  margin-top: 4px;
+  width: 5%;
+  background: #46DEFF;
+  border-radius: 100px;
+  margin-top: 8px;
   margin-left: auto;
   margin-right:auto;
 }
 
 #overall{
   width: 100%;
-  color: #CED3D6;
+  
 }
 
 #overall-inner{
-  width: 90%;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
-}
-
-#overall-show{
-  display: flex;
-  width: 100%;
+  background: #1D1F21;
+  border-radius: 0px 0px 36px 36px;
 }
 
 #overall-more{
   display: flex;
   width: 100%;
+}
+
+#overall-show{
+  display: flex;
+  flex-wrap: wrap;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 
 .overall-single{
@@ -583,18 +730,15 @@ tr:nth-child(even) {
   height: 30px;
   margin-left: auto;
   margin-right: auto;
-  text-align: right;
+  text-align: center;
 }
 
 .overall-source-inner{
-  width: 100px;
-  position: absolute;
-  right: 5.5%;
+  width: 100%;
   color: #51606A;
   font-size: 16px;
   font-weight: bold;
   opacity: 0.6;
-  display: flex;
   cursor: pointer;
 }
 
@@ -603,10 +747,11 @@ tr:nth-child(even) {
   height: 20px;
 }
 
-#chart{
+.chart{
   width: 90%;
   margin-left:auto;
   margin-right: auto;
+  font-size: 12px;
 }
 
 #area{
@@ -620,11 +765,11 @@ tr:nth-child(even) {
   margin-right: auto;
 }
 
-#area-title{
+.title{
   width: 90%;
-  font-size: 24px;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  font-size: 20px;
+  margin-top: 24px;
+  margin-bottom: 6px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -644,6 +789,7 @@ tr:nth-child(even) {
   width: 100%; 
   height: 100px;
   margin-top: 40px;
+  color: #111;
 }
 
 #d-inner{
@@ -696,10 +842,20 @@ tr:nth-child(even) {
   color: #fff;
 }
 
+#more{
+  width: 32%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+#more img{
+  width: 100%;
+}
+
 #sources{
   width: 90%;
-  height: 220px;
-  margin-top: 60px;
+  margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
   color: #CED3D6;
@@ -720,6 +876,8 @@ tr:nth-child(even) {
 }
 
 
+
+
 @media only screen and (max-width: 800px) {
 
 
@@ -728,12 +886,12 @@ tr:nth-child(even) {
     height: 450px;
   }
 
-  #sources{
-    height: 320px;
-  }
-
   .overall-source-inner{
     right: 10px;
+  }
+
+  .ds-ids{
+    width: 20%;
   }
 
   #donation{
@@ -746,11 +904,20 @@ tr:nth-child(even) {
   }
 
   #d-btn{
+    width: auto;
     margin-left: 20px;
   }
 
   #d-inner{
     display: block;
+  }
+
+  #more{
+    width: 92%;
+  }
+
+  #more img{
+    width: 100%;
   }
 }
 

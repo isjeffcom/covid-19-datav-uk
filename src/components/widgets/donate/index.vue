@@ -27,17 +27,12 @@
                         <img src="https://i.ibb.co/yFV0MpR/wec.png" alt="donate by wechat pay">
                     </div>
 
-                    <!--div id="wechat-hidden" v-if="wcqr">
-                        <img src="https://i.ibb.co/4RwtP7p/cc.jpg" alt="wechat qrcode">
-                        <span>保存图片，微信点击右上角扫描二维码>相册>识别</span>
-                    </div-->
-
                 </div>
             </div>
             
 
             <div id="donate-close" v-on:click="close">
-                <div>CLOSE</div>
+                <div>{{getLang("CLOSE")}}</div>
             </div>
         </div>
 

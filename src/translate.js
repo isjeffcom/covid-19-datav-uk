@@ -26,7 +26,7 @@ const wording = [
     ["cured", "治愈"],
     ["negative", "阴性"],
     ["tested", "测试量"],
-    ["Co./Te.", "检出率"],
+    ["D Co./Te.", "日检出率"],
     ["serious", "危重"],
     ["suspected", "疑似"],
 
@@ -36,6 +36,7 @@ const wording = [
         "Donation will be use for server maintenance, pay for data services(eg. Map), and team members health protection.", 
         "捐赠将会被用于服务维护，支付第三方数据服务(如地图等)，和团队成员的自我卫生保护。"
     ],
+    ["CLOSE", "关闭"],
 ]
 
 const alert = {

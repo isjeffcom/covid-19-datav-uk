@@ -2,7 +2,7 @@
   <div id="home">
 
     <div v-if="error">
-      Fail to connect API, please report to:
+      Fail to connect API, please report ISSUE to:
       <li>https://github.com/isjeffcom/coronvirusFigureUK</li>
       <li>https://spectrum.chat/covid-19-uk-update?tab=posts</li>
     </div>
@@ -72,10 +72,6 @@
 
       </div>
 
-      
-
-      
-
       <div class="title">
         <span>{{getLang("Confirmed")}}</span><br>
       </div>
@@ -133,7 +129,6 @@
 
         <div id="area-map" v-if="currentAreaView == 'map'">
           <ccmap :mapData="mapData"></ccmap>
-          <!--cmap :mapData="mapData"></cmap-->
         </div>
 
         <div v-if="currentAreaView == 'list'" style="margin-top:40px;">
@@ -413,6 +408,8 @@ export default {
         this.chartData_tested[0].data = testedOverall.all
         this.chartData_tested[1].data = testedOverall.growth
         this.chartLoaded = true
+
+        this.reCalCoTe()
         
       })
     },
@@ -502,7 +499,7 @@ export default {
       var all = []
       var growth = []
 
-      let today = parseInt(this.allData[0].confirmed + this.allData[0].negative)
+      //let today = parseInt(this.allData[0].confirmed + this.allData[0].negative)
 
 
       data.forEach((el,index) => {
@@ -540,10 +537,10 @@ export default {
       let data = {
         confirmed: all.confirmed,
         death: all.death,
-        cured: all.cured == 0 ? this.allData[1].cured : all.cured,
-        negative: all.negative == 0 ? "---" : all.negative,
         tested: all.negative != 0 ? all.confirmed + all.negative : "---",
-        "Co./Te.": all.negative != 0 ? Number.parseFloat(((all.confirmed / (all.confirmed + all.negative))).toFixed(2) * 100) + "%" : "---",
+        negative: all.negative == 0 ? "---" : all.negative,
+        "D Co./Te.": all.negative != 0 ? Number.parseFloat(((all.confirmed / (all.confirmed + all.negative))).toFixed(2) * 100) + "%" : "---",
+        cured: all.cured == 0 ? "---" : all.cured,
         serious: all.serious == 0 ? "---" : all.serious,
         suspected: all.suspected == 0 ? "---" : all.suspected,
       }
@@ -552,9 +549,24 @@ export default {
 
     },
 
+    reCalCoTe(){
+      if(this.historyData){
+        // All tested incresment
+        let testAll = this.chartData_tested[1].data
+        let confirmAll = this.chartData_growth[0].data
+        let testGrowth = testAll[testAll.length - 1] != 0 ? testAll[testAll.length - 1] : testAll[testAll.length - 2]
+        let confirmed = confirmAll[testAll.length - 1] != 0 ? confirmAll[testAll.length - 1] : confirmAll[testAll.length - 2]
+        this.renderData["D Co./Te."]= Number.parseFloat(((confirmed / testGrowth)).toFixed(4) * 100) + "%" 
+      }
+    },
+
     switchData(idx){
       this.selected = idx
       this.produceRenderData()
+      if(idx == 0){
+        this.reCalCoTe()
+      }
+      
     },
 
     switchAreaView(idx){
@@ -628,6 +640,7 @@ tr:nth-child(even) {
 #update{
   width: 100%;
   text-align: center;
+  font-size: 12px;
   padding-bottom: 20px;
   color: #CED3D6;
   opacity: 0.2;
@@ -691,8 +704,7 @@ tr:nth-child(even) {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 20px;
-  padding-bottom: 10px;
+  padding-top: 30px;
 }
 
 .overall-single{
@@ -713,14 +725,14 @@ tr:nth-child(even) {
 }
 
 .overall-single-title{
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   opacity: 0.6;
   z-index:2;
 }
 
 .overall-single-value{
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   z-index:2;
 }

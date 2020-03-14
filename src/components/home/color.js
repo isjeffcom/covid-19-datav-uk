@@ -1,7 +1,7 @@
 const colors = [
     {
         txt: "confirmed",
-        color: "#F62E3A"
+        color: "#FF5151"
     },
     {
         txt: "death",
@@ -22,6 +22,10 @@ const colors = [
     {
         txt: "serious",
         color: "#D21414"
+    },
+    {
+        txt: "D Co./Te.",
+        color: "#F28151"
     },
     {
         txt: "suspected",

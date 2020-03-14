@@ -666,7 +666,7 @@ tr:nth-child(even) {
 }
 
 .ds-single:active{
-  background: rgba(0,0,0,0.1);
+  background: rgba(0,0,0,0.2);
 }
 
 .ds-ids{
@@ -690,7 +690,7 @@ tr:nth-child(even) {
   margin-right: auto;
   text-align: center;
   background: #1D1F21;
-  border-radius: 0px 0px 36px 36px;
+  border-radius: 0 0 24px 24px;
 }
 
 #overall-more{

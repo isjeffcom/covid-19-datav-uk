@@ -69,7 +69,7 @@ export default {
         currentCenter: L.latLng(54.275967, -3.234891),
         showParagraph: false,
         icon: L.icon({
-            iconUrl: 'https://playground.isjeff.com/marker.svg?v=2',
+            iconUrl: './img/marker.svg',
             iconSize: [32, 32],
             iconAnchor: [16, 16]
         }),

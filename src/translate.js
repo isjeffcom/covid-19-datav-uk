@@ -25,8 +25,8 @@ const wording = [
     ["death", "死亡"],
     ["cured", "治愈"],
     ["negative", "阴性"],
-    ["tested", "测试量"],
-    ["D Co./Te.", "日检出率"],
+    ["tested", "测试"],
+    ["D Co./Te.", "日检出"],
     ["serious", "危重"],
     ["suspected", "疑似"],
 

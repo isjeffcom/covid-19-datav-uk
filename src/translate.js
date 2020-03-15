@@ -1,9 +1,21 @@
 const wording = [
     ["Update", "最近更新"],
-    ["Confirmed", "确诊量"],
-    ["Increment", "增长量"],
-    ["Tested", "测试量"],
     ["Regions", "地域"],
+    ["Data", "数据"],
+    ["Case", "确诊"],
+    ["Death", "死亡"],
+    ["Data might incompleted, especially 02-26 was not accurate", "数据不完整，特别是2月26日及之前"],
+
+    // Charts
+    ["C&D", "确诊/死亡"],
+    ["Daily Increase", "日增长"],
+    ["Growth Rate", "增长率"],
+    ["Death Growth", "死亡增量"],
+    ["Mortality Rate", "死亡率"],
+    ["Tested Number", "测试数"],
+    ["Positive Rate", "确诊率"],
+
+    ["Test", "测试"],
     ["Unknown Locations", "位置未知"],
     ["At least 1 day in arrears", "相比确诊数据有至少一天的延迟"],
     ["Location", "位置"],

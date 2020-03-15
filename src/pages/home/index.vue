@@ -7,7 +7,7 @@
       <li>https://spectrum.chat/covid-19-uk-update?tab=posts</li>
     </div>
 
-    <div class="tab-switcher data-switcher">
+    <div class="tab-switcher">
       <div 
         class="ds-single" 
         v-for="(item, index) in allData" 
@@ -54,55 +54,131 @@
               <span :style="'color:' + getColor(name) + ';font-weight: bold; font-size: 14px;opacity: 0.8;'">{{  compare(value, name) }}</span>
             </div>
 
-            
-
           </div>
 
         </div>
 
         <div id="update">
-              <div>{{getLang("Update")}}: {{update}}</div>
-              <!--div class="overall-source" v-on:click="sourcePopup()">
-                <div class="overall-source-inner">
-                  <img src="https://i.ibb.co/7XMdBfH/info.png" alt="source info">
-                  <div style="margin-top: 2px;margin-right: 8px;">Source</div>
-                </div>
-              </div-->
+          <div>{{getLang("Update")}}: {{update}}</div>
+        </div>
+
+      </div>
+
+      <div id="chart" v-if="chartLoaded">
+
+        <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;margin-top:2px;">
+          <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
+            <span>{{getLang("Data")}}</span><br>
+            <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Data might incompleted, especially 02-26 was not accurate")}}</div>
+          </div>
+          
+        </div>
+
+        <div class="tab-switcher">
+          <div 
+            class="ds-single" 
+            v-for="(item, index) in allCharts" 
+            :key="index" :style="'width:calc(100%/' + allCharts.length + ');'" 
+            v-on:click="switchChartView(index)">
+
+            <div class="ds-text">
+              <span>{{getLang(item)}}</span>
             </div>
 
-      </div>
+            <div class="ds-ids" v-if="index == currentChartView"></div>
+            
+          </div>
+        </div>
 
-      <div class="title">
-        <span>{{getLang("Confirmed")}}</span><br>
-      </div>
+        <div id="chart-inner">
+          <!-- Confirmed Charts -->
+          <div class="charts-cont-s" v-if="currentChartView == 0">
+            <swiper :options="swiperOptions" ref="swiperConfirmed">
+              
+              <swiper-slide v-for="item in confirmCharts" :key="item.name">
+                <div class="title" style="width: 100%;">
+                  <span>{{getLang(item.name)}}</span><br>
+                </div>
+                <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
+              </swiper-slide>
 
-      <div class="chart" v-if="chartLoaded">
-        <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData_trend"></apexchart>
-      </div>
+            </swiper>
 
-      <div class="title">
-        <span>{{getLang("Increment")}}</span><br>
-      </div>
+            <div class="chart-switcher-cont" style="width: 100%; display: flex;">
+              <div 
+              class="chart-switcher" 
+              v-for="(item, index) in confirmCharts" 
+              :key="index"
+              :style="'width: calc(100%/' + confirmCharts.length + ');border-color:' 
+              + (chartIndexs['swiperConfirmed'] == index ? '#46DEFF' : '#373D41') + ';color:' 
+              + (chartIndexs['swiperConfirmed'] == index ? '#46DEFF' : '#CED3D6')"
+              v-on:click="chartSwitcher('swiperConfirmed', index)">
+                {{ getLang(item.name) }}
+              </div>
+            </div>
+          </div>
 
-      <div class="chart" v-if="chartLoaded">
-        <apexchart width="100%" height="320px" type="bar" :options="chartOptions" :series="chartData_growth"></apexchart>
-      </div>
+          <!-- Death Charts -->
+          <div class="charts-cont-s" v-if="currentChartView == 1">
+            <swiper :options="swiperOptions" ref="swiperDeath">
+              
+              <swiper-slide v-for="item in deathCharts" :key="item.name">
+                <div class="title" style="width: 100%;">
+                  <span>{{getLang(item.name)}}</span><br>
+                </div>
+                <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
+              </swiper-slide>
 
-      <div class="title">
-        <span>{{getLang("Tested")}}</span><br>
-        <div style="font-size: 12px; opacity: 0.5;">{{getLang("Tested = Confirmed + Negative")}}</div>
-        <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Data Incomplete")}}</div>
-      </div>
+            </swiper>
 
-      <div class="chart" v-if="chartLoaded">
-        <apexchart width="100%" height="320px" type="area" :options="chartOptions" :series="chartData_tested"></apexchart>
-      </div>
+            <div class="chart-switcher-cont" style="width: 100%; display: flex;">
+              <div 
+              class="chart-switcher" 
+              v-for="(item, index) in deathCharts" 
+              :key="index"
+              :style="'width: calc(100%/' + deathCharts.length + ');border-color:' 
+              + (chartIndexs['swiperDeath'] == index ? '#46DEFF' : '#373D41') + ';color:' 
+              + (chartIndexs['swiperDeath'] == index ? '#46DEFF' : '#CED3D6')"
+              v-on:click="chartSwitcher('swiperDeath', index)">
+                {{ getLang(item.name) }}
+              </div>
+            </div>
+          </div>
 
+          <!-- Tested Charts -->
+          <div class="charts-cont-s" v-if="currentChartView == 2">
+            <swiper :options="swiperOptions" ref="swiperTested">
+              
+              <swiper-slide v-for="item in testedCharts" :key="item.name">
+                <div class="title" style="width: 100%;">
+                  <span>{{getLang(item.name)}}</span><br>
+                </div>
+                <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
+              </swiper-slide>
+
+            </swiper>
+
+            <div class="chart-switcher-cont" style="width: 100%; display: flex;">
+              <div 
+              class="chart-switcher" 
+              v-for="(item, index) in testedCharts" 
+              :key="index"
+              :style="'width: calc(100%/' + testedCharts.length + ');border-color:' 
+              + (chartIndexs['swiperTested'] == index ? '#46DEFF' : '#373D41') + ';color:' 
+              + (chartIndexs['swiperTested'] == index ? '#46DEFF' : '#CED3D6')"
+              v-on:click="chartSwitcher('swiperTested', index)">
+                {{ getLang(item.name) }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
       <div id="area" v-if="areaLoaded">
 
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
-          <div class="title-area inner" style="width: 90%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
+          <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
             <span>{{getLang("Regions")}}</span><br>
             <div style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> {{getLang("Unknown Locations")}}</div>
             <div style="font-size: 12px; opacity: 0.5;">* {{getLang("At least 1 day in arrears")}}</div>
@@ -110,7 +186,7 @@
           
         </div>
 
-        <div class="tab-switcher data-switcher">
+        <div class="tab-switcher">
           <div 
             class="ds-single" 
             v-for="(item, index) in areaViews" 
@@ -153,15 +229,25 @@
       </a>
     </div>
 
+    
+
     <div id="sources">
       <span>{{getLang("References")}}</span>
       <li><a href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-the-public" target="_blank">[Gov]COVID-19: latest information and advice</a></li>
       <li><a href="https://www.gov.uk/government/publications/coronavirus-covid-19-number-of-cases-in-england/coronavirus-covid-19-number-of-cases-in-england" target="_blank">[Gov]COVID-19: number of cases in England</a></li>
       <li><a href="https://www.gov.scot/coronavirus-covid-19/" target="_blank">[Gov]Coronavirus in Scotland</a></li>
+      <li><a href="https://www.publichealth.hscni.net/news/covid-19-coronavirus" target="_blank">[Gov]COVID-19 (coronavirus) Northern Ireland</a></li>
+      <li><a href="https://gov.wales/written-statement-coronavirus-covid-19-1" target="_blank">[Gov]Written Statement: COVID-19 Wales</a></li>
       <li><a href="https://www.arcgis.com/apps/opsdashboard/index.html#/f94c3c90da5b4e9f9a0b19484dd4bb14" target="_blank">[Gov]UK GIS Dashboard</a></li>
       <li><a href="https://www.gov.uk/search/news-and-communications" target="_blank">[Gov]UK Gov Announcement (search CMO for history data)</a></li>
       <li><a href="https://twitter.com/DHSCgovuk" target="_blank">[Gov]DHSCgovuk Official Twitter</a></li>
       <li><a href="https://www.worldometers.info/coronavirus/" target="_blank">[Media]COVID-19 CORONAVIRUS OUTBREAK (Worldometers)</a></li>
+    </div>
+
+    <div id="author">
+      <div id="author-inner">
+        <a href="https://www.isjeff.com" target="_blank">@Jeff Wu</a>
+      </div>
     </div>
 
     <div id="donation" v-if="areaLoaded">
@@ -193,16 +279,28 @@
 </template>
 
 <script>
+// Utils
 import { genGet } from '../../request'
-import { getDateFromTs, indexOfObjArr } from '../../utils'
-import alert from '../widgets/alert'
-import donate from '../widgets/donate'
-import ccmap from '../widgets/ccmap'
+import { getDateFromTs, indexOfObjArr, deepCopy } from '../../utils'
+
+// Components
+import alert from '../../components/widgets/alert'
+import donate from '../../components/widgets/donate'
+import ccmap from '../../components/widgets/ccmap'
 import ICountUp from 'vue-countup-v2'
 import { EventBus } from '../../bus'
 
+// Swiper
+import 'swiper/dist/css/swiper.css'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+
+// Custom
 import { putColor } from './color'
 import { putCN } from '../../translate'
+
+import { ConfirmCategories, ConfirmOverallTrend, ConfirmIncrement, ConfirmDaily } from './confirmed'
+import { DeathIncrement, DeathRate } from './death'
+import { Tested, TestedDRate } from './tested'
 
 export default {
   name: 'home',
@@ -211,7 +309,9 @@ export default {
     ccmap,
     alert,
     donate,
-    ICountUp
+    ICountUp,
+    swiper,
+    swiperSlide
   },
   data(){
     return{
@@ -227,12 +327,9 @@ export default {
       selectedChart: "confirm",
       allData: [],
       renderData: {},
-      hiddenData: {},
-      compareData: {},
       renderArea: {},
       mapData: [],
       historyData: [],
-      growthData: [],
       update:"",
       unknown: 0,
       areaViews: ["map", "list"],
@@ -251,14 +348,24 @@ export default {
         topColor: "#2D3133",
         bgColor: "#8FA8B8",
       },
+
+      swiperOptions:{
+        allowTouchMove: false
+      },
       
       chartOptions: {
-        
         chart: {
           foreColor: '#8D9EAA',
           toolbar:{
             show: false,
           }
+        },
+
+        dataLabels:{
+           style: {
+                fontSize: '8px',
+                fontWeight: "normal"
+            },
         },
         colors:["#F62E3A", "#949BB5"],
         
@@ -278,23 +385,25 @@ export default {
           },
         }
       },
-      chartData_trend: [
-        {
-          name: 'Confirmed',
-          data: [0,0,0,0,0,0,0]
-        },
-        {
-          name: 'Death',
-          data: [0,0,0,0,0,0,0]
-        },
-      ],
+      currentChartView: 0,
+      confirmCharts:[],
+      deathCharts:[],
+      testedCharts:[],
+      allCharts:["Case", "Death", "Test"],
+      chartIndexs:{
+        "swiperConfirmed":0,
+        "swiperDeath": 0,
+        "swiperTested": 0
+      },
 
-      chartData_growth: [
+
+      chartData_growth:[
         {
-          name: 'New Cases',
-          data: [0,0,0,0,0,0,0]
+          name: "",
+          data: [0,0,0,0,0,0]
         }
       ],
+
       chartData_tested: [
         {
           name: 'All',
@@ -309,8 +418,14 @@ export default {
     }
   },
 
+  computed:{
+
+  },
+
   mounted(){
     this.getData(this.api)
+
+    
     this.lang = window.navigator.language
   },
 
@@ -333,17 +448,24 @@ export default {
         if(res.status){
           this.allData = res.data.data
 
+          
+
+          // Process Area Data
           if(this.allData[0].area && this.allData[0].area != ""){
             this.renderArea = JSON.parse(this.allData[0].area)
           }
           
-          this.produceRenderData()
-          this.calUnknown()
+          this.renderFigure()
+
+          // Get Update Time
           this.update = getDateFromTs(this.allData[0].ts)
 
+          // Display
           this.loaded = true
-
+          
           this.getHistory(this.api_history)
+
+          
         } else {
           this.error = true
         }
@@ -352,67 +474,153 @@ export default {
       })
     },
 
-    calUnknown(){
+    renderFigure(){
+      // Process Current Selected Data For render
+      const all = this.allData[this.selected]
+      this.renderData = {
+        confirmed: all.confirmed,
+        death: all.death,
+        tested: all.negative != 0 ? all.confirmed + all.negative : "---",
+        negative: all.negative == 0 ? "---" : all.negative,
+        "D Co./Te.": all.negative != 0 ? Number.parseFloat(((all.confirmed / (all.confirmed + all.negative))).toFixed(2) * 100) + "%" : "---",
+        cured: all.cured == 0 ? "---" : all.cured,
+        serious: all.serious == 0 ? "---" : all.serious,
+        suspected: all.suspected == 0 ? "---" : all.suspected,
+      }
+    },
+    
+
+    // Calculate unknow location cases
+    calUnknown(areaData, confirmed){
 
       let all = 0
-      if(this.renderArea){
-        this.renderArea.forEach(el => {
-          all = all + parseInt(el.number)
+      if(areaData){
+        areaData.forEach(el => {
+          if(!isNaN(el.number)){
+            all = all + parseInt(el.number)
+          }
         })
       }
 
-      this.unknown = this.allData[0].confirmed - all
+
+      return confirmed - all
       
 
     },
 
     getHistory(api){
 
-      genGet(api, {}, (res)=>{
+      genGet(api, {}, async (res)=>{
 
         if(res.status){
-          let categories = []
-          let confirmed = []
-          let death = []
 
+          // History data is
           this.historyData = res.data.data
 
-          this.historyData.forEach((el, index) => {
-            
-            el.date = getDateFromTs(el.date, "datesimple")
-            categories.push(el.date)
-            confirmed.push(el.confirmed)
-            death.push(el.death)
-
-          })
-
-          // Push latest data as its not belong to the history
-          confirmed.push(this.allData[0].confirmed)
-          death.push(this.allData[0].death)
-
-          // Push last one
-          categories.push(getDateFromTs(Date.parse( new Date()), "datesimple"))
+          let categories = await ConfirmCategories(this.historyData)
+          let oaConfirmTrend = await ConfirmOverallTrend(this.historyData, this.allData[0])
+          let oaConfirmDaily = await ConfirmDaily(this.historyData, this.allData[0])
+          let oaConfirmIncRate = await ConfirmIncrement(this.historyData, this.allData[0])
+          let deathInc = await DeathIncrement(this.historyData, this.allData[0])
+          let deathRate = await DeathRate(this.historyData, this.allData[0])
+          let tested = await Tested(this.historyData, this.allData[0])
+          let testedCOTE = await TestedDRate(this.historyData, this.allData[0])
 
           this.chartOptions.xaxis.categories = categories
-          this.chartData_trend[0].data = confirmed
-          this.chartData_trend[1].data = death
+
+
+          this.confirmCharts.push(this.constChartData("C&D", "area", false, this.constChartSeries([
+            ["Confirmed", oaConfirmTrend.confirmed], 
+            ["Death", oaConfirmTrend.death]
+          ])))
+
+
+          this.confirmCharts.push(this.constChartData("Daily Increase", "bar", false, this.constChartSeries([
+            ["Cases", oaConfirmDaily]
+          ])))
+
+          this.confirmCharts.push(this.constChartData("Growth Rate", "bar", true, this.constChartSeries([
+            ["Rate", oaConfirmIncRate]
+          ])))
+
+          this.deathCharts.push(this.constChartData("Death Growth", "bar", false, this.constChartSeries([
+            ["Death Increment", deathInc], 
+          ])))
+
+          this.deathCharts.push(this.constChartData("Mortality Rate", "area", true, this.constChartSeries([
+            ["Death Rate", deathRate], 
+          ])))
+
+          this.testedCharts.push(this.constChartData("Tested Number", "area", false, this.constChartSeries([
+            ["All", tested.all],
+            ["Growth", tested.growth],
+          ])))
+
+          this.testedCharts.push(this.constChartData("Positive Rate", "bar", true, this.constChartSeries([
+            ["Increment", testedCOTE],
+          ])))
+
+          
+          // Save for calculate CO./TE.
+          this.dailyConfirmed = oaConfirmDaily
+
+          // Call here because it relay on get history data
+          this.renderData["D Co./Te."] = Number.parseFloat(testedCOTE[testedCOTE.length-1]) + "%"
+
+
+          this.chartLoaded = true
 
         }
 
-        
+       
+
+        // Start Get Location
         this.getLocations(this.api_locations)
 
-        this.chartData_growth[0].data = this.calGrowthRate(this.historyData)
-
-        let testedOverall = this.calTested(this.historyData)
-        this.chartData_tested[0].data = testedOverall.all
-        this.chartData_tested[1].data = testedOverall.growth
-        this.chartLoaded = true
-
-        this.reCalCoTe()
-        
       })
     },
+
+    chartSwitcher(target, index){
+      
+      this.chartIndexs[target] = index
+      this.$refs[target].swiper.slideTo(index)
+    },
+
+    constChartData(name, type, ptg, data){
+
+      let options = deepCopy(this.chartOptions)
+
+      if(ptg){
+        
+        options.dataLabels.formatter = (val)=>{
+          return val + "%"
+        }
+      
+      }
+
+      return {
+        name: name,
+        type: type,
+        options: options,
+        data: data
+      }
+    },
+
+    constChartSeries(arr){
+
+      let res = []
+      for(let i=0;i<arr.length;i++){
+        res.push({
+          name: arr[i][0],
+          data: arr[i][1]
+        })
+      }
+
+      return res
+    },
+    
+
+
 
     getLocations(api){
       var that = this
@@ -420,6 +628,8 @@ export default {
         let d = res.data.data
          
         var markers = []
+
+        // Match area data and location data
         this.renderArea.forEach((el, index) => {
           
           // Match location from location cases list
@@ -435,22 +645,13 @@ export default {
 
         this.mapData = markers
 
-        setTimeout(()=>{
+        // Process Data For Unknown Location
+        this.unknown = this.calUnknown(this.renderArea, this.allData[0].confirmed)
+        this.$nextTick(()=>{
           that.areaLoaded = true
-        }, 200)
-        
+        })
+
       })
-    },
-
-    findAreaData(target, arr){
-      var res = -1
-      for(let i=0;i<arr.length;i++){
-        if(target == arr[i].location){
-          res = arr[i].number
-        }
-      }
-
-      return res
     },
 
     getColor(str){
@@ -466,94 +667,12 @@ export default {
       
     },
 
-    calGrowthRate(data){
-      var res = []
-
-      let today = parseInt(this.allData[0].confirmed)
-
-      data.forEach((el, index) => {
-
-        // If first one
-        if(index == 0){
-          res.push(el.confirmed - 0)
-        } 
-
-        // If last one
-        else if(index == data.length - 1){
-          // Do nothing...
-          res.push(today - el.confirmed)
-        }
-        
-        //
-        else {
-          res.push(el.confirmed - data[index-1].confirmed)
-        }
-      })
-
-      res.unshift(0)
-
-      return res
-    },
-
-    calTested(data){
-      var all = []
-      var growth = []
-
-      //let today = parseInt(this.allData[0].confirmed + this.allData[0].negative)
-
-
-      data.forEach((el,index) => {
-        if(el.confirmed == 0 || el.negative == 0){
-          
-          all.push(0)
-          growth.push(0)
-          
-        } else {
-          let tested = el.confirmed + el.negative
-          all.push(tested)
-
-          if(index - 1 > 0){
-            growth.push(tested - (data[index-1].confirmed + data[index-1].negative))
-          } else {
-            growth.push(0)
-          }
-        }
-
-        // Today
-        if(index == data.length - 1){
-          let today = this.allData[0].confirmed + this.allData[0].negative
-          let lastDay = (data[data.length-1].confirmed + data[data.length-1].negative)
-          all.push(today)
-          growth.push(today - lastDay)
-        }
-        
-      })
-      
-      return {all: all, growth: growth}
-    },
-
-    produceRenderData(){
-      const all = this.allData[this.selected]
-      let data = {
-        confirmed: all.confirmed,
-        death: all.death,
-        tested: all.negative != 0 ? all.confirmed + all.negative : "---",
-        negative: all.negative == 0 ? "---" : all.negative,
-        "D Co./Te.": all.negative != 0 ? Number.parseFloat(((all.confirmed / (all.confirmed + all.negative))).toFixed(2) * 100) + "%" : "---",
-        cured: all.cured == 0 ? "---" : all.cured,
-        serious: all.serious == 0 ? "---" : all.serious,
-        suspected: all.suspected == 0 ? "---" : all.suspected,
-      }
-
-      this.renderData = data
-
-    },
 
     reCalCoTe(){
       if(this.historyData){
         // All tested incresment
         let testAll = this.chartData_tested[1].data
-        let confirmAll = this.chartData_growth[0].data
+        let confirmAll = this.dailyConfirmed
         let testGrowth = testAll[testAll.length - 1] != 0 ? testAll[testAll.length - 1] : testAll[testAll.length - 2]
         let confirmed = confirmAll[testAll.length - 1] != 0 ? confirmAll[testAll.length - 1] : confirmAll[testAll.length - 2]
         this.renderData["D Co./Te."]= Number.parseFloat(((confirmed / testGrowth)).toFixed(4) * 100) + "%" 
@@ -562,15 +681,25 @@ export default {
 
     switchData(idx){
       this.selected = idx
-      this.produceRenderData()
-      if(idx == 0){
-        this.reCalCoTe()
-      }
-      
+      this.renderFigure()
     },
 
     switchAreaView(idx){
       this.currentAreaView = idx
+    },
+
+    switchChartView(idx){
+
+      Object.keys(this.chartIndexs).forEach(el => {
+        this.chartIndexs[el] = 0
+        if(this.$refs[el]){
+          this.$refs[el].swiper.slideTo(0)
+        }
+      })
+
+      
+
+      this.currentChartView = idx
     },
 
     compare(value, name){
@@ -647,41 +776,9 @@ tr:nth-child(even) {
   margin-top: -10px;
 }
 
-.tab-switcher{
-  width: 100%;
-  display: flex;
-  color: #CED3D6;
-  text-align: center;
-  margin-bottom: 0px;
-  font-size: 18px;
-  background: #1D1F21;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-}
-
-.ds-single{
-  padding-top: 14px;
-  padding-bottom: 0px;
-  cursor: pointer;
-  text-align: center;
-}
-
-.ds-single:active{
-  background: rgba(0,0,0,0.2);
-}
-
-.ds-ids{
-  height: 4px;
-  width: 5%;
-  background: #46DEFF;
-  border-radius: 100px;
-  margin-top: 8px;
-  margin-left: auto;
-  margin-right:auto;
-}
 
 #overall{
   width: 100%;
-  
 }
 
 #overall-inner{
@@ -690,7 +787,7 @@ tr:nth-child(even) {
   margin-right: auto;
   text-align: center;
   background: #1D1F21;
-  border-radius: 0 0 24px 24px;
+  /*border-radius: 0 0 24px 24px;*/
 }
 
 #overall-more{
@@ -759,11 +856,15 @@ tr:nth-child(even) {
   height: 20px;
 }
 
-.chart{
-  width: 90%;
+#chart{
+  width: 100%;
+  font-size: 12px;
+}
+
+#chart-inner{
+  width: 92%;
   margin-left:auto;
   margin-right: auto;
-  font-size: 12px;
 }
 
 #area{
@@ -771,7 +872,7 @@ tr:nth-child(even) {
 }
 
 #area-map{
-  width: 90%;
+  width: 92%;
   height: 700px;
   margin-left: auto;
   margin-right: auto;
@@ -866,7 +967,7 @@ tr:nth-child(even) {
 }
 
 #sources{
-  width: 90%;
+  width: 92%;
   margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
@@ -885,6 +986,22 @@ tr:nth-child(even) {
 
 #sources a:active{
   background: #FEB547;
+}
+
+#author{
+  width: 92%;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #CED3D6;
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+#author a{
+  color: rgb(255, 255, 255);
+  text-decoration: underline;
+  font-size: 16px;
 }
 
 

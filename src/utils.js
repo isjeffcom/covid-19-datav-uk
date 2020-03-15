@@ -35,3 +35,6 @@ export function indexOfObjArr(target, arr, id){
 
     return res
 }
+export function deepCopy(obj){
+    return JSON.parse(JSON.stringify(obj))
+}

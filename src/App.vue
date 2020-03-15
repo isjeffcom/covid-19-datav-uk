@@ -2,7 +2,7 @@
   <div id="app">
     <alert :title="firstAlert.title" :content="firstAlert.content" :submit="firstAlert.submit" v-if="needAlert"></alert>
     <chead></chead>
-    <home></home>
+    <router-view></router-view>
     
 
     <div id="github" v-on:click="toGithub">
@@ -13,10 +13,8 @@
 
 <script>
 import chead from './components/widgets/chead'
-import home from './components/home'
 import alert from './components/widgets/alert'
 import { EventBus } from './bus'
-
 import { getAlert } from './translate'
 
 const ls = require('local-storage')
@@ -25,7 +23,6 @@ export default {
   name: 'App',
   components: {
     chead,
-    home,
     alert
   },
   data(){
@@ -76,6 +73,57 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   background: #1F2224;
   user-select: none;
+}
+
+/* TAB */
+.tab-switcher{
+  width: 100%;
+  display: flex;
+  color: #CED3D6;
+  text-align: center;
+  margin-bottom: 0px;
+  font-size: 18px;
+  background: #1D1F21;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.ds-single{
+  padding-top: 14px;
+  padding-bottom: 0px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.ds-single:active{
+  background: rgba(0,0,0,0.2);
+}
+
+.ds-ids{
+  height: 4px;
+  width: 5%;
+  background: #46DEFF;
+  border-radius: 100px;
+  margin-top: 8px;
+  margin-left: auto;
+  margin-right:auto;
+}
+
+/* Chart Swiper */
+.chart-switcher{
+  height: 35px;
+  background: #373D41;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 4px;
+  margin-left:10px;
+  margin-right: 10px;
+  text-align: center;
+  padding-top: 20px;
+  font-size:14px;
+  cursor: pointer;
+}
+
+.chart-switcher:active{
+  background: #2D3133;
 }
 
 

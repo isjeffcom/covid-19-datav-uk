@@ -4,7 +4,6 @@
     <chead></chead>
     <router-view></router-view>
     
-
     <div id="github" v-on:click="toGithub">
       <img src="https://i.ibb.co/27tC8pd/github.png" alt="to github">
     </div>
@@ -73,6 +72,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   background: #1F2224;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* TAB */
@@ -110,7 +110,7 @@ export default {
 
 /* Chart Swiper */
 .chart-switcher{
-  height: 35px;
+  height: 36px;
   background: #373D41;
   border: 1px solid rgba(255,255,255,0.05);
   border-radius: 4px;
@@ -118,8 +118,9 @@ export default {
   margin-right: 10px;
   text-align: center;
   padding-top: 20px;
-  font-size:14px;
+  font-size:12px;
   cursor: pointer;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .chart-switcher:active{

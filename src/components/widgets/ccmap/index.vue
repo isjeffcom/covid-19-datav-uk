@@ -56,7 +56,7 @@ export default {
   },
   data() {
     return {
-        iconResize: 3,
+        iconResize: 1.5,
         minSize: 16,
         zoom: 5.6,
         center: L.latLng(54.275967, -3.234891),

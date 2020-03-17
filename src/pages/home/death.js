@@ -33,8 +33,14 @@ export function DeathRate (history, today){
        
         let dR = []
 
-        history.forEach(el => {
-            let rate = parseFloat((el.death)/el.confirmed).toFixed(4)*100
+        history.forEach((el, index) => {
+            
+            let rate
+            if(index == 0){
+                rate = 0
+            } else {
+                rate = parseFloat((el.death)/el.confirmed).toFixed(4)*100
+            }
             dR.push(rate.toFixed(4))
         })
 

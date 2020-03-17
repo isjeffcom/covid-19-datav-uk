@@ -81,7 +81,12 @@ export function ConfirmIncrement(history, today) {
             }
             else{
                 let last = history[index-1].confirmed
-                increse = parseFloat((el.confirmed-last)/last).toFixed(4)
+                if(last == 0){
+                    increse = el.confirmed
+                } else{
+                    increse = parseFloat((el.confirmed-last)/last).toFixed(4)
+                }
+                
             }
             
 

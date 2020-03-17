@@ -3,15 +3,15 @@ const wording = [
     ["Regions", "地域"],
     ["Data", "数据"],
     ["Case", "确诊"],
-    ["Death", "死亡"],
+    ["Death", "病亡"],
     ["Data might incompleted, especially 02-26 was not accurate", "数据不完整，特别是2月26日及之前"],
 
     // Charts
-    ["C&D", "确诊/死亡"],
+    ["C&D", "确诊/病亡"],
     ["Daily Increase", "日增长"],
     ["Growth Rate", "增长率"],
-    ["Death Growth", "死亡增量"],
-    ["Mortality Rate", "死亡率"],
+    ["Death Increase", "病亡增量"],
+    ["Mortality Rate", "病亡率"],
     ["Tested Number", "测试数"],
     ["Positive Rate", "确诊率"],
 
@@ -34,13 +34,18 @@ const wording = [
 
     // Figures
     ["confirmed", "确诊"],
-    ["death", "死亡"],
+    ["death", "病亡"],
     ["cured", "治愈"],
     ["negative", "阴性"],
     ["tested", "测试"],
     ["D Co./Te.", "日检出"],
     ["serious", "危重"],
     ["suspected", "疑似"],
+
+    // Cases Map
+    ["Cases Map", "周边疫情"],
+    ["Data Source", "数据来源"],
+    ["by User and News, NOT Authoritative", "数据来源于用户贡献或新闻媒体，非权威信息"],
 
     // Donation
     ["THANK YOU", "谢谢支持"],

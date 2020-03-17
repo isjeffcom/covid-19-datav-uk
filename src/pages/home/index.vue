@@ -96,9 +96,6 @@
             <swiper :options="swiperOptions" ref="swiperConfirmed">
               
               <swiper-slide v-for="item in confirmCharts" :key="item.name">
-                <div class="title" style="width: 100%;">
-                  <span>{{getLang(item.name)}}</span><br>
-                </div>
                 <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
               </swiper-slide>
 
@@ -111,7 +108,8 @@
               :key="index"
               :style="'width: calc(100%/' + confirmCharts.length + ');border-color:' 
               + (chartIndexs['swiperConfirmed'] == index ? '#46DEFF' : '#373D41') + ';color:' 
-              + (chartIndexs['swiperConfirmed'] == index ? '#46DEFF' : '#CED3D6')"
+              + (chartIndexs['swiperConfirmed'] == index ? '#46DEFF' : '#CED3D6') + ';background:'
+              + (chartIndexs['swiperConfirmed'] == index ? '#2D3133' : '#373D41')"
               v-on:click="chartSwitcher('swiperConfirmed', index)">
                 {{ getLang(item.name) }}
               </div>
@@ -123,9 +121,6 @@
             <swiper :options="swiperOptions" ref="swiperDeath">
               
               <swiper-slide v-for="item in deathCharts" :key="item.name">
-                <div class="title" style="width: 100%;">
-                  <span>{{getLang(item.name)}}</span><br>
-                </div>
                 <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
               </swiper-slide>
 
@@ -150,9 +145,6 @@
             <swiper :options="swiperOptions" ref="swiperTested">
               
               <swiper-slide v-for="item in testedCharts" :key="item.name">
-                <div class="title" style="width: 100%;">
-                  <span>{{getLang(item.name)}}</span><br>
-                </div>
                 <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
               </swiper-slide>
 
@@ -207,14 +199,19 @@
           <ccmap :mapData="mapData"></ccmap>
         </div>
 
-        <div v-if="currentAreaView == 'list'" style="margin-top:40px;">
+        <div v-if="currentAreaView == 'list'" style="margin-top:20px;">
+
+          <div class="area-list-search">
+            <input type="text" placeholder="Search by place" v-model="listSearch">
+          </div>
+          
+
           <table>
             <tr>
               <th>{{getLang("Location")}}</th>
               <th>{{getLang("Cases")}}</th>
-            </tr>
 
-            <tr v-for="item in renderArea" :key="item.location">
+            <tr v-for="item in listFiltered" :key="item.location">
               <td>{{item.location}}</td>
               <td>{{item.number}}</td>
             </tr>
@@ -223,7 +220,28 @@
       </div>
     </div>
 
+    <div id="third-pardy" v-if="loadCM">
+      <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
+        <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
+          <span>{{getLang("Cases Map")}}</span><br>
+          <div style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> {{getLang("Data Source")}}: COVID-19 MAP (by /r/CovidMapping)</div>
+          <div style="font-size: 12px; opacity: 0.5;">* {{getLang("by User and News, NOT Authoritative")}}</div>
+        </div>
+      </div>
+
+      <div style="width: 92%; height: 600px; margin-left: auto; margin-right: auto;">
+        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1yCPR-ukAgE55sROnmBUFmtLN6riVLTu3&ll=54.019029244689136%2C-1.956174250177014&z=7" 
+              frameborder="0"
+              width="100%"
+              height="600px">
+
+        </iframe>
+      </div>
+      
+    </div>
+
     <div id="more">
+      
       <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank">
         <img src="https://i.ibb.co/RNJTwnx/btn2.png" alt="to NHS official website for more help and information">
       </a>
@@ -316,10 +334,12 @@ export default {
   data(){
     return{
       error: false,
+      loadCM: false,
       lang: "",
       loaded: false,
       chartLoaded: false,
       areaLoaded: false,
+      listSearch: "",
       api: "/",
       api_history: "/historyfigures",
       api_locations: "/locations",
@@ -357,27 +377,36 @@ export default {
         chart: {
           foreColor: '#8D9EAA',
           toolbar:{
-            show: false,
+            show: true,
+          },
+          zoom:{
+            enable: true
+          },
+          selection:{
+            enable: true
           }
         },
 
         dataLabels:{
+          enabled: true,
            style: {
                 fontSize: '8px',
+                borderWidth: 0,
+                padding: 2,
                 fontWeight: "normal"
             },
         },
         colors:["#F62E3A", "#949BB5"],
-        
         xaxis: {
           categories: [0, 0, 0, 0, 0, 0, 0, 0],
           labels:{
+            hideOverlappingLabels: true,
             style: {
               fontSize:  '8px',
             },
           },
         },
-        taxis:{
+        yaxis:{
           abels:{
             style: {
               fontSize:  '8px',
@@ -396,40 +425,32 @@ export default {
         "swiperTested": 0
       },
 
-
-      chartData_growth:[
-        {
-          name: "",
-          data: [0,0,0,0,0,0]
-        }
-      ],
-
-      chartData_tested: [
-        {
-          name: 'All',
-          data: [0,0,0,0,0,0,0]
-        },
-        {
-          name: 'Increment',
-          data: [0,0,0,0,0,0,0]
-        }
-      ],
       donate: false
     }
   },
 
   computed:{
-
+    listFiltered: function(){
+      return this.renderArea.filter(val => {
+        //console.log(this.listSearch)
+        return val.location.toLowerCase().includes(this.listSearch.toLowerCase())
+      })
+    }
   },
 
   mounted(){
     this.getData(this.api)
-
-    
     this.lang = window.navigator.language
+
+    // Lazy load cases map
+    setTimeout(()=>{
+      this.loadCM = true
+    }, 3000)
   },
 
   created(){
+
+    
     EventBus.$on("alert-clicked", ()=>{
       setTimeout(()=>{
         this.sourceAlertEnabled = false
@@ -448,17 +469,15 @@ export default {
         if(res.status){
           this.allData = res.data.data
 
-          
+          this.renderFigure()
+
+          // Get Update Time
+          this.update = getDateFromTs(this.allData[0].ts)
 
           // Process Area Data
           if(this.allData[0].area && this.allData[0].area != ""){
             this.renderArea = JSON.parse(this.allData[0].area)
           }
-          
-          this.renderFigure()
-
-          // Get Update Time
-          this.update = getDateFromTs(this.allData[0].ts)
 
           // Display
           this.loaded = true
@@ -482,7 +501,7 @@ export default {
         death: all.death,
         tested: all.negative != 0 ? all.confirmed + all.negative : "---",
         negative: all.negative == 0 ? "---" : all.negative,
-        "D Co./Te.": all.negative != 0 ? Number.parseFloat(((all.confirmed / (all.confirmed + all.negative))).toFixed(2) * 100) + "%" : "---",
+        "D Co./Te.": "---",
         cured: all.cured == 0 ? "---" : all.cured,
         serious: all.serious == 0 ? "---" : all.serious,
         suspected: all.suspected == 0 ? "---" : all.suspected,
@@ -528,7 +547,7 @@ export default {
 
           this.chartOptions.xaxis.categories = categories
 
-
+          // Compute chart data
           this.confirmCharts.push(this.constChartData("C&D", "area", false, this.constChartSeries([
             ["Confirmed", oaConfirmTrend.confirmed], 
             ["Death", oaConfirmTrend.death]
@@ -543,8 +562,8 @@ export default {
             ["Rate", oaConfirmIncRate]
           ])))
 
-          this.deathCharts.push(this.constChartData("Death Growth", "bar", false, this.constChartSeries([
-            ["Death Increment", deathInc], 
+          this.deathCharts.push(this.constChartData("Death Increase", "bar", false, this.constChartSeries([
+            ["Increase", deathInc], 
           ])))
 
           this.deathCharts.push(this.constChartData("Mortality Rate", "area", true, this.constChartSeries([
@@ -553,11 +572,11 @@ export default {
 
           this.testedCharts.push(this.constChartData("Tested Number", "area", false, this.constChartSeries([
             ["All", tested.all],
-            ["Growth", tested.growth],
+            ["Increase", tested.growth],
           ])))
 
           this.testedCharts.push(this.constChartData("Positive Rate", "bar", true, this.constChartSeries([
-            ["Increment", testedCOTE],
+            ["Positive Rate", testedCOTE],
           ])))
 
           
@@ -565,14 +584,15 @@ export default {
           this.dailyConfirmed = oaConfirmDaily
 
           // Call here because it relay on get history data
-          this.renderData["D Co./Te."] = Number.parseFloat(testedCOTE[testedCOTE.length-1]) + "%"
-
+          if(isNaN(testedCOTE[testedCOTE.length-1])){
+            this.renderData["D Co./Te."] = Number.parseFloat(testedCOTE[testedCOTE.length-2]) + "%"
+          }else{
+            this.renderData["D Co./Te."] = Number.parseFloat(testedCOTE[testedCOTE.length-1]) + "%"
+          }
 
           this.chartLoaded = true
 
         }
-
-       
 
         // Start Get Location
         this.getLocations(this.api_locations)
@@ -593,7 +613,7 @@ export default {
       if(ptg){
         
         options.dataLabels.formatter = (val)=>{
-          return val + "%"
+          return val == 0 ? "" : val + "%"
         }
       
       }
@@ -665,18 +685,6 @@ export default {
         return putCN(str)
       }
       
-    },
-
-
-    reCalCoTe(){
-      if(this.historyData){
-        // All tested incresment
-        let testAll = this.chartData_tested[1].data
-        let confirmAll = this.dailyConfirmed
-        let testGrowth = testAll[testAll.length - 1] != 0 ? testAll[testAll.length - 1] : testAll[testAll.length - 2]
-        let confirmed = confirmAll[testAll.length - 1] != 0 ? confirmAll[testAll.length - 1] : confirmAll[testAll.length - 2]
-        this.renderData["D Co./Te."]= Number.parseFloat(((confirmed / testGrowth)).toFixed(4) * 100) + "%" 
-      }
     },
 
     switchData(idx){
@@ -763,6 +771,21 @@ td, th {
 
 tr:nth-child(even) {
   background-color: #2D3133;
+}
+
+input{
+  background: #373D41;
+  border: 1px solid rgba(255,255,255,0.05);
+  width: 100%;
+  height: 32px;
+  color: #CED3D6;
+  -webkit-appearance: none;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+input:focus {
+  border: 1px solid rgba(70,222,255,1);
+  outline: none;
 }
 
 
@@ -867,6 +890,8 @@ tr:nth-child(even) {
   margin-right: auto;
 }
 
+
+
 #area{
   width: 100%;
 }
@@ -885,6 +910,13 @@ tr:nth-child(even) {
   margin-bottom: 6px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.area-list-search{
+  width: 89%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
 }
 
 #area table{

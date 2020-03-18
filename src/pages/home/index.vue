@@ -120,7 +120,7 @@
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
           <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
             <span>{{getLang("Herd Immunity")}}</span><br>
-            <div style="font-size: 12px; opacity: 0.5;">{{getLang("UK Population")}}:66.44 {{getLang("Million")}} | {{getLang("Immunity Point")}}: 60%</div>
+            <div style="font-size: 12px; opacity: 0.5;">{{getLang("UK Population")}}: 66.44 {{getLang("Million")}} | {{getLang("Immunity Point")}}: 60%</div>
           </div>
         </div>
 
@@ -181,7 +181,7 @@
       </div>
     </div>
 
-    <div id="third-pardy" v-if="loadCM">
+    <div id="third-party" v-if="loadCM">
       <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
         <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
           <span>{{getLang("Cases Map")}}</span><br>
@@ -190,11 +190,11 @@
         </div>
       </div>
 
-      <div style="width: 92%; height: 600px; margin-left: auto; margin-right: auto;">
+      <div id="cases-map">
         <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1yCPR-ukAgE55sROnmBUFmtLN6riVLTu3&ll=54.019029244689136%2C-1.956174250177014&z=7" 
               frameborder="0"
               width="100%"
-              height="600px">
+              height="500px">
 
         </iframe>
       </div>
@@ -952,6 +952,13 @@ input:focus {
   width: 100%;
 }
 
+#cases-map{
+  width: 92%; 
+  height: 500px; 
+  margin-left: auto; 
+  margin-right: auto;
+}
+
 #sources{
   width: 92%;
   margin-top: 40px;
@@ -999,6 +1006,11 @@ input:focus {
   #area-map{
     width: 100%;
     height: 450px;
+  }
+
+  
+  #cases-map{
+    width: 100%;
   }
 
   .overall-source-inner{

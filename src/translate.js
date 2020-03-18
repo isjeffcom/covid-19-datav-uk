@@ -4,7 +4,7 @@ const wording = [
     ["Data", "数据"],
     ["Case", "确诊"],
     ["Death", "病亡"],
-    ["Data might incompleted, especially 02-26 was not accurate", "数据不完整，特别是2月26日及之前"],
+    ["Data might incompleted", "数据有可能不完整"],
 
     // Charts
     ["C&D", "确诊/病亡"],
@@ -14,6 +14,15 @@ const wording = [
     ["Mortality Rate", "病亡率"],
     ["Tested Number", "测试数"],
     ["Positive Rate", "确诊率"],
+    ["Try Rotate", "尝试旋转"],
+
+    // HI
+    ["Herd Immunity", "群体免疫"],
+    ["UK Population", "英国总人口"],
+    ["Immunity Point", "生效人口比例"],
+    ["Million", "百万"],
+    ["Cases to go until herd immunity", "距离群体免疫还需"],
+    ["Progress", "进度"],
 
     ["Test", "测试"],
     ["Unknown Locations", "位置未知"],
@@ -45,7 +54,7 @@ const wording = [
     // Cases Map
     ["Cases Map", "周边疫情"],
     ["Data Source", "数据来源"],
-    ["by User and News, NOT Authoritative", "数据来源于用户贡献或新闻媒体，非权威信息"],
+    ["by Users and News, NOT Authoritative", "数据来源于用户贡献或新闻媒体，非权威信息"],
 
     // Donation
     ["THANK YOU", "谢谢支持"],

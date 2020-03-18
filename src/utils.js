@@ -35,6 +35,11 @@ export function indexOfObjArr(target, arr, id){
 
     return res
 }
+
+export function lightCopy(obj){
+    return Object.assign(obj)
+}
+
 export function deepCopy(obj){
     return JSON.parse(JSON.stringify(obj))
 }

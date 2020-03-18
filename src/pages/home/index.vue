@@ -69,7 +69,7 @@
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;margin-top:2px;">
           <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
             <span>{{getLang("Data")}}</span><br>
-            <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Data might incompleted, especially 02-26 was not accurate")}}</div>
+            <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Data might incompleted")}}</div>
           </div>
           
         </div>
@@ -91,79 +91,40 @@
         </div>
 
         <div id="chart-inner">
-          <!-- Confirmed Charts -->
-          <div class="charts-cont-s" v-if="currentChartView == 0">
-            <swiper :options="swiperOptions" ref="swiperConfirmed">
-              
-              <swiper-slide v-for="item in confirmCharts" :key="item.name">
-                <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
-              </swiper-slide>
 
-            </swiper>
-
-            <div class="chart-switcher-cont" style="width: 100%; display: flex;">
-              <div 
-              class="chart-switcher" 
-              v-for="(item, index) in confirmCharts" 
-              :key="index"
-              :style="'width: calc(100%/' + confirmCharts.length + ');border-color:' 
-              + (chartIndexs['swiperConfirmed'] == index ? '#46DEFF' : '#373D41') + ';color:' 
-              + (chartIndexs['swiperConfirmed'] == index ? '#46DEFF' : '#CED3D6') + ';background:'
-              + (chartIndexs['swiperConfirmed'] == index ? '#2D3133' : '#373D41')"
-              v-on:click="chartSwitcher('swiperConfirmed', index)">
-                {{ getLang(item.name) }}
-              </div>
-            </div>
+          <div v-show="currentChartView == 0">
+            <charts :datas="confirmCharts"></charts>
           </div>
 
-          <!-- Death Charts -->
-          <div class="charts-cont-s" v-if="currentChartView == 1">
-            <swiper :options="swiperOptions" ref="swiperDeath">
-              
-              <swiper-slide v-for="item in deathCharts" :key="item.name">
-                <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
-              </swiper-slide>
-
-            </swiper>
-
-            <div class="chart-switcher-cont" style="width: 100%; display: flex;">
-              <div 
-              class="chart-switcher" 
-              v-for="(item, index) in deathCharts" 
-              :key="index"
-              :style="'width: calc(100%/' + deathCharts.length + ');border-color:' 
-              + (chartIndexs['swiperDeath'] == index ? '#46DEFF' : '#373D41') + ';color:' 
-              + (chartIndexs['swiperDeath'] == index ? '#46DEFF' : '#CED3D6')"
-              v-on:click="chartSwitcher('swiperDeath', index)">
-                {{ getLang(item.name) }}
-              </div>
-            </div>
+          <div v-show="currentChartView == 1">
+            <charts :datas="deathCharts"></charts>
           </div>
 
-          <!-- Tested Charts -->
-          <div class="charts-cont-s" v-if="currentChartView == 2">
-            <swiper :options="swiperOptions" ref="swiperTested">
-              
-              <swiper-slide v-for="item in testedCharts" :key="item.name">
-                <apexchart width="100%" height="280px" :type="item.type" :options="item.options" :series="item.data"></apexchart>
-              </swiper-slide>
+          <div v-show="currentChartView == 2">
+            <charts :datas="testedCharts"></charts>
+          </div>
 
-            </swiper>
+        </div>
 
-            <div class="chart-switcher-cont" style="width: 100%; display: flex;">
-              <div 
-              class="chart-switcher" 
-              v-for="(item, index) in testedCharts" 
-              :key="index"
-              :style="'width: calc(100%/' + testedCharts.length + ');border-color:' 
-              + (chartIndexs['swiperTested'] == index ? '#46DEFF' : '#373D41') + ';color:' 
-              + (chartIndexs['swiperTested'] == index ? '#46DEFF' : '#CED3D6')"
-              v-on:click="chartSwitcher('swiperTested', index)">
-                {{ getLang(item.name) }}
-              </div>
-            </div>
+        <div id="chart-notice" v-if="isMobile()" style="width: 100%;text-align:center;opacity:0.5;margin-top:20px;font-size:10px;">
+          <div id="chart-notice">
+            <img src="https://i.ibb.co/jW1mJZd/rotate.png" alt="rotate for better view" style="width: 24px;">
+            <div>{{getLang('Try Rotate')}}</div>
+          </div>
+          
+        </div>
+
+      </div>
+
+      <div id="herd" style="margin-top:40px;margin-bottom:40px;" v-if="loaded">
+        <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
+          <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
+            <span>{{getLang("Herd Immunity")}}</span><br>
+            <div style="font-size: 12px; opacity: 0.5;">{{getLang("UK Population")}}:66.44 {{getLang("Million")}} | {{getLang("Immunity Point")}}: 60%</div>
           </div>
         </div>
+
+        <ptg style="margin-top:20px;margin-bottom:20px;"></ptg>
 
       </div>
 
@@ -224,8 +185,8 @@
       <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
         <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
           <span>{{getLang("Cases Map")}}</span><br>
-          <div style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> {{getLang("Data Source")}}: COVID-19 MAP (by /r/CovidMapping)</div>
-          <div style="font-size: 12px; opacity: 0.5;">* {{getLang("by User and News, NOT Authoritative")}}</div>
+          <div style="font-size: 16px;">{{getLang("Data Source")}}: COVID-19 MAP (by /r/CovidMapping)</div>
+          <div style="font-size: 12px; opacity: 0.5;">* {{getLang("by Users and News, NOT Authoritative")}}</div>
         </div>
       </div>
 
@@ -302,15 +263,13 @@ import { genGet } from '../../request'
 import { getDateFromTs, indexOfObjArr, deepCopy } from '../../utils'
 
 // Components
+import charts from '../../components/charts'
+import ptg from '../../components/ptg'
 import alert from '../../components/widgets/alert'
 import donate from '../../components/widgets/donate'
 import ccmap from '../../components/widgets/ccmap'
 import ICountUp from 'vue-countup-v2'
 import { EventBus } from '../../bus'
-
-// Swiper
-import 'swiper/dist/css/swiper.css'
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
 
 // Custom
 import { putColor } from './color'
@@ -323,13 +282,12 @@ import { Tested, TestedDRate } from './tested'
 export default {
   name: 'home',
   components:{
-    //cmap,
+    charts,
+    ptg,
     ccmap,
     alert,
     donate,
     ICountUp,
-    swiper,
-    swiperSlide
   },
   data(){
     return{
@@ -344,7 +302,6 @@ export default {
       api_history: "/historyfigures",
       api_locations: "/locations",
       selected: 0,
-      selectedChart: "confirm",
       allData: [],
       renderData: {},
       renderArea: {},
@@ -377,18 +334,15 @@ export default {
         chart: {
           foreColor: '#8D9EAA',
           toolbar:{
-            show: true,
+            show: false,
           },
           zoom:{
-            enable: true
+            enabled: false
           },
-          selection:{
-            enable: true
-          }
         },
 
         dataLabels:{
-          enabled: true,
+          enabled: false,
            style: {
                 fontSize: '8px',
                 borderWidth: 0,
@@ -419,11 +373,6 @@ export default {
       deathCharts:[],
       testedCharts:[],
       allCharts:["Case", "Death", "Test"],
-      chartIndexs:{
-        "swiperConfirmed":0,
-        "swiperDeath": 0,
-        "swiperTested": 0
-      },
 
       donate: false
     }
@@ -548,34 +497,50 @@ export default {
           this.chartOptions.xaxis.categories = categories
 
           // Compute chart data
-          this.confirmCharts.push(this.constChartData("C&D", "area", false, this.constChartSeries([
+          this.confirmCharts.push(this.constChartData("C&D", "area", false, [
+            "#F62E3A",
+            "#949BB5",
+          ], this.constChartSeries([
             ["Confirmed", oaConfirmTrend.confirmed], 
             ["Death", oaConfirmTrend.death]
           ])))
 
 
-          this.confirmCharts.push(this.constChartData("Daily Increase", "bar", false, this.constChartSeries([
+          this.confirmCharts.push(this.constChartData("Daily Increase", "bar", false, [
+            "#F62E3A"
+          ], this.constChartSeries([
             ["Cases", oaConfirmDaily]
           ])))
 
-          this.confirmCharts.push(this.constChartData("Growth Rate", "bar", true, this.constChartSeries([
+          this.confirmCharts.push(this.constChartData("Growth Rate", "line", true, [
+            "#F62E3A"
+          ], this.constChartSeries([
             ["Rate", oaConfirmIncRate]
           ])))
 
-          this.deathCharts.push(this.constChartData("Death Increase", "bar", false, this.constChartSeries([
+          this.deathCharts.push(this.constChartData("Death Increase", "bar", false, [
+            "#FFC634"
+          ], this.constChartSeries([
             ["Increase", deathInc], 
           ])))
 
-          this.deathCharts.push(this.constChartData("Mortality Rate", "area", true, this.constChartSeries([
+          this.deathCharts.push(this.constChartData("Mortality Rate", "area", true, [
+            "#FFC634"
+          ], this.constChartSeries([
             ["Death Rate", deathRate], 
           ])))
 
-          this.testedCharts.push(this.constChartData("Tested Number", "area", false, this.constChartSeries([
+          this.testedCharts.push(this.constChartData("Tested Number", "area", false, [
+            "#46DEFF",
+            "#31DA93"
+          ], this.constChartSeries([
             ["All", tested.all],
             ["Increase", tested.growth],
           ])))
 
-          this.testedCharts.push(this.constChartData("Positive Rate", "bar", true, this.constChartSeries([
+          this.testedCharts.push(this.constChartData("Positive Rate", "bar", true, [
+            "#46DEFF"
+          ], this.constChartSeries([
             ["Positive Rate", testedCOTE],
           ])))
 
@@ -600,15 +565,10 @@ export default {
       })
     },
 
-    chartSwitcher(target, index){
-      
-      this.chartIndexs[target] = index
-      this.$refs[target].swiper.slideTo(index)
-    },
-
-    constChartData(name, type, ptg, data){
+    constChartData(name, type, ptg, colors, data){
 
       let options = deepCopy(this.chartOptions)
+      options.colors = colors
 
       if(ptg){
         
@@ -697,16 +657,6 @@ export default {
     },
 
     switchChartView(idx){
-
-      Object.keys(this.chartIndexs).forEach(el => {
-        this.chartIndexs[el] = 0
-        if(this.$refs[el]){
-          this.$refs[el].swiper.slideTo(0)
-        }
-      })
-
-      
-
       this.currentChartView = idx
     },
 
@@ -743,6 +693,10 @@ export default {
 
     openDonate(bol){
       this.donate = bol
+    },
+
+    isMobile(){
+      return screen.width < 480 ? true : false
     }
 
     

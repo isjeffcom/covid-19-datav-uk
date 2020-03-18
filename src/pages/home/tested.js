@@ -40,7 +40,7 @@ export function TestedDRate(history, today){
             }else{
                 let co = el.confirmed - history[index-1].confirmed
                 let te = (el.confirmed + el.negative) - (history[index-1].confirmed + history[index-1].negative)
-                let cote = parseFloat((co/te).toFixed(2))*100
+                let cote = parseFloat((co/te).toFixed(4))*100
                 res.push(cote.toFixed(4))
             }
             

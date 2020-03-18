@@ -9,7 +9,7 @@
 
             <div class="ptg-txt-s">
                 <div class="ptg-txt-tit">{{getLang(txt2)}}</div>
-                <div class="ptg-txt-num">{{res2}}%</div>
+                <div class="ptg-txt-num" :style="'color:' + aColor">{{res2}}%</div>
             </div>
         </div>
 

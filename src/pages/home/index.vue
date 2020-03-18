@@ -124,7 +124,7 @@
           </div>
         </div>
 
-        <ptg style="margin-top:20px;margin-bottom:20px;"></ptg>
+        <ptg :mData="[allData[0].confirmed, 66440000]" style="margin-top:20px;margin-bottom:20px;"></ptg>
 
       </div>
 

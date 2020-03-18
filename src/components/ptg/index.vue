@@ -50,7 +50,7 @@ export default {
         },
         pointColor:{
             type: String,
-            default: "#FFFFFF"
+            default: "#148267"
         },
         mData: {
             type: Array,
@@ -69,11 +69,12 @@ export default {
     },
     mounted(){
         this.lang = window.navigator.language
-        
-        this.res2 = parseFloat((this.mData[0] / this.mData[1]).toFixed(6))*100
-        this.aWidth = this.aWidth > 1 ? this.res2.toFixed(3) : 4
 
         this.res1 = this.mData[1] - this.mData[0]
+        
+        this.res2 = ((this.mData[0] / this.mData[1])*100).toFixed(5)
+        this.res2 = Number(this.res2)
+        this.aWidth = this.res2 > 1 ? this.res2.toFixed(3) : 4
 
         let bBar = this.$refs['bBar']
         this.bWidth = parseInt(window.getComputedStyle(bBar).width)
@@ -145,9 +146,9 @@ export default {
 }
 
 .ptg-point{
-    width: 20px;
+    width: 6px;
     height: 20px;
-    border-radius: 100px;
+    border-radius: 2px;
     margin-top: -15px;
     position: absolute;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);

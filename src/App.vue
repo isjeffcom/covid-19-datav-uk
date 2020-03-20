@@ -82,7 +82,7 @@ export default {
   color: #CED3D6;
   text-align: center;
   margin-bottom: 0px;
-  font-size: 18px;
+  font-size: 16px;
   background: #1D1F21;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }

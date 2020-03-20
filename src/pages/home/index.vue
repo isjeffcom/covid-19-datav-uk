@@ -181,27 +181,6 @@
       </div>
     </div>
 
-
-    <!--div id="third-party" v-if="loadCM">
-      <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
-        <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
-          <span>{{getLang("Cases Map")}}</span><br>
-          <div style="font-size: 16px;">{{getLang("Data Source")}}: COVID-19 MAP (by /r/CovidMapping)</div>
-          <div style="font-size: 12px; opacity: 0.5;">* {{getLang("by Users and News, NOT Authoritative")}}</div>
-        </div>
-      </div>
-
-      <div id="cases-map">
-        <iframe src="https://www.google.com/maps/d/u/0/embed?mid=1yCPR-ukAgE55sROnmBUFmtLN6riVLTu3&ll=54.019029244689136%2C-1.956174250177014&z=7" 
-              frameborder="0"
-              width="100%"
-              height="500px">
-
-        </iframe>
-      </div>
-      
-    </div-->
-
     <div id="more">
       <div style="margin-bottom:20px;">
 
@@ -272,7 +251,6 @@
 
     <donate v-if="donate"></donate>
 
-    
   </div>
 </template>
 
@@ -298,6 +276,7 @@ import { ConfirmCategories, ConfirmOverallTrend, ConfirmIncrement, ConfirmDaily 
 import { DeathIncrement, DeathRate } from './death'
 import { Tested, TestedDRate } from './tested'
 
+
 export default {
   name: 'home',
   components:{
@@ -306,7 +285,7 @@ export default {
     ccmap,
     alert,
     donate,
-    ICountUp,
+    ICountUp
   },
   data(){
     return{
@@ -426,6 +405,14 @@ export default {
     })
   },
   methods:{
+    onRefresh() {
+      let that = this
+      return new Promise(function (resolve, reject) {
+          setTimeout(function () {
+              resolve();
+          }, 1000);
+      });
+    },
     getData(api){
 
       genGet(api, {}, (res)=>{
@@ -713,8 +700,6 @@ export default {
     isMobile(){
       return screen.width < 480 ? true : false
     }
-
-    
   }
 }
 </script>
@@ -980,8 +965,9 @@ input:focus {
   margin-left: auto;
   margin-right: auto;
   color: #CED3D6;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 36px;
+  font-weight: bold;
 }
 
 

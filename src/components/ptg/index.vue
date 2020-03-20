@@ -9,7 +9,7 @@
 
             <div class="ptg-txt-s">
                 <div class="ptg-txt-tit">{{getLang(txt2)}}</div>
-                <div class="ptg-txt-num" :style="'color:' + aColor">{{res2}}%</div>
+                <div class="ptg-txt-num" :style="'color:' + aColor">{{resPoint}}%</div>
             </div>
         </div>
 
@@ -64,17 +64,20 @@ export default {
             bWidth: 0,
             pointPosi: 0,
             res1: 0,
-            res2: 0
+            res2: 0,
+            resPoint: 0
         }
     },
     mounted(){
         this.lang = window.navigator.language
 
-        this.res1 = this.mData[1] - this.mData[0]
+        this.res1 = (this.mData[1] * this.point) - this.mData[0]
         
         this.res2 = ((this.mData[0] / this.mData[1])*100).toFixed(5)
         this.res2 = Number(this.res2)
         this.aWidth = this.res2 > 1 ? this.res2.toFixed(3) : 4
+        this.resPoint = ((this.mData[0] / (this.mData[1] * this.point))*100).toFixed(5)
+
 
         let bBar = this.$refs['bBar']
         this.bWidth = parseInt(window.getComputedStyle(bBar).width)

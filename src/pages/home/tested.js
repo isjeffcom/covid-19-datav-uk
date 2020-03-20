@@ -49,9 +49,11 @@ export function TestedDRate(history, today){
         let todCo = today.confirmed -history[history.length-1].confirmed
         let todTe = (today.confirmed + today.negative) - (history[history.length-1].confirmed + history[history.length-1].negative)
         let tod = parseFloat((todCo/todTe).toFixed(4))*100
-        if(isNaN(tod)){
+
+        /*if(isNaN(tod)){
+            console.log(isNaN(tod))
             tod = 0
-        }
+        }*/
 
         res.push(tod.toFixed(4))
 

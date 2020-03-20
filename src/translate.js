@@ -4,7 +4,7 @@ const wording = [
     ["Data", "数据"],
     ["Case", "确诊"],
     ["Death", "病亡"],
-    ["Data might incompleted", "数据有可能不完整"],
+    ["Data might be incompleted", "数据有可能不完整"],
 
     // Charts
     ["C&D", "确诊/病亡"],
@@ -55,6 +55,10 @@ const wording = [
     ["Cases Map", "周边疫情"],
     ["Data Source", "数据来源"],
     ["by Users and News, NOT Authoritative", "数据来源于用户贡献或新闻媒体，非权威信息"],
+
+    // Group Up
+    ["Group Up", "群组讨论"],
+    ["By", "通过"],
 
     // Donation
     ["THANK YOU", "谢谢支持"],

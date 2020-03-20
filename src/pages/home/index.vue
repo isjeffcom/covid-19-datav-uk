@@ -69,7 +69,7 @@
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;margin-top:2px;">
           <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
             <span>{{getLang("Data")}}</span><br>
-            <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Data might incompleted")}}</div>
+            <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Data might be incompleted")}}</div>
           </div>
           
         </div>
@@ -181,7 +181,8 @@
       </div>
     </div>
 
-    <div id="third-party" v-if="loadCM">
+
+    <!--div id="third-party" v-if="loadCM">
       <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
         <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
           <span>{{getLang("Cases Map")}}</span><br>
@@ -199,13 +200,31 @@
         </iframe>
       </div>
       
-    </div>
+    </div-->
 
     <div id="more">
-      
-      <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank">
-        <img src="https://i.ibb.co/RNJTwnx/btn2.png" alt="to NHS official website for more help and information">
-      </a>
+      <div style="margin-bottom:20px;">
+
+        <a href="https://www.google.com/maps/d/u/0/embed?mid=1yCPR-ukAgE55sROnmBUFmtLN6riVLTu3&ll=54.019029244689136%2C-1.956174250177014&z=7" target="_blank">
+          <img src="https://i.ibb.co/F3MSgQC/dsc1322122.png" alt="to NHS official website for more help and information">
+        </a>
+
+      </div>
+
+      <div>
+
+        <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank">
+          <img src="https://i.ibb.co/RNJTwnx/btn2.png" alt="to NHS official website for more help and information">
+        </a>
+
+      </div>
+
+    </div>
+
+    <div id="sources">
+      <span>{{getLang("Group Up")}}</span>
+      <li><a href="https://spectrum.chat/covid-19-uk-update" target="_blank">{{getLang("By")}} Spectrum.chat</a></li>
+      <li><a href="https://jq.qq.com/?_wv=1027&k=5Ajnx1w" target="_blank">{{getLang("By")}} QQ</a></li>
     </div>
 
     
@@ -292,7 +311,7 @@ export default {
   data(){
     return{
       error: false,
-      loadCM: false,
+      loadCM: true,
       lang: "",
       loaded: false,
       chartLoaded: false,
@@ -391,10 +410,6 @@ export default {
     this.getData(this.api)
     this.lang = window.navigator.language
 
-    // Lazy load cases map
-    setTimeout(()=>{
-      this.loadCM = true
-    }, 3000)
   },
 
   created(){

@@ -15,7 +15,7 @@ const wording = [
     ["Tested Number", "测试数"],
     ["Positive Rate", "确诊率"],
     ["Try Rotate", "尝试旋转"],
-
+    
     // HI
     ["Herd Immunity", "群体免疫"],
     ["UK Population", "英国总人口"],
@@ -47,7 +47,8 @@ const wording = [
     ["cured", "治愈"],
     ["negative", "阴性"],
     ["tested", "测试"],
-    ["D Co./Te.", "日检出"],
+    ["D. Posi.", "日检出"],
+    ["mortality", "死亡率"],
     ["serious", "危重"],
     ["suspected", "疑似"],
 

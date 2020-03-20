@@ -285,7 +285,7 @@ export default {
     ccmap,
     alert,
     donate,
-    ICountUp
+    ICountUp,
   },
   data(){
     return{
@@ -338,7 +338,9 @@ export default {
             enabled: false
           },
         },
-
+        tooltip:{
+          y:{}
+        },
         dataLabels:{
           enabled: false,
            style: {
@@ -452,10 +454,11 @@ export default {
         death: all.death,
         tested: all.negative != 0 ? all.confirmed + all.negative : "---",
         negative: all.negative == 0 ? "---" : all.negative,
-        "D Co./Te.": "---",
+        "D. Posi.": "---",
+        mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%",
         cured: all.cured == 0 ? "---" : all.cured,
         serious: all.serious == 0 ? "---" : all.serious,
-        suspected: all.suspected == 0 ? "---" : all.suspected,
+        //suspected: all.suspected == 0 ? "---" : all.suspected,
       }
     },
     
@@ -552,9 +555,9 @@ export default {
 
           // Call here because it relay on get history data
           if(isNaN(testedCOTE[testedCOTE.length-1])){
-            this.renderData["D Co./Te."] = Number.parseFloat(testedCOTE[testedCOTE.length-2]) + "%"
+            this.renderData["D. Posi."] = Number.parseFloat(testedCOTE[testedCOTE.length-2]) + "%"
           }else{
-            this.renderData["D Co./Te."] = Number.parseFloat(testedCOTE[testedCOTE.length-1]) + "%"
+            this.renderData["D. Posi."] = Number.parseFloat(testedCOTE[testedCOTE.length-1]) + "%"
           }
 
           this.chartLoaded = true
@@ -577,7 +580,10 @@ export default {
         options.dataLabels.formatter = (val)=>{
           return val == 0 ? "" : val + "%"
         }
-      
+
+        options['tooltip']['y'].formatter = (val)=>{
+          return val == 0 ? "" : val + "%"
+        }
       }
 
       return {
@@ -1016,6 +1022,14 @@ input:focus {
 
   .overall-source-inner{
     right: 10px;
+  }
+
+  .overall-single-title{
+    font-size: 10px;
+  }
+
+  .overall-single-value{
+    font-size: 18px;
   }
 
   .ds-ids{

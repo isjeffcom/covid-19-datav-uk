@@ -24,7 +24,7 @@ const colors = [
         color: "#D21414"
     },
     {
-        txt: "D Co./Te.",
+        txt: "D. Posi.",
         color: "#F28151"
     },
     {

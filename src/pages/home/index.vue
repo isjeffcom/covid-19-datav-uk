@@ -7,6 +7,8 @@
       <li>https://spectrum.chat/covid-19-uk-update?tab=posts</li>
     </div>
 
+    <!-- CURRENT FIGURES -->
+    <!-- current figure switcher -->
     <div class="tab-switcher">
       <div 
         class="ds-single" 
@@ -23,6 +25,7 @@
       </div>
     </div>
 
+    <!-- current figure container -->
     <div id="overall" v-if="loaded">
       <div id="overall-inner">
 
@@ -37,6 +40,7 @@
               <span v-if="value == '---'">{{value}}</span>
               <span v-if="value != '---' && isNaN(value)">{{value}}</span>
 
+              <!-- count up animation, provided by vue-countup package -->
               <ICountUp
                 :delay="100"
                 :endVal="value"
@@ -58,14 +62,18 @@
 
         </div>
 
+        <!-- update date -->
         <div id="update">
           <div>{{getLang("Update")}}: {{update}}</div>
         </div>
 
       </div>
 
+      <!-- CHARTS -->
+      <!-- charts container -->
       <div id="chart" v-if="chartLoaded">
 
+        <!-- Sector Title -->
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;margin-top:2px;">
           <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
             <span>{{getLang("Data")}}</span><br>
@@ -74,6 +82,7 @@
           
         </div>
 
+        <!-- Charts tab switcher -->
         <div class="tab-switcher">
           <div 
             class="ds-single" 
@@ -90,6 +99,8 @@
           </div>
         </div>
 
+        <!-- 3 charts, confirmed, death, tested -->
+        <!-- use charts components in /src/components/charts -->
         <div id="chart-inner">
 
           <div v-show="currentChartView == 0">
@@ -108,6 +119,7 @@
 
       </div>
 
+      <!-- HERD IMMUNITY -->
       <div id="herd" style="margin-top:40px;margin-bottom:40px;" v-if="loaded">
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
           <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
@@ -116,10 +128,13 @@
           </div>
         </div>
 
+        <!-- use progress bar component, not fully constructed, very poor code structure -->
         <ptg :mData="[allData[0].confirmed, 66440000]" style="margin-top:20px;margin-bottom:20px;"></ptg>
 
       </div>
 
+
+      <!-- REGIONAL MAP -->
       <div id="area" v-if="areaLoaded">
 
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
@@ -131,6 +146,7 @@
           
         </div>
 
+        <!-- switch between map or list -->
         <div class="tab-switcher">
           <div 
             class="ds-single" 
@@ -148,10 +164,13 @@
           </div>
         </div>
 
+        <!-- IF MAP -->
+        <!-- use ccmap from /src/components/widgets/ccmap -->
         <div id="area-map" v-if="currentAreaView == 'map'">
           <ccmap :mapData="mapData"></ccmap>
         </div>
 
+        <!-- IF LIST -->
         <div v-if="currentAreaView == 'list'" style="margin-top:20px;">
 
           <div class="area-list-search">
@@ -173,6 +192,7 @@
       </div>
     </div>
 
+    <!-- MORE INFO BUTTON -->
     <div id="more">
       <div style="margin-bottom:20px;">
 
@@ -192,6 +212,7 @@
 
     </div>
 
+    <!-- GROUP INFO -->
     <div id="sources">
       <span>{{getLang("Group Up")}}</span>
       <li><a href="https://spectrum.chat/covid-19-uk-update" target="_blank">{{getLang("By")}} Spectrum.chat</a></li>
@@ -199,7 +220,7 @@
     </div>
 
     
-
+    <!-- DATA REFERENCES -->
     <div id="sources">
       <span>{{getLang("References")}}</span>
       <li><a href="https://www.gov.uk/guidance/coronavirus-covid-19-information-for-the-public" target="_blank">[Gov]COVID-19: latest information and advice</a></li>
@@ -213,12 +234,14 @@
       <li><a href="https://www.worldometers.info/coronavirus/" target="_blank">[Media]COVID-19 CORONAVIRUS OUTBREAK (Worldometers)</a></li>
     </div>
 
+    <!-- AUTHOR INFO -->
     <div id="author">
       <div id="author-inner">
         <a href="https://www.isjeff.com" target="_blank">@Jeff Wu</a>
       </div>
     </div>
 
+    <!-- DONATION FOOTER -->
     <div id="donation" v-if="areaLoaded">
       <div id="d-inner">
         <div id="d-cont">
@@ -232,15 +255,8 @@
       </div>
     </div>
 
-    <alert 
-      :title="sourceAlert.title" 
-      :content="sourceAlert.content" 
-      :submit="sourceAlert.submit" 
-      :topColor="sourceAlert.topColor" 
-      :bgColor="sourceAlert.bgColor" 
-      v-if="sourceAlertEnabled">
-    </alert>
-
+    <!-- DONATION OVERLAP -->
+    <!-- donation overlap from /src/components/widgets/donate -->
     <donate v-if="donate"></donate>
 
   </div>
@@ -254,7 +270,6 @@ import { getDateFromTs, indexOfObjArr, deepCopy } from '../../utils'
 // Components
 import charts from '../../components/charts'
 import ptg from '../../components/ptg'
-import alert from '../../components/widgets/alert'
 import donate from '../../components/widgets/donate'
 import ccmap from '../../components/widgets/ccmap'
 import ICountUp from 'vue-countup-v2'
@@ -264,6 +279,7 @@ import { EventBus } from '../../bus'
 import { putColor } from './color'
 import { putCN } from '../../translate'
 
+// Charts calculation functions
 import { ConfirmCategories, ConfirmOverallTrend, ConfirmIncrement, ConfirmDaily } from './confirmed'
 import { DeathIncrement, DeathRate } from './death'
 import { Tested, TestedDRate } from './tested'
@@ -275,51 +291,64 @@ export default {
     charts,
     ptg,
     ccmap,
-    alert,
     donate,
     ICountUp,
   },
   data(){
     return{
+      // If couldn't get data from API, display error info
       error: false,
-      loadCM: true,
+
+      // Language
       lang: "",
+
+      // Loaded status for different section, render only if data ready
       loaded: false,
       chartLoaded: false,
       areaLoaded: false,
+
+      // List search input var
       listSearch: "",
+
+      // API URLs
       api: "/",
       api_history: "/historyfigures",
       api_locations: "/locations",
+
+      // Selected data sources on figure section
       selected: 0,
+
+      // Data storage variable
       allData: [],
       renderData: {},
       renderArea: {},
       mapData: [],
       historyData: [],
+
+      // Update time var
       update:"",
+
+      // Unknow location cases count var
       unknown: 0,
+
+      // Area tab switcher and current status
       areaViews: ["map", "list"],
       currentAreaView: "map",
+
+      // Render options Count-up package 
       countUpOptions:{
         useEasing: true,
         useGrouping: true,
         separator: ',',
         decimal: '.'
       },
-      sourceAlertEnabled: false,
-      sourceAlert:{
-        title:"Source",
-        content: "",
-        submit: "OK",
-        topColor: "#2D3133",
-        bgColor: "#8FA8B8",
-      },
 
+      // Render options for swiper package
       swiperOptions:{
         allowTouchMove: false
       },
       
+      // Charts render options for APEXCHART package
       chartOptions: {
         chart: {
           foreColor: '#8D9EAA',
@@ -360,17 +389,26 @@ export default {
           },
         }
       },
+
+      // Save current chart view
       currentChartView: 0,
+
+      // Charts data storages
       confirmCharts:[],
       deathCharts:[],
       testedCharts:[],
+
+      // Charts switcher
       allCharts:["Case", "Death", "Test"],
 
+      // Donation popup open or close
       donate: false
     }
   },
 
   computed:{
+    // Filter table list
+    // 列表搜索的filter，每次键入fire
     listFiltered: function(){
       return this.renderArea.filter(val => {
         //console.log(this.listSearch)
@@ -380,6 +418,8 @@ export default {
   },
 
   mounted(){
+
+    // On start get data
     this.getData(this.api)
     this.lang = window.navigator.language
 
@@ -387,26 +427,15 @@ export default {
 
   created(){
 
-    
-    EventBus.$on("alert-clicked", ()=>{
-      setTimeout(()=>{
-        this.sourceAlertEnabled = false
-      }, 500)
-    })
-
     EventBus.$on("donate-close", ()=>{
       this.donate = false
     })
+
   },
   methods:{
-    onRefresh() {
-      let that = this
-      return new Promise(function (resolve, reject) {
-          setTimeout(function () {
-              resolve();
-          }, 1000);
-      });
-    },
+
+    // Get Figure Data from API
+    // 从API获取基本数字数据
     getData(api){
 
       genGet(api, {}, (res)=>{
@@ -438,41 +467,10 @@ export default {
       })
     },
 
-    renderFigure(){
-      // Process Current Selected Data For render
-      const all = this.allData[this.selected]
-      this.renderData = {
-        confirmed: all.confirmed,
-        death: all.death,
-        tested: all.negative != 0 ? all.confirmed + all.negative : "---",
-        negative: all.negative == 0 ? "---" : all.negative,
-        "D. Posi.": "---",
-        mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%",
-        cured: all.cured == 0 ? "---" : all.cured,
-        serious: all.serious == 0 ? "---" : all.serious,
-        //suspected: all.suspected == 0 ? "---" : all.suspected,
-      }
-    },
     
-
-    // Calculate unknow location cases
-    calUnknown(areaData, confirmed){
-
-      let all = 0
-      if(areaData){
-        areaData.forEach(el => {
-          if(!isNaN(el.number)){
-            all = all + parseInt(el.number)
-          }
-        })
-      }
-
-
-      return confirmed - all
-      
-
-    },
-
+    
+    // Get history data from api and generate charts
+    // 从API获取历史数据，生成图表
     getHistory(api){
 
       genGet(api, {}, async (res)=>{
@@ -562,46 +560,9 @@ export default {
       })
     },
 
-    constChartData(name, type, ptg, colors, data){
 
-      let options = deepCopy(this.chartOptions)
-      options.colors = colors
-
-      if(ptg){
-        
-        options.dataLabels.formatter = (val)=>{
-          return val == 0 ? "" : val + "%"
-        }
-
-        options['tooltip']['y'].formatter = (val)=>{
-          return val == 0 ? "" : val + "%"
-        }
-      }
-
-      return {
-        name: name,
-        type: type,
-        options: options,
-        data: data
-      }
-    },
-
-    constChartSeries(arr){
-
-      let res = []
-      for(let i=0;i<arr.length;i++){
-        res.push({
-          name: arr[i][0],
-          data: arr[i][1]
-        })
-      }
-
-      return res
-    },
-    
-
-
-
+    // Get all location center point from api
+    // 获取所有的地理位置中心点数据
     getLocations(api){
       var that = this
       genGet(api, {}, (res)=>{
@@ -610,6 +571,7 @@ export default {
         var markers = []
 
         // Match area data and location data
+        // 整合地理位置中心点和区域确诊数据
         this.renderArea.forEach((el, index) => {
           
           // Match location from location cases list
@@ -634,10 +596,91 @@ export default {
       })
     },
 
+    // Render figure data by data sources
+    // 渲染数字（主要给切换数据源使用，每次切换调用这个方法）
+    renderFigure(){
+      // Process Current Selected Data For render
+      const all = this.allData[this.selected]
+      this.renderData = {
+        confirmed: all.confirmed,
+        death: all.death,
+        tested: all.negative != 0 ? all.confirmed + all.negative : "---",
+        negative: all.negative == 0 ? "---" : all.negative,
+        "D. Posi.": "---",
+        mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%",
+        cured: all.cured == 0 ? "---" : all.cured,
+        serious: all.serious == 0 ? "---" : all.serious,
+        //suspected: all.suspected == 0 ? "---" : all.suspected,
+      }
+    },
+
+    // Calculate unknow location cases
+    // 辅助方法：计算未知地理位置
+    calUnknown(areaData, confirmed){
+
+      let all = 0
+      if(areaData){
+        areaData.forEach(el => {
+          if(!isNaN(el.number)){
+            all = all + parseInt(el.number)
+          }
+        })
+      }
+
+
+      return confirmed - all
+      
+
+    },
+
+    // Construct chart data
+    // 辅助方法：组合图标整体数据
+    constChartData(name, type, ptg, colors, data){
+
+      let options = deepCopy(this.chartOptions)
+      options.colors = colors
+
+      if(ptg){
+        
+        options.dataLabels.formatter = (val)=>{
+          return val == 0 ? "" : val + "%"
+        }
+
+        options['tooltip']['y'].formatter = (val)=>{
+          return val == 0 ? "" : val + "%"
+        }
+      }
+
+      return {
+        name: name,
+        type: type,
+        options: options,
+        data: data
+      }
+    },
+
+
+    // Construct Chart Data Series
+    // 辅助方法：组合图标纯数组数据
+    constChartSeries(arr){
+
+      let res = []
+      for(let i=0;i<arr.length;i++){
+        res.push({
+          name: arr[i][0],
+          data: arr[i][1]
+        })
+      }
+
+      return res
+    },
+    
+    // 从color.js获取各种颜色
     getColor(str){
       return putColor(str)
     },
 
+    // 翻译，由translate.js提供字典
     getLang(str){
       if(this.lang != "zh-CN"){
         return str
@@ -647,19 +690,23 @@ export default {
       
     },
 
+    // 顶上切换数据源tab切换时fire
     switchData(idx){
       this.selected = idx
       this.renderFigure()
     },
 
+    // 更换区域，地图<->列表
     switchAreaView(idx){
       this.currentAreaView = idx
     },
 
+    // 切换图表
     switchChartView(idx){
       this.currentChartView = idx
     },
 
+    //  顶上八大金刚，对比昨日的数据，没有显示---
     compare(value, name){
 
       if(this.historyData.length > 0){
@@ -682,22 +729,11 @@ export default {
       
     },
 
-    sourcePopup(){
-      let source = this.allData[this.selected]
-      this.sourceAlert.content = "<br><br>Source Name: " + source.source + ". <br><br> Link:" + "<a href='" + source.link + " style='color:#3F8BBE;'>" + source.link + "</a>"
-      this.$nextTick(()=>{
-        this.sourceAlertEnabled = true
-      })
-      
-    },
-
+    // 打开捐赠浮层
     openDonate(bol){
       this.donate = bol
-    },
-
-    isMobile(){
-      return screen.width < 480 ? true : false
     }
+
   }
 }
 </script>

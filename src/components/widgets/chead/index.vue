@@ -1,4 +1,5 @@
 <template>
+    <!-- PAGE TITLE BAR -->
     <div id="chead">
         <div id="chead-inner">
             <div id="chead-logo">

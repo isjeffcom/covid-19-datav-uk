@@ -1,3 +1,5 @@
+// Some basic calculation functions
+
 export function numAddZero(num){
 
     num = String(num)

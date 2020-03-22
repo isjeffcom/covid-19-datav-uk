@@ -1,9 +1,12 @@
 <template>
   <div id="app">
+    <!-- Popup alert when user first enter -->
     <alert :title="firstAlert.title" :content="firstAlert.content" :submit="firstAlert.submit" v-if="needAlert"></alert>
     <chead></chead>
     <router-view></router-view>
     
+
+    <!-- Github Link -->
     <div id="github" v-on:click="toGithub">
       <img src="https://i.ibb.co/27tC8pd/github.png" alt="to github">
     </div>
@@ -36,13 +39,17 @@ export default {
   },
 
   created(){
+
+    // Check browser localstorage if already clicked
     if(!ls.get("first") || ls.get("first") != "2"){
       this.needAlert = true
     }
+    
 
+    // Get alert content by user language
     this.firstAlert.content = getAlert(window.navigator.language)
 
-
+    // On user click close popup window
     EventBus.$on("alert-clicked", (data)=>{
       if(data == "I consent"){
         ls.set("first", "2")
@@ -51,6 +58,8 @@ export default {
   },
 
   methods:{
+
+    // Open github link
     toGithub(){
       window.open("https://github.com/isjeffcom/coronvirusFigureUK");
     }

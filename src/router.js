@@ -5,6 +5,7 @@ Vue.use(VueRouter)
 
 import home from './pages/home'
 
+// Router, ready for multiple page
 
 export default new VueRouter({
   mode: 'history',

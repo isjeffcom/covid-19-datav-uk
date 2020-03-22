@@ -1,5 +1,7 @@
+/* REQUEST FUNCTIONS */
+
 const axios = require('axios')
-const baseUrl = "https://coronauk.isjeff.com"
+const baseUrl = "https://api.covid19uk.live"
 
 export function genGet (api, param, callback) {
 

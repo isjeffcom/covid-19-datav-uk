@@ -1,3 +1,5 @@
+// Translate wording dict
+
 const wording = [
     ["Update", "最近更新"],
     ["Regions", "地域"],

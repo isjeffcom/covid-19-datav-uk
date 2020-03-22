@@ -106,14 +106,6 @@
 
         </div>
 
-        <div id="chart-notice" v-if="isMobile()" style="width: 100%;text-align:center;opacity:0.5;margin-top:20px;font-size:10px;">
-          <div id="chart-notice">
-            <img src="https://i.ibb.co/jW1mJZd/rotate.png" alt="rotate for better view" style="width: 24px;">
-            <div>{{getLang('Try Rotate')}}</div>
-          </div>
-          
-        </div>
-
       </div>
 
       <div id="herd" style="margin-top:40px;margin-bottom:40px;" v-if="loaded">
@@ -543,7 +535,7 @@ export default {
             ["Increase", tested.growth],
           ])))
 
-          this.testedCharts.push(this.constChartData("Positive Rate", "bar", true, [
+          this.testedCharts.push(this.constChartData("Positive Rate", "line", true, [
             "#46DEFF"
           ], this.constChartSeries([
             ["Positive Rate", testedCOTE],

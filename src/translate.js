@@ -14,8 +14,7 @@ const wording = [
     ["Mortality Rate", "病亡率"],
     ["Tested Number", "测试数"],
     ["Positive Rate", "确诊率"],
-    ["Try Rotate", "尝试旋转"],
-    
+
     // HI
     ["Herd Immunity", "群体免疫"],
     ["UK Population", "英国总人口"],
@@ -36,8 +35,6 @@ const wording = [
         "We promise free access, however, maintaining this server has costs and it's not cheap.", 
         "本网站是免费的，但维护和运营均产生高昂费用。如果你觉得不错，请帮助我们做的更好。"
     ],
-    ["Tested = Confirmed + Negative", "测试量 = 确诊 + 阴性"],
-    ["Data Incomplete", "数据有缺失"],
     ["map", "地图"],
     ["list", "列表"],
 

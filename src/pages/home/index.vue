@@ -280,9 +280,9 @@ import { putColor } from './color'
 import { putCN } from '../../translate'
 
 // Charts calculation functions
-import { ConfirmCategories, ConfirmOverallTrend, ConfirmIncrement, ConfirmDaily } from './confirmed'
-import { DeathIncrement, DeathRate } from './death'
-import { Tested, TestedDRate } from './tested'
+import { confirmCal } from './confirmed'
+import { deathCal } from './death'
+import { testCal } from './tested'
 
 
 export default {
@@ -411,7 +411,6 @@ export default {
     // 列表搜索的filter，每次键入fire
     listFiltered: function(){
       return this.renderArea.filter(val => {
-        //console.log(this.listSearch)
         return val.location.toLowerCase().includes(this.listSearch.toLowerCase())
       })
     }
@@ -480,74 +479,67 @@ export default {
           // History data is
           this.historyData = res.data.data
 
-          let categories = await ConfirmCategories(this.historyData)
-          let oaConfirmTrend = await ConfirmOverallTrend(this.historyData, this.allData[0])
-          let oaConfirmDaily = await ConfirmDaily(this.historyData, this.allData[0])
-          let oaConfirmIncRate = await ConfirmIncrement(this.historyData, this.allData[0])
-          let deathInc = await DeathIncrement(this.historyData, this.allData[0])
-          let deathRate = await DeathRate(this.historyData, this.allData[0])
-          let tested = await Tested(this.historyData, this.allData[0])
-          let testedCOTE = await TestedDRate(this.historyData, this.allData[0])
+          let co = await confirmCal(this.historyData, this.allData[0])
+          let de = await deathCal(this.historyData, this.allData[0])
+          let te = await testCal(this.historyData, this.allData[0])
 
-          this.chartOptions.xaxis.categories = categories
+          this.chartOptions.xaxis.categories = co.cates
 
           // Compute chart data
           this.confirmCharts.push(this.constChartData("C&D", "area", false, [
             "#F62E3A",
             "#949BB5",
           ], this.constChartSeries([
-            ["Confirmed", oaConfirmTrend.confirmed], 
-            ["Death", oaConfirmTrend.death]
+            ["Confirmed", co.co], 
+            ["Death", co.death]
           ])))
-
 
           this.confirmCharts.push(this.constChartData("Daily Increase", "bar", false, [
             "#F62E3A"
           ], this.constChartSeries([
-            ["Cases", oaConfirmDaily]
+            ["Cases", co.coDaily]
           ])))
 
-          this.confirmCharts.push(this.constChartData("Growth Rate", "line", true, [
+          this.confirmCharts.push(this.constChartData("Growth Rate", "area", true, [
             "#F62E3A"
           ], this.constChartSeries([
-            ["Rate", oaConfirmIncRate]
+            ["Rate", co.coInc]
           ])))
 
           this.deathCharts.push(this.constChartData("Death Increase", "bar", false, [
             "#FFC634"
           ], this.constChartSeries([
-            ["Increase", deathInc], 
+            ["Increase", de.inc], 
           ])))
 
           this.deathCharts.push(this.constChartData("Mortality Rate", "area", true, [
             "#FFC634"
           ], this.constChartSeries([
-            ["Death Rate", deathRate], 
+            ["Death Rate", de.rate], 
           ])))
 
           this.testedCharts.push(this.constChartData("Tested Number", "area", false, [
             "#46DEFF",
             "#31DA93"
           ], this.constChartSeries([
-            ["All", tested.all],
-            ["Increase", tested.growth],
+            ["All", te.all],
+            ["Increase", te.growth],
           ])))
 
-          this.testedCharts.push(this.constChartData("Positive Rate", "line", true, [
+          this.testedCharts.push(this.constChartData("Positive Rate", "area", true, [
             "#46DEFF"
           ], this.constChartSeries([
-            ["Positive Rate", testedCOTE],
+            ["Positive Rate", te.pRate],
           ])))
 
-          
           // Save for calculate CO./TE.
-          this.dailyConfirmed = oaConfirmDaily
+          this.dailyConfirmed = co.coDaily
 
           // Call here because it relay on get history data
-          if(isNaN(testedCOTE[testedCOTE.length-1])){
-            this.renderData["D. Posi."] = Number.parseFloat(testedCOTE[testedCOTE.length-2]) + "%"
+          if(isNaN(te.pRate[te.pRate.length-1])){
+            this.renderData["D. Posi."] = Number.parseFloat(te.pRate[te.pRate.length-2]) + "%"
           }else{
-            this.renderData["D. Posi."] = Number.parseFloat(testedCOTE[testedCOTE.length-1]) + "%"
+            this.renderData["D. Posi."] = Number.parseFloat(te.pRate[te.pRate.length-1]) + "%"
           }
 
           this.chartLoaded = true

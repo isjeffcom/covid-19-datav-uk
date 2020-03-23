@@ -1,105 +1,65 @@
 import { getDateFromTs } from '../../utils'
 
-export function ConfirmCategories(history){
+export function confirmCal(history, today){
     return new Promise(resolve => {
 
-        let categories = [] // Chart's categories
+        let res = {
+            cates: [],
+            co: [],
+            death: [],
+            coDaily: [],
+            coInc: []
+        }
 
-        history.forEach(el => {    
+        // Loop
+        history.forEach((el, index)=>{
             el.date = getDateFromTs(el.date, "datesimple")
-            categories.push(el.date)
-        })
+            res.cates.push(el.date)
+            res.co.push(el.confirmed)
+            res.death.push(el.death)
 
-        // Push last one
-        categories.push(getDateFromTs(Date.parse( new Date()), "datesimple"))
+            let increse
 
-        resolve(categories)
-    })
-}
-
-export function ConfirmOverallTrend(history, today) {
-
-    return new Promise(resolve => {
-        // Create Array for Fill in history data
-       
-        let confirmed = []
-        let death = []
-
-        history.forEach(el => {    
-            confirmed.push(el.confirmed)
-            death.push(el.death)
-        })
-
-        // Push latest data as its not belong to the history
-        confirmed.push(today.confirmed)
-        death.push(today.death)
-
-        let res = { confirmed: confirmed, death: death }
-
-        resolve(res)
-
-    })
-    
-}
-
-export function ConfirmDaily (history, today) {
-    return new Promise(resolve => {
-        var res = []
-
-        let tc = parseInt(today.confirmed)
-
-        history.forEach((el, index) => {
-
-            // If first one
+            // Daily and Inc
             if(index == 0){
-                res.push(el.confirmed - 0)
+                // Daily
+                res.coDaily.push(el.confirmed - 0)
+                
+                // Inc
+                increse = parseFloat((el.confirmed-0)/10).toFixed(4)
             } 
             
             else {
-                res.push(el.confirmed - history[index-1].confirmed)
-            }
-        })
+                // Daily
+                res.coDaily.push(el.confirmed - history[index-1].confirmed)
 
-        res.push(today.confirmed - history[history.length-1].confirmed )
-
-        res.unshift(0)
-
-        resolve(res)
-    })
-}
-
-
-export function ConfirmIncrement(history, today) {
-    return new Promise(resolve => {
-        let inc = [] // Chart's categories
-    
-        history.forEach((el, index) => {
-
-            let increse
-            if(index == 0){
-                increse = parseFloat((el.confirmed-0)/10).toFixed(4)
-            }
-            else{
+                // Inc
                 let last = history[index-1].confirmed
                 if(last == 0){
                     increse = el.confirmed
                 } else{
                     increse = parseFloat((el.confirmed-last)/last).toFixed(4)
                 }
-                
             }
-            
 
-            inc.push((increse*100).toFixed(4))
+            res.coInc.push((increse*100).toFixed(4))
+            
         })
+
+        // The last one
+        res.cates.push(getDateFromTs(Date.parse( new Date()), "datesimple"))
+        res.co.push(today.confirmed)
+        res.death.push(today.death)
+
+
+        res.coDaily.push(today.confirmed - history[history.length-1].confirmed )
+        res.coDaily.unshift(0)
 
         // Push latest data as its not belong to the history
         let todayLast = history[history.length-1].confirmed
         let todayInc = (Number.parseFloat((today.confirmed - todayLast) / todayLast).toFixed(4))
-        inc.push((todayInc*100).toFixed(4))
+        res.coInc.push((todayInc*100).toFixed(4))
 
-        resolve(inc)
-
+        resolve(res)
     })
-    
 }

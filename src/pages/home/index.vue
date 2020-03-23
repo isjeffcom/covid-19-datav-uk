@@ -197,7 +197,7 @@
       <div style="margin-bottom:20px;">
 
         <a href="https://www.google.com/maps/d/u/0/embed?mid=1yCPR-ukAgE55sROnmBUFmtLN6riVLTu3&ll=54.019029244689136%2C-1.956174250177014&z=7" target="_blank">
-          <img src="https://i.ibb.co/F3MSgQC/dsc1322122.png" alt="to NHS official website for more help and information">
+          <img src="https://i.ibb.co/GnR4nCt/yessdg.png" alt="Cases explorer">
         </a>
 
       </div>
@@ -215,8 +215,21 @@
     <!-- GROUP INFO -->
     <div id="sources">
       <span>{{getLang("Group Up")}}</span>
-      <li><a href="https://spectrum.chat/covid-19-uk-update" target="_blank">{{getLang("By")}} Spectrum.chat</a></li>
-      <li><a href="https://jq.qq.com/?_wv=1027&k=5Ajnx1w" target="_blank">{{getLang("By")}} QQ</a></li>
+      <div style="margin-top: 10px; margin-bottom:10px;">
+        <a href="https://spectrum.chat/covid-19-uk-update" target="_blank">
+          <img src="https://i.ibb.co/QkvZQyM/nd.png" alt="join by spectrum.chat">
+        </a>
+        
+      </div>
+
+      <div style="margin-top: 10px; margin-bottom:10px;">
+        <a href="https://jq.qq.com/?_wv=1027&k=5Ajnx1w" target="_blank">
+          <img src="https://i.ibb.co/K0hK1rd/qqc.png" alt="join by tencent qq">
+        </a>
+      </div>
+      
+      <!--li><a href="https://spectrum.chat/covid-19-uk-update" target="_blank">{{getLang("By")}} Spectrum.chat</a></li>
+      <li><a href="https://jq.qq.com/?_wv=1027&k=5Ajnx1w" target="_blank">{{getLang("By")}} QQ</a></li-->
     </div>
 
     
@@ -324,6 +337,7 @@ export default {
       renderArea: {},
       mapData: [],
       historyData: [],
+      DPosi: 0,
 
       // Update time var
       update:"",
@@ -536,11 +550,13 @@ export default {
           this.dailyConfirmed = co.coDaily
 
           // Call here because it relay on get history data
-          if(isNaN(te.pRate[te.pRate.length-1])){
-            this.renderData["D. Posi."] = Number.parseFloat(te.pRate[te.pRate.length-2]) + "%"
+          if(te.pRate[te.pRate.length-1] == 0){
+            this.DPosi = Number.parseFloat(te.pRate[te.pRate.length-2]) + "%"
           }else{
-            this.renderData["D. Posi."] = Number.parseFloat(te.pRate[te.pRate.length-1]) + "%"
+            this.DPosi = Number.parseFloat(te.pRate[te.pRate.length-1]) + "%"
           }
+
+          this.renderData['D. Posi.'] = this.DPosi
 
           this.chartLoaded = true
 
@@ -591,6 +607,7 @@ export default {
     // Render figure data by data sources
     // 渲染数字（主要给切换数据源使用，每次切换调用这个方法）
     renderFigure(){
+
       // Process Current Selected Data For render
       const all = this.allData[this.selected]
       this.renderData = {
@@ -604,6 +621,11 @@ export default {
         serious: all.serious == 0 ? "---" : all.serious,
         //suspected: all.suspected == 0 ? "---" : all.suspected,
       }
+
+      if(this.selected == 0){
+        this.renderData['D. Posi.'] = this.DPosi
+      }
+
     },
 
     // Calculate unknow location cases
@@ -943,6 +965,7 @@ input:focus {
   font-weight: bold;
   margin-top: 4px; 
   margin-left: 24px;
+  margin-right: 24px;
 }
 
 #d-btn{
@@ -991,16 +1014,29 @@ input:focus {
   margin-left: auto;
   margin-right: auto;
   color: #CED3D6;
-  font-size: 20px;
-  line-height: 36px;
+  line-height: 30px;
   font-weight: bold;
+}
+
+#sources img{
+  opacity: 0.8;
+  width: 300px;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+#sources img:hover{
+  opacity: 1;
+}
+
+#sources img:active{
+  opacity: 0.6;
 }
 
 
 #sources a{
   color: #3F8BBE;
   text-decoration: underline;
-  font-size: 16px;
+  font-size: 10px;
   font-weight: bold;
 }
 
@@ -1080,6 +1116,11 @@ input:focus {
 
   #more img{
     width: 100%;
+  }
+
+  #sources img{
+    opacity: 1;
+    width: 50%;
   }
 }
 

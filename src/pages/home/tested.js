@@ -37,7 +37,7 @@ export function testCal(history, today){
         let pTodCo = today.confirmed -history[history.length-1].confirmed
         let pTodTe = (today.confirmed + today.negative) - (history[history.length-1].confirmed + history[history.length-1].negative)
         let pTod = parseFloat((pTodCo/pTodTe).toFixed(4))*100
-        if(isNaN){
+        if(isNaN(pTod)){
             pTod = 0
         }
         res.pRate.push(pTod.toFixed(4))

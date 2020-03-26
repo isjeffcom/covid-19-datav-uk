@@ -120,7 +120,7 @@
       </div>
 
       <!-- HERD IMMUNITY -->
-      <div id="herd" style="margin-top:40px;margin-bottom:40px;" v-if="loaded">
+      <!--div id="herd" style="margin-top:40px;margin-bottom:40px;" v-if="loaded">
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
           <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
             <span>{{getLang("Herd Immunity")}}</span><br>
@@ -128,10 +128,9 @@
           </div>
         </div>
 
-        <!-- use progress bar component, not fully constructed, very poor code structure -->
         <ptg :mData="[allData[0].confirmed, 66440000]" style="margin-top:20px;margin-bottom:20px;"></ptg>
 
-      </div>
+      </div-->
 
 
       <!-- REGIONAL MAP -->
@@ -215,7 +214,7 @@
     <!-- GROUP INFO -->
     <div id="sources">
       <span>{{getLang("Group Up")}}</span>
-      <div style="margin-top: 10px; margin-bottom:10px;">
+      <div style="margin-top: 15px; margin-bottom:10px;">
         <a href="https://spectrum.chat/covid-19-uk-update" target="_blank">
           <img src="https://i.ibb.co/QkvZQyM/nd.png" alt="join by spectrum.chat">
         </a>
@@ -282,7 +281,7 @@ import { getDateFromTs, indexOfObjArr, deepCopy } from '../../utils'
 
 // Components
 import charts from '../../components/charts'
-import ptg from '../../components/ptg'
+//import ptg from '../../components/ptg'
 import donate from '../../components/widgets/donate'
 import ccmap from '../../components/widgets/ccmap'
 import ICountUp from 'vue-countup-v2'
@@ -302,7 +301,7 @@ export default {
   name: 'home',
   components:{
     charts,
-    ptg,
+    //ptg,
     ccmap,
     donate,
     ICountUp,
@@ -480,8 +479,6 @@ export default {
       })
     },
 
-    
-    
     // Get history data from api and generate charts
     // 从API获取历史数据，生成图表
     getHistory(api){
@@ -991,14 +988,15 @@ input:focus {
 }
 
 #more{
-  width: 32%;
+  width: 92%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 50px;
+  text-align: center;
 }
 
 #more img{
-  width: 100%;
+  width: 30%;
 }
 
 #cases-map{

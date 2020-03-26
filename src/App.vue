@@ -119,6 +119,16 @@ export default {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* TITLE */
+.title{
+  width: 90%;
+  font-size: 20px;
+  margin-top: 24px;
+  margin-bottom: 6px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* TAB */
 .tab-switcher{
   width: 100%;
@@ -236,6 +246,12 @@ export default {
   animation-name: clickHere;
   animation-duration: 4s;
   animation-iteration-count: infinite;
+}
+
+@media only screen and (max-width: 800px) {
+  .ds-ids{
+    width: 20%;
+  }
 }
 
 </style>

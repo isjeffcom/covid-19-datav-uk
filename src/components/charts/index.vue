@@ -48,7 +48,7 @@
 <script>
 
 import { putCN } from '../../translate'
-import { deepCopy, lightCopy } from '../../utils'
+import { deepCopy } from '../../utils'
 
 // Swiper
 import 'swiper/dist/css/swiper.css'

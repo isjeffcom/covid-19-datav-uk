@@ -1,9 +1,31 @@
+// Translate wording dict
+
 const wording = [
     ["Update", "最近更新"],
-    ["Confirmed", "确诊量"],
-    ["Increment", "增长量"],
-    ["Tested", "测试量"],
     ["Regions", "地域"],
+    ["Data", "数据"],
+    ["Case", "确诊"],
+    ["Death", "病亡"],
+    ["Data might be incompleted", "数据有可能不完整"],
+
+    // Charts
+    ["C&D", "确诊/病亡"],
+    ["Daily Increase", "日增长"],
+    ["Growth Rate", "增长率"],
+    ["Death Increase", "病亡增量"],
+    ["Mortality Rate", "病亡率"],
+    ["Tested Number", "测试数"],
+    ["Positive Rate", "确诊率"],
+
+    // HI
+    ["Herd Immunity", "群体免疫"],
+    ["UK Population", "英国总人口"],
+    ["Immunity Point", "生效人口比例"],
+    ["Million", "百万"],
+    ["Cases to go until herd immunity", "距离群体免疫还需"],
+    ["Progress", "进度"],
+
+    ["Test", "测试"],
     ["Unknown Locations", "位置未知"],
     ["At least 1 day in arrears", "相比确诊数据有至少一天的延迟"],
     ["Location", "位置"],
@@ -15,20 +37,28 @@ const wording = [
         "We promise free access, however, maintaining this server has costs and it's not cheap.", 
         "本网站是免费的，但维护和运营均产生高昂费用。如果你觉得不错，请帮助我们做的更好。"
     ],
-    ["Tested = Confirmed + Negative", "测试量 = 确诊 + 阴性"],
-    ["Data Incomplete", "数据有缺失"],
     ["map", "地图"],
     ["list", "列表"],
 
     // Figures
     ["confirmed", "确诊"],
-    ["death", "死亡"],
+    ["death", "病亡"],
     ["cured", "治愈"],
     ["negative", "阴性"],
     ["tested", "测试"],
-    ["D Co./Te.", "日检出"],
+    ["D. Posi.", "日检出"],
+    ["mortality", "死亡率"],
     ["serious", "危重"],
     ["suspected", "疑似"],
+
+    // Cases Map
+    ["Cases Map", "周边疫情"],
+    ["Data Source", "数据来源"],
+    ["by Users and News, NOT Authoritative", "数据来源于用户贡献或新闻媒体，非权威信息"],
+
+    // Group Up
+    ["Group Up", "群组讨论"],
+    ["By", "通过"],
 
     // Donation
     ["THANK YOU", "谢谢支持"],

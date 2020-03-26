@@ -5,7 +5,7 @@ const colors = [
     },
     {
         txt: "death",
-        color: "#B9A53C"
+        color: "#FFCE1F"
     },
     {
         txt: "cured",
@@ -13,19 +13,19 @@ const colors = [
     },
     {
         txt: "tested",
-        color: "#A4C2D2"
+        color: "#46DEFF"
     },
     {
         txt: "negative",
-        color: "#46DEFF"
+        color: "#56FFB8"
     },
     {
         txt: "serious",
         color: "#D21414"
     },
     {
-        txt: "D Co./Te.",
-        color: "#F28151"
+        txt: "D. Posi.",
+        color: "#9289FF"
     },
     {
         txt: "suspected",

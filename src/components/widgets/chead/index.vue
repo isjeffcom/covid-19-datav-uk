@@ -1,13 +1,14 @@
 <template>
+    <!-- PAGE TITLE BAR -->
     <div id="chead">
         <div id="chead-inner">
             <div id="chead-logo">
-                <img src="https://i.ibb.co/ssYj6L8/ccc.png" alt="">
+                <img src="https://i.ibb.co/0fhd1RL/vvvvlogo.png" alt="logo">
             </div>
 
             <div id="chead-right">
                 <div class="circle circle-c"></div>
-                <div>Live</div>
+                <div>LIVE</div>
             </div>
         </div>
     </div>
@@ -33,6 +34,8 @@ export default {
     100% {opacity: 0}
 }
 
+
+
 .circle{
     width: 14px;
     height: 14px;
@@ -54,7 +57,8 @@ export default {
     height: 110px;
     width: 100%;
     background-color: #17181A;
-    color: #CED3D6;
+    color: #ffffff;
+    font-weight: bold;
 }
 
 #chead-inner{

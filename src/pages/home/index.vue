@@ -410,6 +410,16 @@ export default {
         let death = []
         let len = 0
 
+        // UK
+        let ukCoSe = ["UK", []]
+        let ukDeSe = ["UK", []]
+        for(let i=0;i<this.historyData.length;i++){
+          ukCoSe[1].push(this.historyData[i].confirmed)
+          ukDeSe[1].push(this.historyData[i].death)
+        }
+
+        confirmed.push(ukCoSe)
+        death.push(ukDeSe)
 
         // 4 Country
         for (const prop in d){
@@ -434,33 +444,26 @@ export default {
         }
 
 
-        // UK
-        let ukCoSe = ["UK", []]
-        let ukDeSe = ["UK", []]
-        for(let i=0;i<this.historyData.length;i++){
-          ukCoSe[1].push(this.historyData[i].confirmed)
-          ukDeSe[1].push(this.historyData[i].death)
-        }
-        confirmed.push(ukCoSe)
-        death.push(ukDeSe)
+        
+        
 
         this.euCharts.push(
             this.constChartData("Confirmed", "line", false, [
+            "#F62E3A", // UK
             "#00FFA3", // Italy
-            "#00FFF0", // Germany
+            "#FF7A00", // Germany
             "#0075FF", // France
             "#FFF500", // Spain
-            "#F62E3A" // UK
           ], this.constChartSeries(confirmed), this.getLabels(len))
         )
 
         this.euCharts.push(
             this.constChartData("Death", "line", false, [
+            "#F62E3A", // UK
             "#00FFA3", // Italy
-            "#00FFF0", // Germany
+            "#FF7A00", // Germany
             "#0075FF", // France
             "#FFF500", // Spain
-            "#F62E3A" // UK
           ], this.constChartSeries(death), this.getLabels(len))
         )
 

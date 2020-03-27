@@ -37,8 +37,8 @@ export default {
 
 
 .circle{
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
     border-radius: 100px;
     background:#CED3D6;
     animation-name: flashing;
@@ -49,7 +49,7 @@ export default {
 
 .circle-c{
     margin-right: 8px; 
-    margin-top: 5px;
+    margin-top: 3px;
 }
 
 #chead{
@@ -75,9 +75,9 @@ export default {
     position: absolute;
     right: 44px;
     display: flex;
-    font-size: 18px;
+    font-size: 14px;
     font-weight: bold;
-    margin-top: 48px;
+    margin-top: 40px;
 }
 
 #chead-logo img{
@@ -91,12 +91,13 @@ export default {
     }
 
     .circle{
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
     }
 
     .circle-c{
-        margin-top: 7px;
+        margin-right: 6px; 
+        margin-top: 2.2px;
     }
 
     #chead-logo {
@@ -120,8 +121,9 @@ export default {
     
     #chead-right{
         right: 24px;
-        margin-top: 30px;
-        font-weight: normal;
+        margin-top: 28px;
+        font-size: 10px;
+        font-weight: bold;
     }
 }
 </style>

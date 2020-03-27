@@ -138,7 +138,7 @@ export default {
       api: "/",
       api_history: "/historyfigures",
       api_locations: "/locations",
-      api_eu: "http://global.covid19uk.live/majoreu",
+      api_eu: "https://global.covid19uk.live/majoreu",
 
       // Data storage variable
       allData: [],

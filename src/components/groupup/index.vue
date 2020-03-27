@@ -27,11 +27,11 @@ export default {
     methods:{
         // 翻译，由translate.js提供字典
         getLang(str){
-        if(this.lang != "zh-CN"){
-            return str
-        } else {
-            return putCN(str)
-        }
+          if(window.navigator.language != "zh-CN"){
+              return str
+          } else {
+              return putCN(str)
+          }
         },
     }
 }

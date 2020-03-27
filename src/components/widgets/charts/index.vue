@@ -5,7 +5,7 @@
 
             <swiper-slide v-for="(item,idx) in datas" :key="idx">
 
-                 <div class="chart-range">
+                 <div class="chart-range" v-if="showRange">
                     <div class="chart-inner" :style="'width:' + (rangeSelection.length * 54) + 'px;'">
                         <div 
                         class="chart-rs" 
@@ -47,8 +47,8 @@
 
 <script>
 
-import { putCN } from '../../translate'
-import { deepCopy } from '../../utils'
+import { putCN } from '../../../translate'
+import { deepCopy } from '../../../utils'
 
 // Swiper
 import 'swiper/dist/css/swiper.css'
@@ -61,11 +61,14 @@ export default {
         swiperSlide
     },
     props:{
-        datas: {}
+        datas: {},
+        showRange: {
+            type: Boolean,
+            default: true
+        }
     },
     data(){
         return{
-            lang: "",
             chartIndexs: 0,
             rangeSelection: [7, 14, 30, "ALL"],
             rangeSelected: 3,
@@ -74,9 +77,7 @@ export default {
             }
         }
     },
-    mounted(){
-        this.lang = window.navigator.language
-    },
+
     methods:{
         chartSwitcher(index){
             this.chartIndexs = index
@@ -86,7 +87,6 @@ export default {
         toRs(target, days, idx){
 
             this.rangeSelected = idx
-
 
             if(this.$refs['chart-'+target]){
 
@@ -120,52 +120,56 @@ export default {
 
                 tmpOpts.dataLabels.enabled = true
 
+                let cutRes = this.cutData(tmpData, tmpOpts, days)
+
+                if(!chart['cd_'+days]){
+                    chart['cd_'+days] = cutRes.data
+                }
+
+                if(!chart['co_'+days]){
+                    chart['co_'+days] = cutRes.options
+                }
+
                 // Set new data
-                chart.updateSeries(this.cutData(tmpData, days), false)
-                chart.updateOptions(this.cutOpts(tmpOpts, days), false, false, false)
+                chart.updateSeries(chart['cd_'+days], false)
+                chart.updateOptions(chart['co_'+days], false, false, false)
 
             }
 
         },
 
-        cutData(data, days){
+        cutData(data, opts, days){
             
-            let res = data
+            let d = data
+            let o = opts
+            let cateLen = opts['xaxis']['categories'].length
+            
             for(let i=0;i<data.length;i++){
                 let ds = this.cutArrToDays(data[i]['data'], days)
-                res[i]['data'] = ds
+                d[i]['data'] = ds
             }
 
-            return res
-        },
-
-        cutOpts(opts, days){
-            
-            let res = opts
-
-            //console.log(opts['xaxis']['categories'])
-            
             let os = this.cutArrToDays(opts['xaxis']['categories'], days) 
-            res['xaxis']['categories'] = os
+            o['xaxis']['categories'] = os
 
-            //console.log(os)
-
-            return res
+            return {data: d, options: o}
         },
 
         cutArrToDays(arr, days){
             let res
 
             if(arr.length > days){
+
                 let from = (arr.length-1)-days
                 res = arr.slice(from, arr.length)
+
             }
 
             return res
         },
 
         getLang(str){
-            if(this.lang != "zh-CN"){
+            if(window.navigator.language != "zh-CN"){
                 return str
             } else {
                 return putCN(str)
@@ -197,6 +201,7 @@ export default {
 }
 
 .chart-rs-txt{
+    font-size: 12px;
     margin-top: 8px;
     font-weight: bold;
 }

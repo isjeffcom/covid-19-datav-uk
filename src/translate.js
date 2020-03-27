@@ -5,17 +5,18 @@ const wording = [
     ["Regions", "地域"],
     ["Data", "数据"],
     ["Case", "确诊"],
-    ["Death", "病亡"],
+    ["Death", "死亡"],
     ["Data might be incompleted", "数据有可能不完整"],
 
     // Charts
-    ["C&D", "确诊/病亡"],
+    ["C&D", "确诊/死亡"],
     ["Daily Increase", "日增长"],
     ["Growth Rate", "增长率"],
-    ["Death Increase", "病亡增量"],
-    ["Mortality Rate", "病亡率"],
+    ["Death Increase", "死亡增量"],
+    ["Mortality Rate", "死亡率"],
     ["Tested Number", "测试数"],
     ["Positive Rate", "确诊率"],
+    ["Confirmed", "确诊"],
 
     // HI
     ["Herd Immunity", "群体免疫"],
@@ -40,9 +41,12 @@ const wording = [
     ["map", "地图"],
     ["list", "列表"],
 
+    // World
+    ["Major Eupore", "欧洲重点地区"],
+
     // Figures
     ["confirmed", "确诊"],
-    ["death", "病亡"],
+    ["death", "死亡"],
     ["cured", "治愈"],
     ["negative", "阴性"],
     ["tested", "测试"],

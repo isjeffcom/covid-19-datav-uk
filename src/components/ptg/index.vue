@@ -59,7 +59,6 @@ export default {
     },
     data(){
         return{
-            lang: "",
             aWidth: 0,
             bWidth: 0,
             pointPosi: 0,
@@ -69,7 +68,6 @@ export default {
         }
     },
     mounted(){
-        this.lang = window.navigator.language
 
         this.res1 = (this.mData[1] * this.point) - this.mData[0]
         
@@ -91,7 +89,7 @@ export default {
     },
     methods:{
         getLang(str){
-            if(this.lang != "zh-CN"){
+            if(window.navigator.language != "zh-CN"){
                 return str
             } else {
                 return putCN(str)

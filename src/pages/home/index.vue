@@ -36,7 +36,7 @@
         v-if="chartLoaded">
     </cdata>
 
-    <world></world>
+    <world :chartData="euCharts" v-if="worldLoaded"></world>
 
     <carea 
       :renderArea="renderArea"
@@ -47,6 +47,7 @@
 
     <more></more>
     <groupup></groupup>
+    <sources></sources>
 
     <!-- AUTHOR INFO -->
     <div id="author">
@@ -68,6 +69,7 @@
         </div>
       </div>
     </div>
+    
 
     <!-- DONATION OVERLAP -->
     <!-- donation overlap from /src/components/widgets/donate -->
@@ -87,6 +89,7 @@ import world from '../../components/world'
 import carea from '../../components/carea'
 import cdata from '../../components/cdata'
 import more from '../../components/more'
+import sources from '../../components/sources'
 import groupup from '../../components/groupup'
 import donate from '../../components/widgets/donate'
 
@@ -111,7 +114,8 @@ export default {
     world,
     carea,
     more,
-    groupup
+    groupup,
+    sources
   },
   data(){
     return{
@@ -125,6 +129,7 @@ export default {
       loaded: false,
       chartLoaded: false,
       areaLoaded: false,
+      worldLoaded: false,
 
       // List search input var
       listSearch: "",
@@ -133,7 +138,7 @@ export default {
       api: "/",
       api_history: "/historyfigures",
       api_locations: "/locations",
-
+      api_eu: "http://global.covid19uk.live/majoreu",
 
       // Data storage variable
       allData: [],
@@ -158,8 +163,22 @@ export default {
             enabled: false
           },
         },
+        stroke: {
+          curve: "straight",
+          width: 2
+        },
         tooltip:{
           y:{}
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shadeIntensity: 1,
+                inverseColors: false,
+                opacityFrom: 0.5,
+                opacityTo: 0,
+                stops: [0, 90, 100]
+            },
         },
         dataLabels:{
           enabled: false,
@@ -199,6 +218,7 @@ export default {
       confirmCharts:[],
       deathCharts:[],
       testedCharts:[],
+      euCharts: [],
 
       // Charts switcher
       allCharts:["Case", "Death", "Test"],
@@ -231,10 +251,11 @@ export default {
     // 从API获取基本数字数据
     getData(api){
 
-      genGet(api, {}, (res)=>{
+      genGet(api, {}, false, (res)=>{
 
         if(res.status){
           this.allData = res.data.data
+          
 
           // Process Area Data
           if(this.allData[0].area && this.allData[0].area != ""){
@@ -259,7 +280,7 @@ export default {
     // 从API获取历史数据，生成图表
     getHistory(api){
 
-      genGet(api, {}, async (res)=>{
+      genGet(api, {}, false, async (res)=>{
 
         if(res.status){
 
@@ -344,7 +365,7 @@ export default {
     // 获取所有的地理位置中心点数据
     getLocations(api){
       var that = this
-      genGet(api, {}, (res)=>{
+      genGet(api, {}, false, (res)=>{
         let d = res.data.data
          
         var markers = []
@@ -373,9 +394,92 @@ export default {
         })
 
       })
+
+      this.getEU()
     },
 
-    
+    // Get EU data and compare
+    // 获取欧洲国家数据并对比
+    getEU(){
+      genGet(this.api_eu, [], true, (res)=>{
+        //for(res.data.data)
+
+        const d = res.data.data
+
+        let confirmed = []
+        let death = []
+        let len = 0
+
+
+        // 4 Country
+        for (const prop in d){
+
+          let tmp = [prop, []]
+          let tmp_d = [prop, []]
+
+          if(d[prop].length > len){
+            len = d[prop].length
+          }
+          
+
+          for(let i=0;i<d[prop].length;i++){
+            if(d[prop][i].country_region == d[prop][i].province_state || d[prop][i].province_state == ""){
+              tmp[1].push(d[prop][i].confirmed)
+              tmp_d[1].push(d[prop][i].death)
+            }
+          }
+
+          confirmed.push(tmp)
+          death.push(tmp_d)
+        }
+
+
+        // UK
+        let ukCoSe = ["UK", []]
+        let ukDeSe = ["UK", []]
+        for(let i=0;i<this.historyData.length;i++){
+          ukCoSe[1].push(this.historyData[i].confirmed)
+          ukDeSe[1].push(this.historyData[i].death)
+        }
+        confirmed.push(ukCoSe)
+        death.push(ukDeSe)
+
+        this.euCharts.push(
+            this.constChartData("Confirmed", "line", false, [
+            "#00FFA3", // Italy
+            "#FF005C", // Germany
+            "#0075FF", // France
+            "#FFF500", // Spain
+            "#F62E3A" // UK
+          ], this.constChartSeries(confirmed), this.getLabels(len))
+        )
+
+        this.euCharts.push(
+            this.constChartData("Death", "line", false, [
+            "#00FFA3", // Italy
+            "#FF005C", // Germany
+            "#0075FF", // France
+            "#FFF500", // Spain
+            "#F62E3A" // UK
+          ], this.constChartSeries(death), this.getLabels(len))
+        )
+
+        this.worldLoaded = true
+
+      })
+    },
+
+    // Generate labels by length
+    // 辅助方法：使用长度生成labels，用于在不完整数据集中获取labels
+    getLabels(len){
+      let labels = []
+
+      for(let i=0;i<len;i++){
+        labels.push("D" + (i+1) )
+      }
+
+      return labels
+    },
 
     // Calculate unknow location cases
     // 辅助方法：计算未知地理位置
@@ -398,10 +502,21 @@ export default {
 
     // Construct chart data
     // 辅助方法：组合图标整体数据
-    constChartData(name, type, ptg, colors, data){
+    constChartData(name, type, ptg, colors, data, categories){
+
 
       let options = deepCopy(this.chartOptions)
-      options.colors = colors
+      if(colors){
+        options.colors = colors
+      }
+      
+      if(categories){
+        options.xaxis.categories = categories
+      }
+
+      if(type == "line" || type == "bar"){
+        options.fill = {}
+      }
 
       if(ptg){
         

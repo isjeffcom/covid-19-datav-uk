@@ -3,9 +3,10 @@
 const axios = require('axios')
 const baseUrl = "https://api.covid19uk.live"
 
-export function genGet (api, param, callback) {
+export function genGet (api, param, noBase, callback) {
 
-    api = baseUrl + api
+
+    api = noBase ? api : baseUrl + api
     
     axios.get(contParam(api, param)).then((response) => {
 

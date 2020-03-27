@@ -447,7 +447,7 @@ export default {
         this.euCharts.push(
             this.constChartData("Confirmed", "line", false, [
             "#00FFA3", // Italy
-            "#FF005C", // Germany
+            "#00FFF0", // Germany
             "#0075FF", // France
             "#FFF500", // Spain
             "#F62E3A" // UK
@@ -457,7 +457,7 @@ export default {
         this.euCharts.push(
             this.constChartData("Death", "line", false, [
             "#00FFA3", // Italy
-            "#FF005C", // Germany
+            "#00FFF0", // Germany
             "#0075FF", // France
             "#FFF500", // Spain
             "#F62E3A" // UK

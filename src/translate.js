@@ -42,7 +42,7 @@ const wording = [
     ["list", "列表"],
 
     // World
-    ["Major Eupore", "欧洲重点地区"],
+    ["Major Europe", "欧洲重点地区"],
 
     // Figures
     ["confirmed", "确诊"],

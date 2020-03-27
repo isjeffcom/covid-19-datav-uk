@@ -2,7 +2,7 @@
     <div id='forecast'>
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
           <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
-            <span>{{getLang("Major Eupore")}} <span style="font-size: 14px; opacity: 0.7;">[Beta]</span> </span><br>
+            <span>{{getLang("Major Europe")}} <span style="font-size: 14px; opacity: 0.7;">[Beta]</span> </span><br>
             <div style="font-size: 12px; opacity: 0.5;">{{getLang("Data Source")}}: Johns Hopkins University</div>
             
           </div>

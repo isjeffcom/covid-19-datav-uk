@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import L from "leaflet";
-import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet";
+import L from "leaflet"
+import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet"
 
 export default {
   name: "ccmap",
@@ -56,7 +56,7 @@ export default {
   },
   data() {
     return {
-        iconResize: 0.4,
+        iconResize: 0.2,
         minSize: 16,
         zoom: 5.6,
         center: L.latLng(54.275967, -3.234891),

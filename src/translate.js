@@ -23,7 +23,6 @@ const wording = [
     ["UK Population", "英国总人口"],
     ["Immunity Point", "生效人口比例"],
     ["Million", "百万"],
-    ["Cases to go until herd immunity", "距离群体免疫还需"],
     ["Progress", "进度"],
 
     ["Test", "测试"],
@@ -42,7 +41,17 @@ const wording = [
     ["list", "列表"],
 
     // World
-    ["Major Europe", "欧洲重点地区"],
+    ["Analysis", "数据解析"],
+    ["Eupore", "欧洲主要"],
+    ["UK Prediction", "英国预测"],
+    [
+        "Prediction model based on ANN machine learning algorithm trained with Italy, Germany and France's data.", 
+        "预测模型基于ANN机器学习算法，参考意大利，德国和法国数据。"
+    ],
+    [
+        "Constantly Optimising by @Big-Tree, @Jimmy.",
+        "由 @林大树 和 @陆嘉铭 同学持续开发和优化"
+    ],
 
     // Figures
     ["confirmed", "确诊"],
@@ -59,6 +68,15 @@ const wording = [
     ["Cases Map", "周边疫情"],
     ["Data Source", "数据来源"],
     ["by Users and News, NOT Authoritative", "数据来源于用户贡献或新闻媒体，非权威信息"],
+
+
+    // Key data
+    ["Key Data", "关键数据"],
+    ["Global data has 1 Day Delay", "全球数据有1天延迟"],
+    ["Global Cases", "全球感染"],
+    ["Global Death", "全球死亡"],
+    ["Cases to go until herd immunity(UK)", "英国距群体免疫还需"],
+
 
     // Group Up
     ["Group Up", "群组讨论"],

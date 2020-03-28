@@ -36,7 +36,7 @@
         v-if="chartLoaded">
     </cdata>
 
-    <world :chartData="euCharts" v-if="worldLoaded"></world>
+    <world :euData="euCharts" :preData="preCharts" v-if="worldLoaded"></world>
 
     <carea 
       :renderArea="renderArea"
@@ -44,6 +44,8 @@
       :unknown="unknown"
       v-if="areaLoaded">
     </carea>
+
+    <keydata v-if="keyDataLoaded" :allData="allKeyData"></keydata>
 
     <more></more>
     <groupup></groupup>
@@ -89,6 +91,7 @@ import world from '../../components/world'
 import carea from '../../components/carea'
 import cdata from '../../components/cdata'
 import more from '../../components/more'
+import keydata from '../../components/keydata'
 import sources from '../../components/sources'
 import groupup from '../../components/groupup'
 import donate from '../../components/widgets/donate'
@@ -114,6 +117,7 @@ export default {
     world,
     carea,
     more,
+    keydata,
     groupup,
     sources
   },
@@ -130,6 +134,7 @@ export default {
       chartLoaded: false,
       areaLoaded: false,
       worldLoaded: false,
+      keyDataLoaded: false,
 
       // List search input var
       listSearch: "",
@@ -139,6 +144,8 @@ export default {
       api_history: "/historyfigures",
       api_locations: "/locations",
       api_eu: "https://global.covid19uk.live/majoreu",
+      api_global_status: "https://global.covid19uk.live/status",
+      api_prediction: "./uk.json",
 
       // Data storage variable
       allData: [],
@@ -146,6 +153,7 @@ export default {
       renderArea: {},
       mapData: [],
       historyData: [],
+      allKeyData: [],
       DPosi: 0,
 
       // Unknow location cases count var
@@ -219,6 +227,7 @@ export default {
       deathCharts:[],
       testedCharts:[],
       euCharts: [],
+      preCharts: [],
 
       // Charts switcher
       allCharts:["Case", "Death", "Test"],
@@ -228,12 +237,11 @@ export default {
     }
   },
 
-  
-
   mounted(){
 
     // On start get data
     this.getData(this.api)
+    this.getKeyData(this.api_global_status)
     this.lang = window.navigator.language
 
   },
@@ -245,6 +253,7 @@ export default {
     })
 
   },
+
   methods:{
 
     // Get Figure Data from API
@@ -267,7 +276,6 @@ export default {
           
           this.getHistory(this.api_history)
 
-          
         } else {
           this.error = true
         }
@@ -414,6 +422,7 @@ export default {
         let ukCoSe = ["UK", []]
         let ukDeSe = ["UK", []]
         for(let i=0;i<this.historyData.length;i++){
+          
           ukCoSe[1].push(this.historyData[i].confirmed)
           ukDeSe[1].push(this.historyData[i].death)
         }
@@ -443,10 +452,6 @@ export default {
           death.push(tmp_d)
         }
 
-
-        
-        
-
         this.euCharts.push(
             this.constChartData("Confirmed", "line", false, [
             "#F62E3A", // UK
@@ -467,7 +472,31 @@ export default {
           ], this.constChartSeries(death), this.getLabels(len))
         )
 
-        this.worldLoaded = true
+        genGet(this.api_prediction, [], true, (res)=>{
+            const d = res.data
+
+            let c = []
+            for (const prop in d){
+              c.push(d[prop][0].toFixed(0))
+            }
+
+            let cr = ukCoSe[1]
+            cr.push(this.allData[0].confirmed)
+
+            this.preCharts.push(
+              this.constChartData("UK Prediction", "line", false, [
+                "#F62E3A", // Current
+                "#4696CB", // Forcast
+              ], this.constChartSeries([
+                ["Current", cr],
+                ["Forcast",c]
+              ]), this.getLabels(c.length))
+            )
+
+            this.worldLoaded = true
+        })
+
+        
 
       })
     },
@@ -482,6 +511,35 @@ export default {
       }
 
       return labels
+    },
+
+    getKeyData(api){
+
+      genGet(api, [], true, (res) => {
+ 
+        this.allKeyData = [
+        
+          {
+            name: "Global Cases",
+            num: res.data.data.confirmed,
+            color: "rgb(255, 81, 81)"
+          },
+          {
+            name: "Global Death",
+            num: res.data.data.death,
+            color: "rgb(255, 206, 31)"
+          },
+          { 
+            name: "Cases to go until herd immunity(UK)", 
+            num: Math.floor((66440000 * 0.6) - this.allData[0].confirmed),
+            color: "rgb(86, 255, 184)"
+          }
+        ] 
+
+        this.keyDataLoaded = true
+      })
+
+      
     },
 
     // Calculate unknow location cases
@@ -521,6 +579,13 @@ export default {
         options.fill = {}
       }
 
+      if(name == "UK Prediction"){
+        options.stroke = {
+          width: 3,
+          dashArray: [0, 2]
+        }
+      }
+
       if(ptg){
         
         options.dataLabels.formatter = (val)=>{
@@ -531,6 +596,8 @@ export default {
           return val == 0 ? "" : val + "%"
         }
       }
+      
+
 
       return {
         name: name,
@@ -604,18 +671,18 @@ export default {
 }
 
 #d-cont{
-  width: 90%;
+  width: 80%;
 }
 
 #d-title{
-  font-size: 24px;
+  font-size: 22px;
   font-weight: bold;
   margin-top: 24px;
   margin-left: 24px;
 }
 
 #d-sub{
-  font-size: 16px; 
+  font-size: 14px; 
   font-weight: bold;
   margin-top: 4px; 
   margin-left: 24px;
@@ -623,7 +690,7 @@ export default {
 }
 
 #d-btn{
-  width: 10%; 
+  width: 12%; 
   margin-top: 28px;
 }
 

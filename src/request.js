@@ -5,7 +5,6 @@ const baseUrl = "https://api.covid19uk.live"
 
 export function genGet (api, param, noBase, callback) {
 
-
     api = noBase ? api : baseUrl + api
     
     axios.get(contParam(api, param)).then((response) => {
@@ -13,6 +12,7 @@ export function genGet (api, param, noBase, callback) {
         callback({status: true, data: response.data})
 
     }).catch((err) => {
+        
         callback({status: false, error: err})
 
     })

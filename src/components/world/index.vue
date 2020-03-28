@@ -2,13 +2,43 @@
     <div id='forecast'>
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
           <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
-            <span>{{getLang("Major Europe")}} <span style="font-size: 14px; opacity: 0.7;">[Beta]</span> </span><br>
+            <span>{{getLang("Analysis")}} <span style="font-size: 14px; opacity: 0.7;">[Beta]</span> </span><br>
             <div style="font-size: 12px; opacity: 0.5;">{{getLang("Data Source")}}: Johns Hopkins University</div>
             
           </div>
         </div>
 
-        <charts :datas="chartData" :showRange="false"></charts>
+        <!-- Charts tab switcher -->
+        <div class="tab-switcher">
+            <div 
+                class="ds-single" 
+                v-for="(item, index) in allCharts" 
+                :key="index" :style="'width:calc(100%/' + allCharts.length + ');'" 
+                v-on:click="switchChartView(index)">
+
+                <div class="ds-text">
+                <span>{{getLang(item)}}</span>
+                </div>
+
+                <div class="ds-ids" v-if="index == currentChartView"></div>
+                
+            </div>
+        </div>
+
+        <div v-if="currentChartView == 0">
+            <charts :datas="euData" :showRange="false"></charts>
+        </div>
+
+        <div v-if="currentChartView == 1">
+            <charts :datas="preData" :showRange="false"></charts>
+            <div class="notice" style="font-size: 10px; width: 95%; margin-top: 20px; margin-bottom:20px; margin-left: auto;margin-right:auto;">
+                <span style="opacity: 0.5;"> {{getLang("Prediction model based on ANN machine learning algorithm trained with Italy, Germany and France's data.")}} <br> {{getLang("Constantly Optimising by @Big-Tree, @Jimmy.")}}</span>
+                <br><br>
+                <a href="https://github.com/lamharrison/coronavirus-machine-learning" target="_blank">COVID19-ML-PREDICTION</a>
+            </div>
+        </div>
+
+        
         <!--div style="font-size: 12px; opacity: 0.5;margin-left:auto;marign-right:auto;">https://github.com/isjeffcom/coronavirusDataGlobal</div-->
     </div>
 </template>
@@ -23,7 +53,14 @@ export default {
         charts
     },
     props:{
-        chartData: {
+        
+        euData: {
+            type: Array,
+            default(){
+                return []
+            }
+        },
+        preData: {
             type: Array,
             default(){
                 return []
@@ -33,7 +70,8 @@ export default {
 
     data(){
         return{
-
+            currentChartView: 0,
+            allCharts: ["Eupore", "UK Prediction"]
         }
     },
 
@@ -42,6 +80,10 @@ export default {
     },
 
     methods:{
+        // 切换图表
+        switchChartView(idx){
+            this.currentChartView = idx
+        },
         // 翻译，由translate.js提供字典
         getLang(str){
             if(window.navigator.language != "zh-CN"){

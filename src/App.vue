@@ -5,7 +5,6 @@
     <chead></chead>
     <router-view></router-view>
     
-
     <!-- Github Link -->
     <div id="github" v-on:click="toGithub">
       <img src="https://i.ibb.co/27tC8pd/github.png" alt="to github">
@@ -96,7 +95,17 @@ export default {
 *{
   padding: 0;
   margin: 0;
-  
+}
+
+body{
+  background: #1F2224;
+}
+
+a{
+  color: #3F8BBE;
+  text-decoration: underline;
+  font-size: 10px;
+  font-weight: bold;
 }
 
 @keyframes noticeShow {
@@ -115,6 +124,9 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #1F2224;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -220,11 +232,11 @@ export default {
   bottom: 40px;
   height: 30px;
   width: 100%;
+  max-width: 700px;
   color: #FFEAEA;
   text-align: center;
   margin-top: 20px;
   margin-bottom: 20px;
-
   font-weight: bold;
   font-size: 12px;
   z-index: 999;
@@ -249,6 +261,11 @@ export default {
 }
 
 @media only screen and (max-width: 800px) {
+    /* TAB */
+  .tab-switcher{
+    font-size: 14px;
+  }
+
   .ds-ids{
     width: 20%;
   }

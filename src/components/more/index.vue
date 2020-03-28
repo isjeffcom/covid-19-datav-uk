@@ -40,7 +40,7 @@ export default {
 }
 
 #more img{
-  width: 30%;
+  width: 70%;
 }
 
 @media only screen and (max-width: 800px) {

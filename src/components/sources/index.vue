@@ -3,7 +3,7 @@
     <div id="sources">
       <span>{{getLang("References")}}</span>
       <li v-for="(item, index) in list" :key="index">
-          <a :href="item.url">{{ item.name }}</a>
+          <a :href="item.url" target="_blank">{{ item.name }}</a>
       </li>
     </div>
 
@@ -87,12 +87,7 @@ export default {
 }
 
 
-#sources a{
-  color: #3F8BBE;
-  text-decoration: underline;
-  font-size: 10px;
-  font-weight: bold;
-}
+
 
 #sources a:active{
   background: #FEB547;

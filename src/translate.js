@@ -37,8 +37,8 @@ const wording = [
         "We promise free access, however, maintaining this server has costs and it's not cheap.", 
         "本网站是免费的，但维护和运营均产生高昂费用。如果你觉得不错，请帮助我们做的更好。"
     ],
-    ["map", "地图"],
-    ["list", "列表"],
+    ["Map", "地图"],
+    ["List", "列表"],
 
     // World
     ["Analysis", "数据解析"],

@@ -31,12 +31,12 @@
 
         <!-- IF MAP -->
         <!-- use ccmap from /src/components/widgets/ccmap -->
-        <div id="area-map" v-if="currentAreaView == 'map'">
+        <div id="area-map" v-if="currentAreaView == 'Map'">
             <osmmap :mapData="mapData"></osmmap>
         </div>
 
         <!-- IF LIST -->
-        <div v-if="currentAreaView == 'list'" style="margin-top:20px;">
+        <div v-if="currentAreaView == 'List'" style="margin-top:20px;">
 
         <div class="area-list-search">
             <input type="text" placeholder="Search by place" v-model="listSearch">
@@ -86,8 +86,8 @@ export default {
     data(){
         return{
             listSearch: "",
-            areaViews: ["map", "list"],
-            currentAreaView: "map",
+            areaViews: ["Map", "List"],
+            currentAreaView: "Map",
             areaList: []
         }
     },
@@ -108,7 +108,7 @@ export default {
 
         // 更换区域，地图<->列表
         switchAreaView(idx){
-        this.currentAreaView = idx
+            this.currentAreaView = idx
         },
 
         // 翻译，由translate.js提供字典

@@ -98,7 +98,7 @@ export default {
 }
 
 body{
-  background: #1F2224;
+  background: #131618;
 }
 
 a{
@@ -186,7 +186,7 @@ a{
   padding-top: 20px;
   font-size:12px;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 .chart-switcher:active{

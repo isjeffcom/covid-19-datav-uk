@@ -664,6 +664,7 @@ export default {
   width: 100%; 
   height: 100%;
   background: #FFC634;
+  padding-bottom:20px;
   border-bottom: 8px solid #152DFF;
   margin-left: auto;
   margin-right:auto; 
@@ -757,6 +758,7 @@ export default {
 
   #d-inner{
     display: block;
+    padding-bottom:0px;
   }
 
 }

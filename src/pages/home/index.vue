@@ -170,6 +170,19 @@ export default {
           zoom:{
             enabled: false
           },
+          animations: {
+            enabled: true,
+            easing: 'easeinout',
+            speed: 300,
+            animateGradually: {
+                enabled: true,
+                delay: 90
+            },
+            dynamicAnimation: {
+                enabled: true,
+                speed: 250
+            }
+          }
         },
         stroke: {
           curve: "straight",
@@ -198,7 +211,7 @@ export default {
             },
         },
         grid: {
-          borderColor: 'rgba(255,255,255,0.15)',
+          borderColor: 'rgba(255,255,255,0.08)',
         },
         colors:["#F62E3A", "#949BB5"],
         xaxis: {
@@ -334,7 +347,7 @@ export default {
             ["Death Rate", de.rate], 
           ])))
 
-          this.testedCharts.push(this.constChartData("Tested Number", "area", false, [
+          this.testedCharts.push(this.constChartData("Tested Number", "bar", false, [
             "#46DEFF",
             "#31DA93"
           ], this.constChartSeries([
@@ -577,6 +590,10 @@ export default {
 
       if(type == "line" || type == "bar"){
         options.fill = {}
+      }
+
+      if(type == "bar"){
+        options.chart.stacked = true
       }
 
       if(name == "UK Prediction"){

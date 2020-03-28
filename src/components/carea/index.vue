@@ -31,29 +31,33 @@
 
         <!-- IF MAP -->
         <!-- use ccmap from /src/components/widgets/ccmap -->
-        <div id="area-map" v-if="currentAreaView == 'Map'">
-            <osmmap :mapData="mapData"></osmmap>
-        </div>
+        <transition name="fade">
+            <div id="area-map" v-if="currentAreaView == 'Map'">
+                <osmmap :mapData="mapData"></osmmap>
+            </div>
+        </transition>
 
         <!-- IF LIST -->
-        <div v-if="currentAreaView == 'List'" style="margin-top:20px;">
+        <transition name="fade">
+            <div v-if="currentAreaView == 'List'" style="margin-top:20px;">
 
-        <div class="area-list-search">
-            <input type="text" placeholder="Search by place" v-model="listSearch">
-        </div>
-        
+            <div class="area-list-search">
+                <input type="text" placeholder="Search by place" v-model="listSearch">
+            </div>
+            
 
-        <table>
-            <tr>
-            <th>{{getLang("Location")}}</th>
-            <th>{{getLang("Cases")}}</th>
+            <table>
+                <tr>
+                <th>{{getLang("Location")}}</th>
+                <th>{{getLang("Cases")}}</th>
 
-            <tr v-for="item in listFiltered" :key="item.location">
-                <td>{{item.location}}</td>
-                <td>{{item.number}}</td>
-            </tr>
-        </table>
-        </div>
+                <tr v-for="item in listFiltered" :key="item.location">
+                    <td>{{item.location}}</td>
+                    <td>{{item.number}}</td>
+                </tr>
+            </table>
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -124,6 +128,14 @@ export default {
 </script>
 
 <style scoped>
+
+.fade-enter-active {
+  transition: opacity 1.6s;
+}
+
+.fade-enter /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
 table {
   font-family: arial, sans-serif;

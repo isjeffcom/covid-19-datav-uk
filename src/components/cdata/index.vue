@@ -33,18 +33,23 @@
             <!-- 3 charts, confirmed, death, tested -->
             <!-- use charts components in /src/components/charts -->
             <div id="chart-inner">
+                <transition name="fade">
+                    <div v-show="currentChartView == 0">
+                        <charts :datas="confirmCharts"></charts>
+                    </div>
+                </transition>
+                
+                <transition name="fade">
+                    <div v-show="currentChartView == 1">
+                        <charts :datas="deathCharts"></charts>
+                    </div>
+                </transition>
 
-                <div v-show="currentChartView == 0">
-                    <charts :datas="confirmCharts"></charts>
-                </div>
-
-                <div v-show="currentChartView == 1">
-                    <charts :datas="deathCharts"></charts>
-                </div>
-
-                <div v-show="currentChartView == 2">
-                    <charts :datas="testedCharts"></charts>
-                </div>
+                <transition name="fade">
+                    <div v-show="currentChartView == 2">
+                        <charts :datas="testedCharts"></charts>
+                    </div>
+                </transition>
 
             </div>
 
@@ -88,6 +93,7 @@ export default {
             }
         }
     },
+
     data(){
         return{
             currentChartView: 0,
@@ -120,6 +126,14 @@ export default {
 
 
 <style scoped>
+.fade-enter-active {
+  transition: opacity 1.6s;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
 #chart{
   width: 100%;
   font-size: 12px;
@@ -130,4 +144,5 @@ export default {
   margin-left:auto;
   margin-right: auto;
 }
+
 </style>

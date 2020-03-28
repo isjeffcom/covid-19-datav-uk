@@ -119,6 +119,7 @@ a{
   100% {background: rgba(246, 46, 58, 1)}
 }
 
+
 #app {
   font-family:  Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

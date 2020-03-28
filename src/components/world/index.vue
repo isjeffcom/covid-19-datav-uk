@@ -25,18 +25,22 @@
             </div>
         </div>
 
-        <div v-if="currentChartView == 0">
-            <charts :datas="euData" :showRange="false"></charts>
-        </div>
-
-        <div v-if="currentChartView == 1">
-            <charts :datas="preData" :showRange="false"></charts>
-            <div class="notice" style="font-size: 10px; width: 95%; margin-top: 20px; margin-bottom:20px; margin-left: auto;margin-right:auto;">
-                <span style="opacity: 0.5;"> {{getLang("Prediction model based on ANN machine learning algorithm trained with Italy, Germany and France's data.")}} <br> {{getLang("Constantly Optimising by @Big-Tree, @Jimmy.")}}</span>
-                <br><br>
-                <a href="https://github.com/lamharrison/coronavirus-machine-learning" target="_blank">COVID19-ML-PREDICTION</a>
+        <transition name="fade">
+            <div v-if="currentChartView == 0">
+                <charts :datas="euData" :showRange="false"></charts>
             </div>
-        </div>
+        </transition>
+
+        <transition name="fade">
+            <div v-if="currentChartView == 1">
+                <charts :datas="preData" :showRange="false"></charts>
+                <div class="notice" style="font-size: 10px; width: 95%; margin-top: 20px; margin-bottom:20px; margin-left: auto;margin-right:auto;">
+                    <span style="opacity: 0.5;"> {{getLang("Prediction model based on ANN machine learning algorithm trained with Italy, Germany and France's data.")}} <br> {{getLang("Constantly Optimising by @Big-Tree, @Jimmy.")}}</span>
+                    <br><br>
+                    <a href="https://github.com/lamharrison/coronavirus-machine-learning" target="_blank">COVID19-ML-PREDICTION</a>
+                </div>
+            </div>
+        </transition>
 
         
         <!--div style="font-size: 12px; opacity: 0.5;margin-left:auto;marign-right:auto;">https://github.com/isjeffcom/coronavirusDataGlobal</div-->
@@ -97,5 +101,11 @@ export default {
 </script>
 
 <style scoped>
+.fade-enter-active {
+  transition: opacity 1.6s;
+}
 
+.fade-enter /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

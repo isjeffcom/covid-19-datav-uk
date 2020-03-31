@@ -502,7 +502,7 @@ export default {
                 "#4696CB", // Forcast
               ], this.constChartSeries([
                 ["Current", cr],
-                ["Forcast",c]
+                ["Forecast",c]
               ]), this.getLabels(c.length))
             )
 

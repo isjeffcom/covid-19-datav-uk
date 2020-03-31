@@ -75,7 +75,7 @@ export default {
     data(){
         return{
             currentChartView: 0,
-            allCharts: ["Eupore", "UK Prediction"]
+            allCharts: ["Europe", "UK Prediction"]
         }
     },
 

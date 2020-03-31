@@ -42,7 +42,7 @@ const wording = [
 
     // World
     ["Analysis", "数据解析"],
-    ["Eupore", "欧洲主要"],
+    ["Europe", "欧洲主要"],
     ["UK Prediction", "英国预测"],
     [
         "Prediction model based on ANN machine learning algorithm trained with Italy, Germany and France's data.", 

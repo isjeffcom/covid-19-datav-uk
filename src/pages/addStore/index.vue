@@ -14,28 +14,7 @@ export default {
     name: "addstore",
     data(){
         return{
-            //api:"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=55.9490576,-3.1836716&radius=1500&type=store&keyword=tesco&key=AIzaSyBQDwsA6PES3fCvEAzHeKP5f50XdbDR1WI",
-            /*storeName: "tesco/",
-            storeList: [
-                "Tesco",
-                "Co-op",
-                "Asda",
-                "Lidl",
-                "Aldi",
-                "Sainsbury's",
-                "Marks & Spencer",
-                "Farmfoods",
-                "Waitrose",
-                "Booths",
-                "Boots",
-                "Ocado",
-                "Budgens",
-                "Jacks",
-                "Iceland",
-                "Morrisons",
-                "Heron Foods",
-                "Fulton's Foods"
-            ]*/
+            
         }
     },
     /*mounted(){

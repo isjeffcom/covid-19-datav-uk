@@ -42,7 +42,10 @@ const wording = [
     ],
     ["Map", "地图"],
     ["List", "列表"],
+    ["Postcode", "邮编"],
+    ["Your Postcode", "输入你的邮编"],
     ["Cases Near", "案例临近"],
+    
     
     // World
     ["Analysis", "数据解析"],
@@ -75,7 +78,6 @@ const wording = [
     // Cases Map
     ["Cases Map", "周边疫情"],
     ["Data Source", "数据来源"],
-    ["by Users and News, NOT Authoritative", "数据来源于用户贡献或新闻媒体，非权威信息"],
 
 
     // Key data
@@ -97,6 +99,7 @@ const wording = [
         "捐赠将会被用于服务维护，支付第三方数据服务(如地图等)，和团队成员的自我卫生保护。"
     ],
     ["CLOSE", "关闭"],
+    
 ]
 
 const alert = {

@@ -3,7 +3,7 @@
     <div id="chead">
         <div id="chead-inner">
             <div id="chead-logo">
-                <img src="https://i.ibb.co/0fhd1RL/vvvvlogo.png" alt="logo">
+                <img :src="'./img/logo.png'" alt="logo">
             </div>
 
             <div id="chead-right">

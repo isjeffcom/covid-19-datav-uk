@@ -6,16 +6,10 @@
     <router-view></router-view>
     
     <!-- Github Link -->
-    <div id="github" v-on:click="toGithub">
+    <!--div id="github" v-on:click="toGithub">
       <img src="https://i.ibb.co/27tC8pd/github.png" alt="to github">
-    </div>
+    </div-->
 
-    <!-- Notice -->
-    <div id="notice" v-if="noticed" v-on:click="toNotice">
-      <div id="notice-inner">
-          STAY AT HOME - INFO.
-      </div>
-    </div>
   </div>
 </template>
 
@@ -51,14 +45,6 @@ export default {
     if(!ls.get("first") || ls.get("first") != "2"){
       this.needAlert = true
     }
-
-    // Check browser localstorage if already clicked
-    if(!ls.get("noticed") || ls.get("noticed") != "1"){
-      setTimeout(()=>{
-        this.noticed = true
-      }, 1500)
-      
-    }
     
 
     // Get alert content by user language
@@ -74,18 +60,6 @@ export default {
 
   methods:{
 
-    // Open github link
-    toGithub(){
-      window.open("https://github.com/isjeffcom/coronvirusFigureUK")
-    },
-
-    toNotice(){
-      this.noticed = false
-      ls.set("noticed", "1")
-      this.$nextTick(()=>{
-        window.open("https://www.gov.uk/coronavirus")
-      })
-    }
   }
 }
 </script>
@@ -140,6 +114,13 @@ a{
   margin-bottom: 6px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.title-right{
+  float: right;
+  margin-right: 24px;
+  margin-top: -65px;
+  font-size: 14px;
 }
 
 /* TAB */

@@ -1,10 +1,10 @@
 <template>
     <div id="addstore">
-        <div id="form">
+        <!--div id="form">
             <div id="map">
                 <iframe id="mapifm" ref="mapifm" :src="iframeUrl" frameborder="0"></iframe>
             </div>
-        </div>
+        </div-->
     </div>
 </template>
 
@@ -14,8 +14,8 @@ export default {
     name: "addstore",
     data(){
         return{
-            api:"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=55.9490576,-3.1836716&radius=1500&type=store&keyword=tesco&key=AIzaSyBQDwsA6PES3fCvEAzHeKP5f50XdbDR1WI",
-            storeName: "tesco/",
+            //api:"https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=55.9490576,-3.1836716&radius=1500&type=store&keyword=tesco&key=AIzaSyBQDwsA6PES3fCvEAzHeKP5f50XdbDR1WI",
+            /*storeName: "tesco/",
             storeList: [
                 "Tesco",
                 "Co-op",
@@ -35,10 +35,10 @@ export default {
                 "Morrisons",
                 "Heron Foods",
                 "Fulton's Foods"
-            ]
+            ]*/
         }
     },
-    mounted(){
+    /*mounted(){
 
         //url变化监听器
         if( ('onhashchange' in window) && ((typeof document.documentMode==='undefined') || document.documentMode==8)) {
@@ -60,6 +60,6 @@ export default {
         hashChange(){
             console.log("url changed")
         }
-    }
+    }*/
 }
 </script>

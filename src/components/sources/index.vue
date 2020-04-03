@@ -18,6 +18,10 @@ export default {
         return{
             list:[
                 {
+                    name: "[API] Coronvirus Figure UK - isjeffcom",
+                    url: "https://github.com/isjeffcom/coronvirusFigureUK"
+                },
+                {
                     name: "[Gov]COVID-19: latest information and advice",
                     url: "https://www.gov.uk/guidance/coronavirus-covid-19-information-for-the-public"
                 },

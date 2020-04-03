@@ -6,6 +6,7 @@
             <swiper-slide v-for="(item,idx) in datas" :key="idx">
 
                  <div class="chart-range" v-if="showRange">
+
                     <div class="chart-inner" :style="'width:' + (rangeSelection.length * 54) + 'px;'">
                         <div 
                         class="chart-rs" 
@@ -18,15 +19,22 @@
                             <div class="chart-rs-txt">
                                 {{isNaN(itm) ? itm : itm + 'd'}}
                             </div>
+
+                            
                         </div>
+
                     </div>
-                    
+
                 </div>
 
                 <apexchart width="100%" height="280px" :ref="'chart-'+item.name" :type="item.type" :options="item.options" :series="item.data"></apexchart>
+                <div class="chart-full" v-on:click="toFc(item.data, item.options, item.name, item.type)">{{ getLang("Full Chart")}} </div>
+            
             </swiper-slide>
 
         </swiper>
+
+        
 
         <div class="chart-switcher-cont" style="width: 100%; display: flex;">
 
@@ -42,6 +50,7 @@
                 {{ getLang(item.name) }}
             </div>
         </div>
+
     </div>
 </template>
 
@@ -168,6 +177,17 @@ export default {
             return res
         },
 
+        toFc(data, options, name, type){
+            const to = {
+                data: data,
+                options: options,
+                name: name,
+                type: type
+            }
+
+            this.$router.push({path: '/fullchart', query: {d: to}})
+        },
+
         getLang(str){
             if(window.navigator.language != "zh-CN"){
                 return str
@@ -189,6 +209,18 @@ export default {
     margin-left: auto;
     margin-right: auto;
     display: flex;
+}
+
+.chart-full{
+    width: 100%;
+    margin-top: -6px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: #ffffff;
+    opacity: 0.5;
+    text-align: center;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .chart-rs{

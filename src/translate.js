@@ -17,6 +17,8 @@ const wording = [
     ["Tested Number", "测试数"],
     ["Positive Rate", "确诊率"],
     ["Confirmed", "确诊"],
+    ["Full Chart", "全屏查看"],
+    
 
     // HI
     ["Herd Immunity", "群体免疫"],
@@ -33,13 +35,15 @@ const wording = [
     ["References", "数据参考"],
     ["Support Us", "支持我们"],
     ["SUPPORT", "捐赠资助"],
+    
     [
         "We promise free access, however, maintaining this server has costs and it's not cheap.", 
         "本网站是免费的，但维护和运营均产生高昂费用。如果你觉得不错，请帮助我们做的更好。"
     ],
     ["Map", "地图"],
     ["List", "列表"],
-
+    ["Cases Near", "案例临近"],
+    
     // World
     ["Analysis", "数据解析"],
     ["Europe", "欧洲主要"],
@@ -52,6 +56,10 @@ const wording = [
         "Constantly Optimising by @Big-Tree, @Jimmy.",
         "由 @林大树 和 @陆嘉铭 同学持续开发和优化"
     ],
+
+    // Full Chart
+    ["BACK", "返回"],
+    ["Built for PC", "使用PC查看以获得最佳体验"],
 
     // Figures
     ["confirmed", "确诊"],

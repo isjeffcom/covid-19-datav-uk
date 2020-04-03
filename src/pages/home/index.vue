@@ -434,14 +434,17 @@ export default {
         // UK
         let ukCoSe = ["UK", []]
         let ukDeSe = ["UK", []]
+
         for(let i=0;i<this.historyData.length;i++){
-          
           ukCoSe[1].push(this.historyData[i].confirmed)
-          ukDeSe[1].push(this.historyData[i].death)
+          
+          // From the day has first death
+          if(this.historyData[i].death > 0) ukDeSe[1].push(this.historyData[i].death)
         }
 
         confirmed.push(ukCoSe)
         death.push(ukDeSe)
+
 
         // 4 Country
         for (const prop in d){
@@ -456,8 +459,12 @@ export default {
 
           for(let i=0;i<d[prop].length;i++){
             if(d[prop][i].country_region == d[prop][i].province_state || d[prop][i].province_state == ""){
+
               tmp[1].push(d[prop][i].confirmed)
-              tmp_d[1].push(d[prop][i].death)
+
+              // From the day has first death
+              if(d[prop][i].death > 0) tmp_d[1].push(d[prop][i].death)
+              
             }
           }
 

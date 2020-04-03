@@ -2,7 +2,7 @@
     <div id="overall">
         <!-- CURRENT FIGURES -->
         <!-- current figure switcher -->
-        <div class="tab-switcher">
+        <!--div class="tab-switcher">
             <div 
                 class="ds-single" 
                 v-for="(item, index) in allData" 
@@ -16,7 +16,7 @@
                 <div class="ds-ids" v-if="index == selected"></div>
                 
             </div>
-        </div>
+        </div-->
 
         <!-- current figure container -->
         <div id="overall">
@@ -130,10 +130,10 @@ export default {
     methods:{
         
         // 顶上切换数据源tab切换时fire
-        switchData(idx){
+        /*switchData(idx){
             this.selected = idx
             this.renderFigure()
-        },
+        },*/
 
         // 从color.js获取各种颜色
         getColor(str){
@@ -234,7 +234,7 @@ export default {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  padding-top: 30px;
+  padding-top: 35px;
 }
 
 .overall-single{

@@ -1,6 +1,8 @@
 <template>
 
   <div style="height: 100%; width: 100%">
+
+    
     <l-map
       v-if="showMap"
       :zoom="zoom"
@@ -39,6 +41,8 @@
 <script>
 import L from "leaflet"
 import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet"
+import { genGet } from '../../../request'
+import { EventBus } from '../../../bus'
 
 export default {
   name: "ccmap",
@@ -56,15 +60,14 @@ export default {
   },
   data() {
     return {
-        iconResize: 0.2,
+        api_geoToPo: "https://api.postcodes.io/postcodes/",
+        iconResize: 0.15,
         minSize: 16,
         zoom: 5.6,
         center: L.latLng(54.275967, -3.234891),
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution:
             '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        withPopup: L.latLng(47.41322, -1.219482),
-        withTooltip: L.latLng(47.41422, -1.250482),
         currentZoom: 5,
         currentCenter: L.latLng(54.275967, -3.234891),
         showParagraph: false,
@@ -84,7 +87,88 @@ export default {
     };
   },
 
+
+  created(){
+    var that = this
+    EventBus.$on("getLoc", ()=>{
+      
+      that.getUserGeo()
+    })
+  },
+
   methods: {
+    getUserGeo(){
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((geo)=>{
+          let la = geo.coords.latitude
+          let lo = geo.coords.longitude
+
+          // UK's Latitude between 48 - 62
+          if( la < 48 || la > 62){
+            return
+          }
+
+          // UK's Longitute between -8 - 3
+          if(lo < -8 || lo > 3) {
+            return
+          }
+          
+          let c = L.latLng(la, lo)
+          
+          this.center = c
+          this.currentCenter = c
+
+          // Do this otherwise center udpate will be overwrite
+          setTimeout(()=>{
+            this.zoom = 8
+          }, 1400)
+
+          genGet(this.api_geoToPo, [
+            {
+              name: "lon",
+              val: lo
+            },
+            {
+              name: "lat",
+              val: la
+            }
+          ], true, (res)=>{
+
+            let result = res.data.result[0]
+            let UTLA = ""
+            if(result.country == "Scotland"){
+              UTLA = result["nhs_ha"]
+            } 
+            
+            else if(result.country == "England"){
+              UTLA = result["nuts"]
+            }
+
+            else if(result.country == "Northern Ireland"){
+              UTLA = "Northern Ireland"
+            }
+
+            else if(result.country == "Wales"){
+              UTLA = "Wales"
+            }
+
+            EventBus.$emit("utla", UTLA)
+
+          })
+          
+        }, (err)=>{
+          if(err.code == 1){
+            alert("You didn't give location access to your bowser. Please try to clear your bowser cache and try again.")
+          }
+        })
+        
+      } else {
+        console.log("no auth")
+      }
+    },
+
+
     zoomUpdate(zoom) {
       this.currentZoom = zoom
     },
@@ -99,6 +183,9 @@ export default {
     },
     setIcon(num){
       let size = num * this.iconResize > this.minSize ? num * this.iconResize : this.minSize
+      if(size > 100){
+        size = 100
+      }
       return L.icon({
           iconUrl: 'https://playground.isjeff.com/marker.svg',
           iconSize: [size, size],

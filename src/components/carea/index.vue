@@ -249,20 +249,7 @@ tr:nth-child(even) {
   background-color: #2D3133;
 }
 
-input{
-  background: #373D41;
-  border: 1px solid rgba(255,255,255,0.05);
-  width: 100%;
-  height: 32px;
-  color: #CED3D6;
-  -webkit-appearance: none;
-  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
 
-input:focus {
-  border: 1px solid rgba(70,222,255,1);
-  outline: none;
-}
 
 #carea{
   width: 100%;

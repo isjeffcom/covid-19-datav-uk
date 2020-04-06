@@ -4,8 +4,11 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 import home from './pages/home'
-import addstore from './pages/addStore'
+import store from './pages/store'
+import storesingle from './pages/storesingle'
+import storeup from './pages/storeup'
 import fullchart from './pages/fullchart'
+
 
 // Router, ready for multiple page
 
@@ -13,8 +16,10 @@ export default new VueRouter({
   mode: 'history',
   routes: [
     { path:'/', name:'home', component: home },
-    { path:'/addstore', name:'addstore', component: addstore },
-    { path:'/fullchart', name:'fullchart', component: fullchart}
+    { path:'/store', name:'store', component: store },
+    { path:'/storeup', name:'storeup', component: storeup },
+    { path:'/fullchart', name:'fullchart', component: fullchart},
+    { path:'/storesingle', name:'storesingle', component: storesingle}
     /*{ path: '/home', name: 'home', component: home },*/
     ]
 })

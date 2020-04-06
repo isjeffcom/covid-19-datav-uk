@@ -1,7 +1,9 @@
 /* REQUEST FUNCTIONS */
 
 const axios = require('axios')
+const qs = require('qs')
 const baseUrl = "https://api.covid19uk.live"
+let api_pos = "https://api.postcodes.io/postcodes/"
 
 export function genGet (api, param, noBase, callback) {
 
@@ -17,6 +19,42 @@ export function genGet (api, param, noBase, callback) {
 
     })
 }
+
+export function genPost(api, data, noBase, callback){
+
+
+    api = noBase ? api : baseUrl + api
+
+    const postData = qs.stringify(data)
+
+    //console.log(postData)
+
+    axios.post(api, postData)
+      .then(function (response) {
+          if(response){
+            callback({status: true, data: response.data}, false)
+            return 
+          }else{
+            callback({status: false, data: response.data})
+            return 
+          }
+      })
+      .catch(function (error) {
+        callback({status: false, data: null, err: error})
+        return 
+      })
+}
+
+export function getLocByPO(po, callback){
+    genGet(api_pos + po, [], true, (res)=>{
+        if(res.status){
+            callback({status: true, data: res.data})
+        } else {
+            callback({status: false, error: "not postcode"})
+        }
+    })
+}
+
 // Construct url with paramaters
 function contParam (api, param) {
     

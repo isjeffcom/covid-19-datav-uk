@@ -93,12 +93,27 @@ a{
   100% {background: rgba(246, 46, 58, 1)}
 }
 
+input{
+  background: #373D41;
+  border: 1px solid rgba(255,255,255,0.05);
+  width: 100%;
+  height: 32px;
+  color: #CED3D6;
+  -webkit-appearance: none;
+  transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+input:focus {
+  border: 1px solid rgba(70,222,255,1);
+  outline: none;
+}
 
 #app {
   font-family:  Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #1F2224;
+  color: #CED3D6;
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;

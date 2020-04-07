@@ -23,7 +23,10 @@
 
                 <div class="su-ques-s-m">
                     <star-rating v-model="item.val" :star-size="24" :padding="10" inactive-color="#333" active-color="#fff"></star-rating>
+                    
                 </div>
+
+                <button v-on:click="item.val = item.val != 0 ? 0 : 3">{{ item.val != 0 ? "Unavailable" : "Available" }}</button>
             </div>
 
             <div class="su-ques-s">
@@ -151,6 +154,13 @@ export default {
 
 <style scoped>
 
+button{
+    margin-top: 14px;
+    margin-left: 0px; 
+    margin-right: 0px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+}
 
 #storeup{
     width: 92%;

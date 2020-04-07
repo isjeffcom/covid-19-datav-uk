@@ -146,6 +146,8 @@ button:active{
   background: #2D3133;
 }
 
+button:focus {outline:0;}
+
 progress[value]{
     border: 0;
     height: 6px;

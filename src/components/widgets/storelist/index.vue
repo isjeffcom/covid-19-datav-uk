@@ -175,9 +175,6 @@ export default {
         EventBus.$on("storemap", (res)=>{
             this.mapSelected = res
             scrollLock = true
-            //console.log(this.$refs["sl-"+res][0].offsetTop)
-            //let c = this.$refs["sl-"+res]
-            //c.scrollIntoView()
             VueScrollTo.scrollTo(this.$refs["sl-"+res][0], 300, VSoptions)
         })
     },

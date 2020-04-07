@@ -2,6 +2,7 @@
   <div id="home">
 
     <div v-if="error">
+
       Fail to connect API, please report ISSUE to:
       <li>https://github.com/isjeffcom/coronvirusFigureUK</li>
       <li>https://spectrum.chat/covid-19-uk-update?tab=posts</li>
@@ -312,66 +313,69 @@ export default {
           let de = await deathCal(this.historyData, this.allData[0])
           let te = await testCal(this.historyData, this.allData[0])
 
-          this.chartOptions.xaxis.categories = co.cates
+          this.$nextTick(()=>{
+            this.chartOptions.xaxis.categories = co.cates
 
-          // Compute chart data
-          this.confirmCharts.push(this.constChartData("C&D", "area", false, [
-            "#F62E3A",
-            "#949BB5",
-          ], this.constChartSeries([
-            ["Confirmed", co.co], 
-            ["Death", co.death]
-          ])))
+            // Compute chart data
+            this.confirmCharts.push(this.constChartData("C&D", "area", false, [
+              "#F62E3A",
+              "#949BB5",
+            ], this.constChartSeries([
+              ["Confirmed", co.co], 
+              ["Death", co.death]
+            ])))
 
-          this.confirmCharts.push(this.constChartData("Daily Increase", "bar", false, [
-            "#F62E3A"
-          ], this.constChartSeries([
-            ["Cases", co.coDaily]
-          ])))
+            this.confirmCharts.push(this.constChartData("Daily Increase", "bar", false, [
+              "#F62E3A"
+            ], this.constChartSeries([
+              ["Cases", co.coDaily]
+            ])))
 
-          this.confirmCharts.push(this.constChartData("Growth Rate", "area", true, [
-            "#F62E3A"
-          ], this.constChartSeries([
-            ["Rate", co.coInc]
-          ])))
+            this.confirmCharts.push(this.constChartData("Growth Rate", "area", true, [
+              "#F62E3A"
+            ], this.constChartSeries([
+              ["Rate", co.coInc]
+            ])))
 
-          this.deathCharts.push(this.constChartData("Death Increase", "bar", false, [
-            "#FFC634"
-          ], this.constChartSeries([
-            ["Increase", de.inc], 
-          ])))
+            this.deathCharts.push(this.constChartData("Death Increase", "bar", false, [
+              "#FFC634"
+            ], this.constChartSeries([
+              ["Increase", de.inc], 
+            ])))
 
-          this.deathCharts.push(this.constChartData("Mortality Rate", "area", true, [
-            "#FFC634"
-          ], this.constChartSeries([
-            ["Death Rate", de.rate], 
-          ])))
+            this.deathCharts.push(this.constChartData("Mortality Rate", "area", true, [
+              "#FFC634"
+            ], this.constChartSeries([
+              ["Death Rate", de.rate], 
+            ])))
 
-          this.testedCharts.push(this.constChartData("Tested Number", "bar", false, [
-            "#46DEFF",
-            "#31DA93"
-          ], this.constChartSeries([
-            ["All", te.all],
-            ["Increase", te.growth],
-          ])))
+            this.testedCharts.push(this.constChartData("Tested Number", "bar", false, [
+              "#46DEFF",
+              "#31DA93"
+            ], this.constChartSeries([
+              ["All", te.all],
+              ["Increase", te.growth],
+            ])))
 
-          this.testedCharts.push(this.constChartData("Positive Rate", "area", true, [
-            "#46DEFF"
-          ], this.constChartSeries([
-            ["Positive Rate", te.pRate],
-          ])))
+            this.testedCharts.push(this.constChartData("Positive Rate", "area", true, [
+              "#46DEFF"
+            ], this.constChartSeries([
+              ["Positive Rate", te.pRate],
+            ])))
 
-          // Save for calculate CO./TE.
-          this.dailyConfirmed = co.coDaily
 
-          // Call here because it relay on get history data
-          if(te.pRate[te.pRate.length-1] == 0){
-            this.DPosi = Number.parseFloat(te.pRate[te.pRate.length-2])
-          }else{
-            this.DPosi = Number.parseFloat(te.pRate[te.pRate.length-1])
-          }
+            // Save for calculate CO./TE.
+            this.dailyConfirmed = co.coDaily
 
-          this.chartLoaded = true
+            // Call here because it relay on get history data
+            if(te.pRate[te.pRate.length-1] == 0){
+              this.DPosi = Number.parseFloat(te.pRate[te.pRate.length-2])
+            }else{
+              this.DPosi = Number.parseFloat(te.pRate[te.pRate.length-1])
+            }
+
+            this.chartLoaded = true
+          })
 
         }
 

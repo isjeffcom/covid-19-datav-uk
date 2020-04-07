@@ -58,6 +58,7 @@
                 <!-- update date -->
                 <div id="update">
                     <div>{{getLang("Update")}}: {{update}}</div>
+                    <!--div>Due to the statistical changes, test data appears not lining up with the government's figure. Our calculation method will reconsider and reconstruct after midnight.</div-->
                 </div>
 
             </div>
@@ -93,11 +94,11 @@ export default {
         }
     },
 
-    watch: {
+    /*watch: {
         'DPosi' () {
             this.renderData["D. Posi."] = this.DPosi + "%"
         }
-    },
+    },*/
     components:{
         ICountUp,
     },
@@ -151,16 +152,18 @@ export default {
                 death: all.death,
                 tested: all.negative != 0 ? all.confirmed + all.negative : "---",
                 negative: all.negative == 0 ? "---" : all.negative,
-                "D. Posi.": "---",
+                "Posi. Rate": (((all.confirmed / (all.confirmed + all.negative))*100).toFixed(2)) + "%",
                 mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%",
                 cured: this.allData[1].cured == 0 ? "---" : this.allData[1].cured,
                 serious: this.allData[1].serious == 0 ? "---" : this.allData[1].serious,
                 //suspected: all.suspected == 0 ? "---" : all.suspected,
             }
 
-            if(this.selected == 0){
+            //console.log(all.confirmed / all.confirmed + all.negative)
+
+            /*if(this.selected == 0){
                 this.renderData['D. Posi.'] = this.DPosi + "%"
-            }
+            }*/
 
         },
 

@@ -22,7 +22,7 @@ export default {
         return{
             alt: {
                 tit: "What is stock checker?",
-                content: "This is a testing function that allows you to share and check your nearby local store's stock situation. We encourage everyone to share the stock information to avoid the mass flow in the shipping area and unnecessary exposure. Be aware that these data are not provided by the official. We have no resource to check every submission so we can only hope one can be honest.",
+                content: "This pilot feature allows the users to share the stock information - Everyone is encouraged to share the shelf conditions and stock insights from their local supermarket visits. While the onsite crowdsourcing data aims to help people better plan their grocery activity, we do appreciate there might be lack of update or entry error. Please use your genuine data contribution to help your neighbourhood stay safe.",
                 submit: "Agree"
             }
         }

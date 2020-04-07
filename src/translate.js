@@ -71,6 +71,7 @@ const wording = [
     ["negative", "阴性"],
     ["tested", "测试"],
     ["D. Posi.", "日检出"],
+    ["Posi. Rate", "检出率"],
     ["mortality", "死亡率"],
     ["serious", "危重"],
     ["suspected", "疑似"],

@@ -28,6 +28,10 @@ const colors = [
         color: "#9289FF"
     },
     {
+        txt: "Posi. Rate",
+        color: "#9289FF"
+    },
+    {
         txt: "suspected",
         color: "#A98AFF"
     },

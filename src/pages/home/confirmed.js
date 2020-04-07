@@ -8,7 +8,7 @@ export function confirmCal(history, today){
             co: [],
             death: [],
             coDaily: [],
-            coInc: []
+            coInc: [],
         }
 
         // Loop

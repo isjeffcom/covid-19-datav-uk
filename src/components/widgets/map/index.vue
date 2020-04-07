@@ -61,13 +61,13 @@ export default {
   data() {
     return {
         api_geoToPo: "https://api.postcodes.io/postcodes/",
-        iconResize: 0.15,
+        iconResize: 0.08,
         minSize: 16,
-        zoom: 5.6,
+        zoom: 5.8,
         center: L.latLng(54.275967, -3.234891),
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution:
-            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+            '&copy; <a href="http://osm.org/copyright">OSM</a>',
         currentZoom: 5,
         currentCenter: L.latLng(54.275967, -3.234891),
         showParagraph: false,

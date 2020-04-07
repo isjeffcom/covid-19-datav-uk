@@ -1,12 +1,18 @@
 <template>
     <div id="storeup">
-        <div id="su-title">
-            <h2>{{ this.sname }}</h2>
-            <h3>{{ this.add }}</h3>
-        </div>
+        <div id="ss-info-cont">
+            <div id="ss-title">
+                <p>{{ sname }}</p>
+            </div>
 
-        <div id="su-subtitle">
-            <h4>Update stock informaton</h4>
+            <div id="ss-add">
+                <p>{{ add }}</p>
+            </div>
+
+            <div id="ss-notice">
+                <p>We have no resource to check every submission so we can only hope one is a honest man/woman.</p>
+            </div>
+
         </div>
 
         <div id="su-ques">
@@ -16,18 +22,22 @@
                 </div>
 
                 <div class="su-ques-s-m">
-                    <star-rating v-model="item.val" :star-size="30" inactive-color="#333" active-color="#fff"></star-rating>
+                    <star-rating v-model="item.val" :star-size="24" :padding="10" inactive-color="#333" active-color="#fff"></star-rating>
                 </div>
             </div>
 
-            <div class="su-ques-user">
+            <div class="su-ques-s">
                 <div>Contributor: </div>
                 <input type="text" placeholder="Anonymous" v-model="user">
             </div>
         </div>
 
+        <div id="ss-update" v-on:click="submit()">
+            <div id="ss-update-inner">
+                <span>SUBMIT</span>
+            </div>
+        </div>
 
-        <button v-on:click="submit()">Submit</button>
     </div>
 </template>
 
@@ -36,6 +46,7 @@
 
 import StarRating from 'vue-star-rating'
 import { genPost } from '../../request'
+import { clean } from '../../utils'
 // https://www.npmjs.com/package/vue-star-rating
 
 export default {
@@ -45,7 +56,7 @@ export default {
     },
     data(){
         return{
-            api: "http://localhost:8020/up/",
+            api: "https://store.covid19uk.live/up/",
             sid: null,
             sname: null,
             add: null,
@@ -56,37 +67,37 @@ export default {
                 {
                     name: "Vegetable & Fruit",
                     key: "d_vegfru",
-                    val: 1,
+                    val: 3,
                 },
                 {
                     name: "Meat & Fish",
                     key: "d_meatfish",
-                    val: 1,
+                    val: 3,
                 },
                 {
                     name: "Bread & Rice",
                     key: "d_bread",
-                    val: 1,
+                    val: 3,
                 },
                 {
                     name: "Milk",
                     key: "d_milk",
-                    val: 1,
+                    val: 3,
                 },
                 {
                     name: "Eggs",
                     key: "d_egg",
-                    val: 1,
+                    val: 3,
                 },
                 {
                     name: "Toilet Paper",
                     key: "d_paper",
-                    val: 1,
+                    val: 3,
                 },
                 {
                     name: "Hand sanitizer",
                     key: "d_handgel",
-                    val: 1,
+                    val: 3,
                 }
             ],
             marks: [1,3,5]
@@ -114,6 +125,7 @@ export default {
             }
 
             postReady.data.user = this.user ? this.user : "Anonymous" 
+            postReady.data.user = clean(this.user)
 
             genPost(this.api, postReady, true, (res)=>{
                 if(res.status){
@@ -128,22 +140,53 @@ export default {
         constPD(){
             let res = {}
             for(let i=0;i<this.ques.length;i++){
-                console.log(this.ques[i]["key"])
                 res[this.ques[i]["key"]] = this.ques[i]["val"]
             }
 
             return res
         }
-        /*makeMark(){
-            console.log(this.ques)
-        }*/
     }
 }
 </script>
 
 <style scoped>
 
+
+#storeup{
+    width: 92%;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 40px;
+}
+
+#ss-title{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#ss-add{
+    font-size: 14px;
+    font-weight: normal;
+    opacity: 0.7;
+}
+
+#ss-notice{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 10px;
+    opacity: 0.5;
+}
+
+.su-ques-s{
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .su-ques-s-m{
+    margin-top: 10px;
     display: flex;
 }
 
@@ -153,4 +196,29 @@ export default {
     border-radius: 100px;
     border: 2px solid #fff;
 }
+
+#ss-update{
+    position: relative;
+    background: #36FFAB;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-radius: 100px;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+
+}
+
+#ss-update-inner{
+    width: 100%;
+    padding-top: 13px;
+    font-weight: bold;
+    color: #000;
+}
+
+#ss-update:active{
+    background: #046F42;
+}
+
 </style>

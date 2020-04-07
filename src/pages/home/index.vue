@@ -620,7 +620,6 @@ export default {
           return val == 0 ? "" : val + "%"
         }
       }
-      
 
 
       return {
@@ -647,6 +646,7 @@ export default {
       return res
     },
 
+    // Chinese translate, provide by translate.js
     // 翻译，由translate.js提供字典
     getLang(str){
       if(this.lang != "zh-CN"){
@@ -656,6 +656,7 @@ export default {
       }
     },
 
+    // Open donation overlay
     // 打开捐赠浮层
     openDonate(bol){
       this.donate = bol

@@ -15,11 +15,15 @@ import fullchart from './pages/fullchart'
 export default new VueRouter({
   mode: 'history',
   routes: [
+    // Home
     { path:'/', name:'home', component: home },
+    { path:'/index.html', name:'index', redirect: home },
+    { path:'/index', name:'index', redirect: home },
+
+    // Store
     { path:'/store', name:'store', component: store },
     { path:'/storeup', name:'storeup', component: storeup },
     { path:'/fullchart', name:'fullchart', component: fullchart},
     { path:'/storesingle', name:'storesingle', component: storesingle}
-    /*{ path: '/home', name: 'home', component: home },*/
-    ]
+  ]
 })

@@ -58,3 +58,13 @@ export function geoDistance( lat1,  lng1,  lat2,  lng2){
     s = Math.round(s * 10000) / 10000
     return s;
 }
+
+// Clean str
+export function clean(s) {
+    var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]"); 
+    var rs = ""; 
+    for (var i = 0; i < s.length; i++) {
+        rs = rs+s.substr(i, 1).replace(pattern, ''); 
+    } 
+    return rs;
+}

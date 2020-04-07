@@ -93,11 +93,84 @@ a{
   100% {background: rgba(246, 46, 58, 1)}
 }
 
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.3); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.16); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.4); 
+}
+
+select{
+  width: 100%;
+  height: 100%;
+  background: #373D41;
+  border: 1px solid rgba(255,255,255,0.05);
+  padding-left: 2px;
+  color: #ffffff;
+  -webkit-appearance: none;
+}
+
+button{
+  height: 100%;
+  background: #373D41;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 4px;
+  color: #ffffff;
+  margin-left:10px;
+  margin-right: 10px;
+  text-align: center;
+  padding-top: 20px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size:12px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
+  -webkit-appearance: none;
+}
+
+button:active{
+  background: #2D3133;
+}
+
+progress[value]{
+    border: 0;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+progress[value]::-webkit-progress-bar{
+    background-color: #46545B;
+    height: 6px;
+    -webkit-appearance: none;
+    border-radius: 100px;
+}
+
+progress[value]::-webkit-progress-value{
+    border-radius: 100px;
+    background-color: #36FFAB;
+}
+
 input{
   background: #373D41;
   border: 1px solid rgba(255,255,255,0.05);
   width: 100%;
   height: 32px;
+  padding-left: 2px;
   color: #CED3D6;
   -webkit-appearance: none;
   transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);

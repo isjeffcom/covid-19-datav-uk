@@ -68,7 +68,7 @@
             <div v-if="currentAreaView == 'Postcode'" style="margin-top:20px;">
 
             <div class="area-po-search">
-                <input type="text" placeholder="Enter your postcode" v-model="poSearch" style="width: 70%;"><br>
+                <input type="text" :placeholder="getLang('Your Postcode')" v-model="poSearch" style="width: 70%;"><br>
                 <input type="submit" style="margin-left: 5%;width: 25%;" v-on:click="searchPO" />
             </div>
 

@@ -153,10 +153,12 @@ export default {
                 negative: all.negative == 0 ? "---" : all.negative,
                 "D. Posi.": "---",
                 mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%",
-                cured: all.cured == 0 ? "---" : all.cured,
-                serious: all.serious == 0 ? "---" : all.serious,
+                cured: this.allData[1].cured == 0 ? "---" : this.allData[1].cured,
+                serious: this.allData[1].serious == 0 ? "---" : this.allData[1].serious,
                 //suspected: all.suspected == 0 ? "---" : all.suspected,
             }
+
+            console.log(this.allData)
 
             if(this.selected == 0){
                 this.renderData['D. Posi.'] = this.DPosi + "%"

@@ -158,8 +158,6 @@ export default {
                 //suspected: all.suspected == 0 ? "---" : all.suspected,
             }
 
-            console.log(this.allData)
-
             if(this.selected == 0){
                 this.renderData['D. Posi.'] = this.DPosi + "%"
             }

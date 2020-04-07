@@ -3,7 +3,10 @@
     <div id="chead">
         <div id="chead-inner">
             <div id="chead-logo">
-                <img :src="'./img/logo.png'" alt="logo">
+                <router-link to="/">
+                    <img :src="'./img/logo.png'" alt="logo">
+                </router-link>
+                
             </div>
 
             <div id="chead-right">

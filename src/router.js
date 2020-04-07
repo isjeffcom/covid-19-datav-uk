@@ -13,7 +13,8 @@ import fullchart from './pages/fullchart'
 // Router, ready for multiple page
 
 export default new VueRouter({
-  mode: 'history',
+  mode: 'hash',
+  base: "/",
   routes: [
     // Home
     { path:'/', name:'home', component: home },

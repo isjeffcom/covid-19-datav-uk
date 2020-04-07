@@ -164,7 +164,7 @@ export default {
 
         },
 
-        //  顶上八大金刚，对比昨日的数据，没有显示---
+        //  顶上八大金刚，对比昨日的数据，没有则显示---
         compare(value, name){
 
             if(this.historyData.length > 0){
@@ -173,6 +173,10 @@ export default {
                 // HARD FIX
                 if(name == "tested"){
                     res = parseInt(value - (this.historyData[this.historyData.length - 1].confirmed + this.historyData[this.historyData.length - 1].negative))
+                }
+
+                if(name == "serious"){
+                    res = "---"
                 }
 
                 if(isNaN(res)){

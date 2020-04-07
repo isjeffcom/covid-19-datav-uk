@@ -3,14 +3,14 @@
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
             <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
                 <span>{{getLang("Key Data")}}</span><br>
-                <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Global data has 1 Day Delay")}}</div>
+                <div style="font-size: 12px; opacity: 0.5;">* {{ getLang("Global data has 1 Day Delay") }}</div>
             </div>
         </div>
 
         <div id="keydata-inner">
             <div id="keydata-data">
                 <div class="keydata-data-s" v-for="(item, index) in allData" :key="index">
-                    <div class="ptg-txt-tit">{{getLang(item.name)}}</div>
+                    <div class="ptg-txt-tit">{{ getLang(item.name )}}</div>
                     <div class="ptg-txt-num" :style="'color:' + item.color">{{ item.num }}</div>
                 </div>
             </div>

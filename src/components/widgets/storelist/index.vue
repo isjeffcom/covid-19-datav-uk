@@ -36,12 +36,13 @@
             <h3>Nearby</h3>
         </div>
 
-        <div id="sl-list" ref="slList" :style="'height:' + (screenHeight > 0 ? screenHeight - 250 - 100 : 300) + 'px;'">
+        <div id="sl-list" ref="slList" :style="'height:' + (screenHeight > 0 ? screenHeight - 365 : 300) + 'px;'">
 
             <div 
                 class="sl-s"
                 v-for="(item, index) in storeRes" 
-                :key="index" :style="'opacity:' + (mapSelected == index ? '1' : '0.6')" 
+                :key="index" 
+                :style="'opacity:' + (mapSelected == index ? '1' : '0.6') + ';height:' + (listInfo.length == storeRes.length ? 95 : 77) + 'px;'" 
                 :ref="'sl-'+index"
                 v-on:click="selectFromList(index)">
 
@@ -54,10 +55,10 @@
                         {{ item.address }}
                     </div>
 
-                    <!--div class="sl-s-mark">
-                        <progress v-if="calOverall(item) != 0" :value="calOverall(item)" max="100"></progress>
+                    <div class="sl-s-mark" v-if="listInfo.length == storeRes.length">
+                        <progress v-if="calOverall(listInfo[index]) != 0" :value="calOverall(listInfo[index])" max="100"></progress>
                         <div v-else style="font-size: 12px; color:#36FFAB;margin-top: 4px;">No data, add status now.</div>
-                    </div-->
+                    </div>
 
                     <div class="sl-s-more">
                         <div class="sl-s-more-txt" v-on:click="listClicked(item)">Stock Checker</div>
@@ -97,6 +98,7 @@ export default {
         return{
             loading: false,
             api: "https://store.covid19uk.live/store/",
+            api_single: "https://store.covid19uk.live/storesingle/",
             la: false,
             lo: false,
             stores: [
@@ -114,6 +116,7 @@ export default {
             tryTime: 0,
             currentStore: [],
             storeRes: [],
+            listInfo: [],
             searchInput: "",
             mapCenter: [],
             screenHeight: 0,
@@ -247,6 +250,7 @@ export default {
                     this.currentStore = res.data.data
                     this.findStoreByGeo(this.la, this.lo)
                     this.loading = false
+                    this.listBarStatus()
                 })
             } else {
                 alert("Please input Postcode")
@@ -254,6 +258,7 @@ export default {
             }
             
         },
+
 
         listClicked(d){
             d.store = this.selected.toLowerCase()
@@ -327,7 +332,23 @@ export default {
                 
             }
             
-        }
+        },
+
+        listBarStatus(){
+            let query = []
+            for(let i=0;i<this.storeRes.length;i++){
+                query.push(this.storeRes[i]["id"])
+            }
+
+            genGet(this.api_single, [
+                { name: "n", val: this.selected.toLowerCase() },
+                { name: "sid", val: String(query)}
+            ], true, (res)=>{
+                this.listInfo = res.data.data
+            })
+
+            
+        },
     }
 }
 </script>
@@ -400,7 +421,7 @@ export default {
 }
 
 .sl-s{
-    height: 77px;
+    width: 90%;
     margin-top: 12px;
     margin-bottom: 12px;
     background: #2C3134;

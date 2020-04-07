@@ -19,7 +19,7 @@ import alert from './components/widgets/alert'
 import { EventBus } from './bus'
 import { getAlert } from './translate'
 
-const ls = require('local-storage')
+import ls from 'local-storage'
 
 export default {
   name: 'App',

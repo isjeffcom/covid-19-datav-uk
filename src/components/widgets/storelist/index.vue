@@ -83,8 +83,10 @@ import { EventBus } from '../../../bus'
 
 import storemap from '../storemap'
 
-const ls = require('local-storage')
-const VueScrollTo = require('vue-scrollto')
+
+import ls from 'local-storage'
+import VueScrollTo from 'vue-scrollto'
+
 
 export default {
     name: "storelist",

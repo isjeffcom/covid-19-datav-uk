@@ -42,6 +42,7 @@
                 class="sl-s"
                 v-for="(item, index) in storeRes" 
                 :key="index" :style="'opacity:' + (mapSelected == index ? '1' : '0.6')" 
+                :ref="'sl-'+index"
                 v-on:click="selectFromList(index)">
 
                 <div class="sl-s-info">
@@ -83,6 +84,7 @@ import { EventBus } from '../../../bus'
 import storemap from '../storemap'
 
 const ls = require('local-storage')
+const VueScrollTo = require('vue-scrollto')
 
 export default {
     name: "storelist",
@@ -113,7 +115,8 @@ export default {
             searchInput: "",
             mapCenter: [],
             screenHeight: 0,
-            output: ""
+            output: "",
+
         }
     },
     
@@ -121,26 +124,56 @@ export default {
 
         this.getCurrentLoc()
 
-        EventBus.$on("storemap", (res)=>{
-            this.mapSelected = res
-        })
-
         this.autoByLast()
         
         
     },
 
     mounted(){
+
+        let scrollLock = false
+
+        let VSoptions = {
+            container: '#sl-list',
+            easing: 'ease-in',
+            offset: 0,
+            force: true,
+            cancelable: false,
+            onStart: function(element) {
+            // scrolling started
+            },
+            onDone: function(element) {
+                scrollLock = false
+            },
+            onCancel: function() {
+            // scrolling has been interrupted
+            },
+            x: false,
+            y: true
+        }
+
         this.screenHeight = screen.height
         let list = this.$refs.slList
         let sh = 100
 
         list.addEventListener("scroll", (evt)=>{
-            this.selectFromList(Math.floor(list.scrollTop / sh))
+            if(scrollLock == false){
+                this.selectFromList(Math.floor(list.scrollTop / sh))
+            }
+            
         })
 
         window.addEventListener("resize", ()=>{
             this.screenHeight = screen.height
+        })
+
+        EventBus.$on("storemap", (res)=>{
+            this.mapSelected = res
+            scrollLock = true
+            //console.log(this.$refs["sl-"+res][0].offsetTop)
+            //let c = this.$refs["sl-"+res]
+            //c.scrollIntoView()
+            VueScrollTo.scrollTo(this.$refs["sl-"+res][0], 300, VSoptions)
         })
     },
 

@@ -84,7 +84,7 @@
 <script>
 // Utils
 import { genGet } from '../../request'
-import { getDateFromTs, indexOfObjArr, deepCopy } from '../../utils'
+import { indexOfObjArr, deepCopy } from '../../utils'
 
 // Components
 import overall from '../../components/overall'

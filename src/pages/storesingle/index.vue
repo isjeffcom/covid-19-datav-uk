@@ -26,43 +26,43 @@
             <div class="ss-store-s">
                 <p>Vegetable &amp; Fruit:</p> 
                 <progress v-if="checkAva(sdata.d_vegfru) != 0" id="file" :value="checkAva(sdata.d_vegfru)" max="5"></progress>
-                <div v-else class="ss-store-s-na">No Data Available</div>
+                <div v-else class="ss-store-s-na">Not Available</div>
             </div>
 
             <div class="ss-store-s">
                 <p>Meat &amp; Fish:</p> 
                 <progress v-if="checkAva(sdata.d_meatfish) != 0" id="file" :value="checkAva(sdata.d_meatfish)" max="5"></progress>
-                <div v-else class="ss-store-s-na">No Data Available</div>
+                <div v-else class="ss-store-s-na">Not Available</div>
             </div>
 
             <div class="ss-store-s">
                 <p>Bread &amp; Rice:</p> 
                 <progress v-if="checkAva(sdata.d_bread) != 0" id="file" :value="checkAva(sdata.d_bread)" max="5"></progress>
-                <div v-else class="ss-store-s-na">No Data Available</div>
+                <div v-else class="ss-store-s-na">Not Available</div>
             </div>
 
             <div class="ss-store-s">
                 <p>Milk:</p> 
                 <progress v-if="checkAva(sdata.d_milk) != 0" id="file" :value="checkAva(sdata.d_milk)" max="5"></progress>
-                <div v-else class="ss-store-s-na">No Data Available</div>
+                <div v-else class="ss-store-s-na">Not Available</div>
             </div>
 
             <div class="ss-store-s">
                 <p>Eggs:</p> 
                 <progress v-if="checkAva(sdata.d_egg) != 0" id="file" :value="checkAva(sdata.d_egg)" max="5"></progress>
-                <div v-else class="ss-store-s-na">No Data Available</div>
+                <div v-else class="ss-store-s-na">Not Available</div>
             </div>
 
             <div class="ss-store-s">
                 <p>Toilet Paper: </p> 
                 <progress v-if="checkAva(sdata.d_paper) != 0" id="file" :value="checkAva(sdata.d_paper)" max="5"></progress>
-                <div v-else class="ss-store-s-na">No Data Available</div>
+                <div v-else class="ss-store-s-na">Not Available</div>
             </div>
 
             <div class="ss-store-s">
                 <p>Hand sanitizer:</p> 
                 <progress v-if="checkAva(sdata.d_handgel) != 0" id="file" :value="checkAva(sdata.d_handgel)" max="5"></progress>
-                <div v-else class="ss-store-s-na">No Data Available</div>
+                <div v-else class="ss-store-s-na">Not Available</div>
             </div>
 
             <div id="ss-store-s" style="font-size: 14px;">

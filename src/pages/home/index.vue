@@ -123,6 +123,9 @@ import donate from '../../components/widgets/donate'
 // Event Bus
 import { EventBus } from '../../bus'
 
+// Utils
+import { compare } from '../../utils'
+
 // Custom
 import { putCN } from '../../translate'
 
@@ -161,6 +164,7 @@ export default {
       areaLoaded: false,
       worldLoaded: false,
       keyDataLoaded: false,
+      globalDataLoaded: false,
       tlLoaded: false,
 
       // List search input var
@@ -172,6 +176,7 @@ export default {
       api_locations: "/locations",
       api_eu: "https://global.covid19uk.live/majoreu",
       api_global_status: "https://global.covid19uk.live/status",
+      api_global_current: "https://global.covid19uk.live/current",
       api_prediction: "./uk.json",
 
       // Data storage variable
@@ -181,6 +186,7 @@ export default {
       mapData: [],
       historyData: [],
       allKeyData: [],
+      globalData:[],
       geoAll:[],
       DPosi: 0,
 
@@ -273,6 +279,7 @@ export default {
     // On start get data
     this.getData(this.api)
     this.getKeyData(this.api_global_status)
+    this.getGlobalData(this.api_global_current)
     this.lang = window.navigator.language
 
   },
@@ -460,7 +467,7 @@ export default {
         // UK
         let ukCoSe = ["UK", []]
         let ukDeSe = ["UK", []]
-
+ 
         for(let i=0;i<this.historyData.length;i++){
           ukCoSe[1].push(this.historyData[i].confirmed)
           
@@ -468,11 +475,7 @@ export default {
           if(this.historyData[i].death > 0) ukDeSe[1].push(this.historyData[i].death)
         }
 
-        confirmed.push(ukCoSe)
-        death.push(ukDeSe)
-
-
-        // 4 Country
+          // 4 Country
         for (const prop in d){
 
           let tmp = [prop, []]
@@ -583,6 +586,50 @@ export default {
         ] 
 
         this.keyDataLoaded = true
+      })
+
+      
+    },
+    
+    getGlobalData(api){
+
+      genGet(api, [], true, (res) => {
+        let a = res.data.data
+        let id = 0
+        // sort the data by country region
+        a.sort(function(a,b){
+          return a.country_region.localeCompare(b.country_region)
+          })
+        this.globalData.push({
+          'id': id,
+          'country_region': a[0].country_region,
+          'confirmed': a[0].confirmed,
+          'death': a[0].death
+        })
+        
+        for(let i=1;i<a.length;i++){
+          if (a[i].country_region == a[i-1].country_region) {
+              this.globalData[id].confirmed += a[i].confirmed
+              this.globalData[id].death += a[i].death
+          }
+          else {
+            id +=1
+            this.globalData.push({
+              'id': id,
+              'country_region': a[i].country_region,
+              'confirmed': a[i].confirmed,
+              'death': a[i].death
+            })
+          }
+        }
+        
+     
+        this.globalData = this.globalData.map(v => ({...v, "death_rate": (Number((v.death/v.confirmed)*100).toFixed(2))}))
+        this.globalData.sort(compare("death_rate"))
+        this.globalData = this.globalData.map(v => ({...v, "death_rate": v.death_rate+"%"}))
+        console.log(this.globalData)
+        this.globalDataLoaded = true
+
       })
 
       

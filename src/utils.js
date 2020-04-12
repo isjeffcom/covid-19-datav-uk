@@ -81,3 +81,12 @@ export function clean(s) {
 export function removeFBSpace(str){ 
     return str.replace(/(^\s*)|(\s*$)/g, ""); 
 }
+
+// Comparision sort function
+export function compare(p){ 
+    return function(m,n){
+        var a = parseFloat(m[p]);
+        var b = parseFloat(n[p]);
+        return b-a
+    }
+}

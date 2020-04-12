@@ -112,6 +112,7 @@ import { putCN } from '../../translate'
 import osmmap from '../widgets/map'
 import { EventBus } from '../../bus'
 import { genGet } from '../../request'
+import { removeFBSpace } from '../../utils'
 
 import VueSlideBar from 'vue-slide-bar'
 import { getDateFromTs, indexOfObjArr, stripSlashes } from '../../utils'
@@ -204,7 +205,6 @@ export default {
         }
     },
     methods:{
-
         searchPO(){
             genGet(this.api_pos + this.poSearch, [], true, (res)=>{
                 if(res.status){
@@ -244,6 +244,8 @@ export default {
             }
         },
 
+
+
         openTL(){
             this.mapLoaded = false
             genGet(this.api_his, [], false, (res)=>{
@@ -253,6 +255,8 @@ export default {
                     allTl = allTl.splice(37, allTl.length - 1)
 
                     for(let i=0;i<allTl.length;i++){
+
+                        
 
                         // Get each date format like 3.4
                         allTl[i].ds = getDateFromTs(allTl[i].date, "dateslim")
@@ -314,6 +318,10 @@ export default {
 
                 let el = data[i]
 
+
+                // Some location has space in front and back
+                el.location = removeFBSpace(el.location)
+
                 let tmp = {}
                 // Match location from geo list
                 let geo = indexOfObjArr(el.location, this.geoData, 'name')
@@ -366,14 +374,17 @@ export default {
 
         // Display tracked area data in timeline mode
         getTLAreaData(area){
+            let res = "No Data"
+
             let md = this.toMapData
+
             for(let i=0;i<md.length;i++){
                 if(area == md[i].name){
-                    return md[i].confirmed
+                    res =  md[i].confirmed
                 }
             }
 
-            return "No Data"
+            return res
         },
 
         // 翻译，由translate.js提供字典

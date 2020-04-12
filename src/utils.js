@@ -76,3 +76,8 @@ export function clean(s) {
     } 
     return rs;
 }
+
+// Remove all front and back space
+export function removeFBSpace(str){ 
+    return str.replace(/(^\s*)|(\s*$)/g, ""); 
+}

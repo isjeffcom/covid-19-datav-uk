@@ -30,8 +30,8 @@ export default {
                     url: "https://www.gov.uk/government/publications/covid-19-track-coronavirus-cases"
                 },
                 {
-                    name: "[[Gov]Coronavirus in Scotland",
-                    url: "https://www.gov.scot/coronavirus-covid-19/"
+                    name: "[Gov]Coronavirus in Scotland",
+                    url: "https://www.gov.scot/publications/coronavirus-covid-19-tests-and-cases-in-scotland/"
                 },
                 {
                     name: "[Gov]COVID-19 (coronavirus) Northern Ireland",

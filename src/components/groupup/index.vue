@@ -5,15 +5,21 @@
 
       <div id="groupup-inner">
         <div class="groupup-s">
-          <a href="https://spectrum.chat/covid-19-uk-update" target="_blank">
-            <img src="https://i.ibb.co/QkvZQyM/nd.png" alt="join by spectrum.chat">
+          <a href="https://www.facebook.com/groups/2944338405655888" target="_blank">
+            <img :src="'./img/facebook.png'" alt="join by Facebook">
           </a>
           
         </div>
 
-        <div class="group-s">
+        <div class="groupup-s">
+          <a href="https://twitter.com/JIANFENGWU9" target="_blank">
+            <img :src="'./img/twitter.png'" alt="Open Twitter">
+          </a>
+        </div>
+
+        <div class="groupup-s">
           <a href="https://jq.qq.com/?_wv=1027&k=5Ajnx1w" target="_blank">
-            <img src="https://i.ibb.co/K0hK1rd/qqc.png" alt="join by tencent qq">
+            <img :src="'./img/qq.png'" alt="join by Tencent QQ">
           </a>
         </div>
       </div>

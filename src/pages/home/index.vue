@@ -42,23 +42,44 @@
     <carea 
       :renderArea="renderArea"
       :mapData="mapData"
+      :geoData="geoAll"
       :unknown="unknown"
       v-if="areaLoaded">
     </carea>
 
+    <more></more>
+
     <keydata v-if="keyDataLoaded" :allData="allKeyData"></keydata>
 
-    <more></more>
+    <timeheat v-if="tlLoaded"></timeheat>
+
     <groupup></groupup>
     <sources></sources>
 
+    <!--tweet></tweet-->
+
     <!-- AUTHOR INFO -->
-    <div id="author">
-      <div id="author-inner">
+    <div class="author">
+      <div class="author-inner">
+        <h3>{{getLang("Author")}}: </h3><br>
         <a href="https://www.isjeff.com" target="_blank">@Jeff Wu</a>
       </div>
     </div>
 
+    <div class="author coworker">
+      <h3>{{getLang("Contributor")}}: </h3><br>
+      <li><a href="https://github.com/lamharrison" target="_blank">@Big Tree</a></li>
+      <li><a href="https://github.com/lujiammy" target="_blank">@Jimmy Lu</a></li>
+      <li><a href="https://github.com/VincentNevermore" target="_blank">@Vincent Zhang</a></li>
+      <li><a href="https://github.com/commmathree" target="_blank">@commathree</a></li>
+    </div>
+
+    <div class="author">
+      <h3>{{getLang("Others")}}: </h3><br>
+      <a href="https://covid19nz.live" target="_blank">New Zealand</a>
+    </div>
+
+    
     <!-- DONATION FOOTER -->
     <div id="donation" v-if="areaLoaded">
       <div id="d-inner">
@@ -95,7 +116,9 @@ import more from '../../components/more'
 import keydata from '../../components/keydata'
 import sources from '../../components/sources'
 import groupup from '../../components/groupup'
+import timeheat from '../../components/timeheat'
 import donate from '../../components/widgets/donate'
+//import tweet from '../../components/tweet'
 
 // Event Bus
 import { EventBus } from '../../bus'
@@ -104,9 +127,9 @@ import { EventBus } from '../../bus'
 import { putCN } from '../../translate'
 
 // Charts calculation functions
-import { confirmCal } from './confirmed'
-import { deathCal } from './death'
-import { testCal } from './tested'
+import { confirmCal } from '../../calculate/confirmed'
+import { deathCal } from '../../calculate/death'
+import { testCal } from '../../calculate/tested'
 
 
 export default {
@@ -120,7 +143,9 @@ export default {
     more,
     keydata,
     groupup,
-    sources
+    sources,
+    timeheat
+    //tweet
   },
   data(){
     return{
@@ -136,6 +161,7 @@ export default {
       areaLoaded: false,
       worldLoaded: false,
       keyDataLoaded: false,
+      tlLoaded: false,
 
       // List search input var
       listSearch: "",
@@ -155,6 +181,7 @@ export default {
       mapData: [],
       historyData: [],
       allKeyData: [],
+      geoAll:[],
       DPosi: 0,
 
       // Unknow location cases count var
@@ -172,17 +199,7 @@ export default {
             enabled: false
           },
           animations: {
-            enabled: true,
-            easing: 'easeinout',
-            speed: 300,
-            animateGradually: {
-                enabled: true,
-                delay: 90
-            },
-            dynamicAnimation: {
-                enabled: true,
-                speed: 250
-            }
+            enabled: false
           }
         },
         stroke: {
@@ -287,6 +304,10 @@ export default {
 
           // Display
           this.loaded = true
+
+          setTimeout(()=>{
+            this.tlLoaded = true
+          }, 3000)
           
           this.getHistory(this.api_history)
 
@@ -321,7 +342,7 @@ export default {
               "#F62E3A",
               "#949BB5",
             ], this.constChartSeries([
-              ["Confirmed", co.co], 
+              ["Cumulative cases", co.co], 
               ["Death", co.death]
             ])))
 
@@ -392,8 +413,9 @@ export default {
       var that = this
       genGet(api, {}, false, (res)=>{
         let d = res.data.data
+        this.geoAll = res.data.data
          
-        var markers = []
+        let markers = []
 
         // Match area data and location data
         // 整合地理位置中心点和区域确诊数据
@@ -683,9 +705,10 @@ export default {
 }
 
 #donation{
-  width: 100%; 
-  height: 100px;
+  width: 100%;
+  height: 120px;
   margin-top: 40px;
+  padding-bottom: 10px;
   color: #111;
 }
 
@@ -693,7 +716,6 @@ export default {
   width: 100%; 
   height: 100%;
   background: #FFC634;
-  padding-bottom:20px;
   border-bottom: 8px solid #152DFF;
   margin-left: auto;
   margin-right:auto; 
@@ -720,7 +742,7 @@ export default {
 }
 
 #d-btn{
-  width: 12%; 
+  width: 14%; 
   margin-top: 28px;
 }
 
@@ -731,6 +753,9 @@ export default {
   border-radius: 100px; 
   cursor:pointer; 
   padding: 12px;
+  margin-top: 10px;
+  margin-left: 0px;
+  height: 40px;
   color: #000;
   font-weight: bold;
   transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
@@ -741,7 +766,7 @@ export default {
   color: #fff;
 }
 
-#author{
+.author{
   width: 92%;
   margin-top: 40px;
   margin-left: auto;
@@ -751,11 +776,21 @@ export default {
   opacity: 0.5;
 }
 
-#author a{
+.author a{
   color: rgb(255, 255, 255);
   text-decoration: underline;
   font-size: 16px;
 }
+
+.author li{
+  font-size: 12px;
+}
+
+.coworker li a{
+  font-size: 14px;
+  line-height: 24px;
+}
+
 
 @media only screen and (max-width: 800px) {
 

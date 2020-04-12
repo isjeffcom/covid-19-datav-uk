@@ -1,7 +1,7 @@
 <template>
-    <div id="carea">
-        <!-- REGIONAL MAP -->
+    <div id="carea" :style="'padding-bottom:' + (timeline ? '220px' : '100px')">
 
+        <!-- REGIONAL MAP -->
         <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
             <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
                 <span>{{getLang("Regions")}}</span><br>
@@ -35,14 +35,40 @@
 
         <!-- IF MAP -->
         <!-- use ccmap from /src/components/widgets/ccmap -->
-        <transition name="fade">
-            <div id="area-map" v-if="currentAreaView == 'Map'">
-                <osmmap :mapData="mapData"></osmmap>
+            <div id="area-map" v-if="currentAreaView == 'Map'" :style="'opacity:' + (mapLoaded ? 1 : 0.2)">
+                <osmmap :mapData="toMapData" :tlMode="tlMode"></osmmap>
+
+                <div class="notice" style="font-size: 10px; width: 95%; margin-top: 6px; margin-bottom:20px; margin-left: auto;margin-right:auto; opacity: 0.7;text-align: center;">
+                    Map tiles by <a href="http://stamen.com" target="_blank">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0" target="_blank">CC BY 3.0</a>
+                </div>
+                
+                <button v-on:click="openTL" v-if="!timeline">{{ getLang("Timeline") }}</button>
+
+                <div id="area-map-tl" v-if="timeline">
+                    <VueSlideBar
+                        v-model="slider.value"
+                        :data="slider.data"
+                        :range="slider.range"
+                        :labelStyles=" sw < 700 ? { opacity: '0' } : {opacity: '1'}"
+                        :tooltipStyles="{ backgroundColor: '#FFD643', borderColor: '#FFD643', borderRadius: '2px', color: '#000000', fontWeight: 'bold' }"
+                        :processStyle="{ backgroundColor: '#FFD643' }"
+                        :speed="0.3"
+                        @callbackRange="sliderChange">
+
+                    </VueSlideBar>
+
+                    <span>{{ getLang("All") }}: {{ sliderConf }}</span>
+                    <br>
+                    <span v-if="tlTracking != ''">{{ tlTracking }}: {{ getTLAreaData(tlTracking) }}</span>
+
+                    <button v-on:click="closeTL">{{ getLang("BACK") }}</button>
+                </div>
+
+                
+                
             </div>
-        </transition>
 
         <!-- IF LIST -->
-        <transition name="fade">
             <div v-if="currentAreaView == 'List'" style="margin-top:20px;">
 
             <div class="area-list-search">
@@ -61,10 +87,8 @@
                 </tr>
             </table>
             </div>
-        </transition>
 
         <!-- IF LIST -->
-        <transition name="fade">
             <div v-if="currentAreaView == 'Postcode'" style="margin-top:20px;">
 
             <div class="area-po-search">
@@ -80,7 +104,6 @@
             
 
             </div>
-        </transition>
     </div>
 </template>
 
@@ -90,10 +113,14 @@ import osmmap from '../widgets/map'
 import { EventBus } from '../../bus'
 import { genGet } from '../../request'
 
+import VueSlideBar from 'vue-slide-bar'
+import { getDateFromTs, indexOfObjArr, stripSlashes } from '../../utils'
+
 export default {
     name: "carea",
     components:{
-        osmmap
+        osmmap,
+        VueSlideBar
     },
     props:{
         renderArea:{
@@ -108,6 +135,12 @@ export default {
                 return []
             }
         },
+        geoData:{
+            type: Array,
+            default(){
+                return []
+            }
+        },
         unknown:{
             type: Number,
             default: 0
@@ -116,26 +149,49 @@ export default {
     data(){
         return{
             api_pos: "https://api.postcodes.io/postcodes/",
+            api_his: "/history",
             nearby: {
                 num: 0,
                 name: ""
             },
             nearbyShow: false,
             getLocAva: true,
+            timeline: false,
+            mapLoaded: true,
+            tlMode: false,
+            tlTracking: "",
             listSearch: "",
             poSearch: "",
             areaViews: ["Map", "List", "Postcode"],
             currentAreaView: "Map",
-            areaList: []
+            areaList: [],
+            timelineData: [],
+            rangeValue: {},
+            sw: 0,
+            slider: {
+                value: "4.1",
+                data: [],
+                range: [
+                    /*{
+                        label: '15 mins'
+                    },*/
+                ]
+            },
+            sliderConf: 0,
         }
     },
-
-    mounted(){
-        //this.areaList = this.renderArea
-    },
     created(){
+        this.toMapData = this.mapData
+        this.sw = screen.width
+
+        // Listen if got gps location than display confirmed figures, from child component map
         EventBus.$on("utla", (area)=>{
             this.displayMyArea(area)
+        })
+
+        // If select track a specific area, from child component map
+        EventBus.$on("area-track", (area)=>{
+            this.tlTracking = area
         })
     },
     computed:{
@@ -188,6 +244,104 @@ export default {
             }
         },
 
+        openTL(){
+            this.mapLoaded = false
+            genGet(this.api_his, [], false, (res)=>{
+                if(res.status){
+
+                    let allTl = res.data.data
+                    allTl = allTl.splice(37, allTl.length - 1)
+
+                    for(let i=0;i<allTl.length;i++){
+
+                        // Get each date format like 3.4
+                        allTl[i].ds = getDateFromTs(allTl[i].date, "dateslim")
+
+                        // Push each by date
+                        this.timelineData.push(this.areaToTl(JSON.parse(stripSlashes(allTl[i].area)), allTl[i].ds))
+
+                        // Push slider value
+                        this.slider.data.push(allTl[i].ds)
+                        this.slider.range.push({ label: allTl[i].ds, idx: i, confirmed: allTl[i].confirmed })
+                    }
+
+                    // Set default is the last one
+                    this.slider.value = this.timelineData[this.timelineData.length - 1].date
+
+                    // open timeline
+                    this.$nextTick(()=>{
+                        this.timeline = true
+                        this.mapLoaded = true
+                    })
+
+                    this.tlMode = true
+
+                } else {
+                    alert("Unknow Error")
+                    this.mapLoaded = true
+                    this.closeTL()
+                }
+
+
+                // Request Time Out
+                setTimeout(()=>{
+                    this.mapLoaded = true
+                }, 5000)
+                
+            })
+        },
+
+        closeTL(){
+            this.timelineData = []
+            this.slider.data = []
+            this.slider.range = []
+            this.toMapData = this.mapData
+            this.timeline = false
+            this.tlMode = false
+            this.tlTracking = ""
+        },
+
+
+        // Area data convert to timeline data
+        areaToTl(data, date){
+
+            let res = {
+                date: date,
+                series: []
+            }
+
+            for(let i=0;i<data.length;i++){
+
+                let el = data[i]
+
+                let tmp = {}
+                // Match location from geo list
+                let geo = indexOfObjArr(el.location, this.geoData, 'name')
+
+                // If matched
+                if(geo != -1){
+                    tmp.name = el.location
+                    tmp.la = this.geoData[geo].la
+                    tmp.lo = this.geoData[geo].lo
+                    tmp.confirmed = el.number
+                }
+
+                res.series.push(tmp)
+
+            }
+
+            //console.log(res.series)
+
+
+            return res
+        },
+
+        sliderChange(val){
+            //console.log(val.label)
+            this.toMapData = this.timelineData[val.idx].series
+            this.sliderConf = this.slider.range[val.idx].confirmed
+        },
+
         // 更换区域，地图<->列表
         switchAreaView(idx){
             this.currentAreaView = idx
@@ -195,7 +349,6 @@ export default {
 
         getCasesByArea(area){
             return this.renderArea.filter(val => {
-                //console.log(val.location.toLowerCase().includes(area.toLowerCase()))
                 return val.location.toLowerCase().includes(area.toLowerCase())
             })
         },
@@ -211,6 +364,18 @@ export default {
             
         },
 
+        // Display tracked area data in timeline mode
+        getTLAreaData(area){
+            let md = this.toMapData
+            for(let i=0;i<md.length;i++){
+                if(area == md[i].name){
+                    return md[i].confirmed
+                }
+            }
+
+            return "No Data"
+        },
+
         // 翻译，由translate.js提供字典
         getLang(str){
             if(window.navigator.language != "zh-CN"){
@@ -224,6 +389,15 @@ export default {
 </script>
 
 <style scoped>
+
+button{
+    height: 58px;
+    width:100%;
+    margin-top:10px;
+    padding-bottom: 16px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
 
 .fade-enter-active {
   transition: opacity 1s;
@@ -269,6 +443,13 @@ tr:nth-child(even) {
   margin-bottom: 20px;
 }
 
+#area-map-tl{
+    width: 88%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 
 .area-po-search{
   width: 90%;

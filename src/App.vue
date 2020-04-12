@@ -192,6 +192,7 @@ input:focus {
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  overflow: hidden;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
@@ -274,8 +275,11 @@ input:focus {
   color: #505C65;
 }
 
+.vue-slide-bar{
+  background: #51606A !important;
+}
 
-#github{
+/*#github{
   position: fixed;
   right: 20px;
   bottom: 20px;
@@ -297,7 +301,7 @@ input:focus {
 #github img{
   width: 75%;
   margin-top: 6px;
-}
+}*/
 
 #notice{
   position: fixed;

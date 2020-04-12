@@ -15,7 +15,7 @@
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
                         <input type="hidden" name="cmd" value="_s-xclick" />
                         <input type="hidden" name="hosted_button_id" value="EY7QJMGB24VBQ" />
-                        <input type="image" src="https://i.ibb.co/DpKkpJc/csd.png" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+                        <input type="image" :src="'./img/csd.png'" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" style="height: 100%;background: none;border: none;" />
                         <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
                     </form>
 
@@ -24,7 +24,7 @@
                 <div id="wechat">
 
                     <div id="wechat-cont" v-on:click="openWCQR">
-                        <img src="https://i.ibb.co/yFV0MpR/wec.png" alt="donate by wechat pay">
+                        <img :src="'./img/wec.png'" alt="donate by wechat pay">
                     </div>
 
                 </div>

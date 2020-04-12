@@ -17,6 +17,10 @@ export function getDateFromTs(ts, mode){
         res = numAddZero(d.getMonth() + 1) + '-' + numAddZero(d.getDate())
     }
 
+    else if(mode == "dateslim"){
+        res = (d.getMonth() + 1) + '.' + d.getDate()
+    }
+
     else if(mode == "time"){
         res = numAddZero(d.getHours()) + ':' + numAddZero(d.getMinutes()) + ':' + numAddZero(d.getSeconds())
     }
@@ -36,6 +40,10 @@ export function indexOfObjArr(target, arr, id){
     }
 
     return res
+}
+
+export function stripSlashes (str){
+    return str.replace(/\\(.)/mg, "$1");
 }
 
 export function lightCopy(obj){

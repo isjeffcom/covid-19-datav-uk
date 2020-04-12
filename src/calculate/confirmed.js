@@ -1,4 +1,4 @@
-import { getDateFromTs } from '../../utils'
+import { getDateFromTs } from '../utils'
 
 export function confirmCal(history, today){
     return new Promise(resolve => {

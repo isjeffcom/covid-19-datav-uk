@@ -10,13 +10,13 @@
 
       </div>
 
-      <div style="margin-bottom:20px;">
+      <!--div style="margin-bottom:20px;">
 
         <a href="https://www.google.com/maps/d/u/0/embed?mid=1yCPR-ukAgE55sROnmBUFmtLN6riVLTu3&ll=54.019029244689136%2C-1.956174250177014&z=7" target="_blank">
           <img src="https://i.ibb.co/GnR4nCt/yessdg.png" alt="Cases explorer">
         </a>
 
-      </div>
+      </div-->
 
       <div>
 

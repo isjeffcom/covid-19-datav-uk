@@ -80,6 +80,11 @@ const wording = [
     ["Cases Map", "周边疫情"],
     ["Data Source", "数据来源"],
 
+    // Area
+    ["Timeline", "时间轴"],
+    ["All", "全部"],
+    ["BACK", "返回"],
+
 
     // Key data
     ["Key Data", "关键数据"],
@@ -100,6 +105,14 @@ const wording = [
         "捐赠将会被用于服务维护，支付第三方数据服务(如地图等)，和团队成员的自我卫生保护。"
     ],
     ["CLOSE", "关闭"],
+
+    // Heatmap
+    ["Data Release", "数据更新时间"],
+    ["when gov.uk website was edited (some might not updating figures)", "显示官方信息何时被编辑过(部分行为可能不是更新数据)"],
+
+    ["Author", "作者"],
+    ["Contributor", "团队贡献"],
+    ["Others", "其他国家"]
     
 ]
 

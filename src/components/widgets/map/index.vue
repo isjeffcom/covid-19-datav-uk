@@ -29,8 +29,10 @@
           <div>
             Area: {{item.name}}
             <br>
-            Confirmed: {{item.confirmed}}
+            Cases: {{item.confirmed}}
           </div>
+
+          <button class="track-btn" v-if="tlMode" v-on:click="track(item.name)">Track</button>
         </l-popup>
       </l-marker>
 
@@ -56,6 +58,10 @@ export default {
     mapData: {
         type: Array,
         value: []
+    },
+    tlMode: {
+      type: Boolean,
+      value: false
     }
   },
   data() {
@@ -63,9 +69,12 @@ export default {
         api_geoToPo: "https://api.postcodes.io/postcodes/",
         iconResize: 0.08,
         minSize: 16,
-        zoom: 5.8,
+        maxSize: 90,
+        zoom: 6,
         center: L.latLng(54.275967, -3.234891),
-        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        //url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        url: 'https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+        //url: "	https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
         attribution:
             '&copy; <a href="http://osm.org/copyright">OSM</a>',
         currentZoom: 5,
@@ -78,6 +87,8 @@ export default {
         }),
         mapOptions: {
             zoomSnap: 0.5,
+            minZoom: 6,
+            maxZoom: 11,
             easeLinearity: true,
             zoomAnimation: true,
             fadeAnimation: true,
@@ -87,11 +98,25 @@ export default {
     };
   },
 
+  watch: {
+    "tlMode": function(){
+
+      // Set icon size
+      if(this.tlMode == false){
+        this.minSize = 16
+        this.maxSize = 100
+      }else {
+        this.minSize = 6
+        this.maxSize = 200
+      }
+
+    }
+  },
+
 
   created(){
     var that = this
     EventBus.$on("getLoc", ()=>{
-      
       that.getUserGeo()
     })
   },
@@ -182,16 +207,37 @@ export default {
         return L.latLng(lo, la)
     },
     setIcon(num){
+
+      // Min SIZE
       let size = num * this.iconResize > this.minSize ? num * this.iconResize : this.minSize
-      if(size > 100){
-        size = 100
+
+      // Max size
+      if(size > this.maxSize){
+        size = this.maxSize
       }
+
       return L.icon({
-          iconUrl: 'https://playground.isjeff.com/marker.svg',
+          iconUrl: './img/marker.svg',
           iconSize: [size, size],
           iconAnchor: [size/2, size/2]
       })
+    },
+
+    track(area){
+      EventBus.$emit("area-track", area)
     }
   }
 };
 </script>
+
+
+<style scoped>
+.track-btn{
+  height: 30px;
+  padding-top: 0px;
+  width: 100%;
+  margin-top: 4px;
+  margin-left: 0px;
+  margin-right: 0px;
+}
+</style>

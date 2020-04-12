@@ -249,14 +249,15 @@ export default {
         openTL(){
             this.mapLoaded = false
             genGet(this.api_his, [], false, (res)=>{
+
+                let tod = new Date()
+
                 if(res.status){
 
                     let allTl = res.data.data
                     allTl = allTl.splice(37, allTl.length - 1)
 
                     for(let i=0;i<allTl.length;i++){
-
-                        
 
                         // Get each date format like 3.4
                         allTl[i].ds = getDateFromTs(allTl[i].date, "dateslim")
@@ -271,6 +272,9 @@ export default {
 
                     // Set default is the last one
                     this.slider.value = this.timelineData[this.timelineData.length - 1].date
+
+                    this.toMapData = this.timelineData[this.timelineData.length - 1].series
+                    this.sliderConf = this.slider.range[this.timelineData.length - 1].confirmed
 
                     // open timeline
                     this.$nextTick(()=>{

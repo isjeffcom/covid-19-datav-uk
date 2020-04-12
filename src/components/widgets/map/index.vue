@@ -1,13 +1,13 @@
 <template>
 
   <div style="height: 100%; width: 100%">
-
     
     <l-map
       v-if="showMap"
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
+      ref="lmap"
       @update:center="centerUpdate"
       @update:zoom="zoomUpdate"
     >
@@ -82,8 +82,8 @@ export default {
         showParagraph: false,
         icon: L.icon({
             iconUrl: './img/marker.svg',
-            iconSize: [32, 32],
-            iconAnchor: [16, 16]
+            iconSize: [0, 0],
+            iconAnchor: [0, 0]
         }),
         mapOptions: {
             zoomSnap: 0.5,
@@ -99,7 +99,7 @@ export default {
   },
 
   watch: {
-    "tlMode": function(){
+    "tlMode": function (){
 
       // Set icon size
       if(this.tlMode == false){
@@ -110,6 +110,10 @@ export default {
         this.maxSize = 200
       }
 
+    },
+
+    "mapData": function (){
+      this.$refs.lmap.mapObject.closePopup();
     }
   },
 
@@ -122,6 +126,8 @@ export default {
   },
 
   methods: {
+
+    // Get user geo by location api
     getUserGeo(){
       
       if (navigator.geolocation) {

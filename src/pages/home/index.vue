@@ -186,7 +186,6 @@ export default {
       mapData: [],
       historyData: [],
       allKeyData: [],
-      globalData:[],
       geoAll:[],
       DPosi: 0,
 
@@ -279,7 +278,6 @@ export default {
     // On start get data
     this.getData(this.api)
     this.getKeyData(this.api_global_status)
-    this.getGlobalData(this.api_global_current)
     this.lang = window.navigator.language
 
   },
@@ -475,7 +473,10 @@ export default {
           if(this.historyData[i].death > 0) ukDeSe[1].push(this.historyData[i].death)
         }
 
-          // 4 Country
+        confirmed.push(ukCoSe)	         
+        death.push(ukDeSe)
+
+        // 4 Country
         for (const prop in d){
 
           let tmp = [prop, []]
@@ -545,12 +546,14 @@ export default {
             this.worldLoaded = true
         })
 
+        this.getGlobeDRate(this.api_global_current)
+
         
 
       })
     },
 
-    // Generate labels by length
+    // Generate labels by length, generate days
     // 辅助方法：使用长度生成labels，用于在不完整数据集中获取labels
     getLabels(len){
       let labels = []
@@ -591,43 +594,82 @@ export default {
       
     },
     
-    getGlobalData(api){
+    getGlobeDRate(api){
+
+      let global = []
 
       genGet(api, [], true, (res) => {
         let a = res.data.data
+        
         let id = 0
         // sort the data by country region
         a.sort(function(a,b){
           return a.country_region.localeCompare(b.country_region)
-          })
-        this.globalData.push({
-          'id': id,
-          'country_region': a[0].country_region,
-          'confirmed': a[0].confirmed,
-          'death': a[0].death
+        })
+
+
+        global.push({
+          id: id,
+          country_region: a[0].country_region,
+          confirmed: a[0].confirmed,
+          death: a[0].death
         })
         
         for(let i=1;i<a.length;i++){
           if (a[i].country_region == a[i-1].country_region) {
-              this.globalData[id].confirmed += a[i].confirmed
-              this.globalData[id].death += a[i].death
+            
+              global[id].confirmed += a[i].confirmed
+              global[id].death += a[i].death
           }
           else {
-            id +=1
-            this.globalData.push({
-              'id': id,
-              'country_region': a[i].country_region,
-              'confirmed': a[i].confirmed,
-              'death': a[i].death
-            })
+
+            if(a[i].country_region != "United Kingdom"){
+              id +=1
+              global.push({
+                id: id,
+                country_region: a[i].country_region,
+                confirmed: a[i].confirmed,
+                death: a[i].death
+              })
+
+            }
+            
           }
         }
+
+        global.push({
+          id: global[global.length-1].id + 1,
+          country_region: "United Kingdom",
+          confirmed: this.allData[0].confirmed,
+          death: this.allData[0].death
+        })
+
         
-     
-        this.globalData = this.globalData.map(v => ({...v, "death_rate": (Number((v.death/v.confirmed)*100).toFixed(2))}))
-        this.globalData.sort(compare("death_rate"))
-        this.globalData = this.globalData.map(v => ({...v, "death_rate": v.death_rate+"%"}))
-        console.log(this.globalData)
+        global = global.map(v => ({...v, "death_rate": (Number((v.death/v.confirmed)*100).toFixed(2))}))
+        global.sort(compare("death_rate"))
+        global = global.map(v => ({...v, "death_rate": v.death_rate}))
+
+        let mRate = []
+        let cn = []
+        for(let i=0;i<global.length;i++){
+          if(global[i].confirmed > 5000){
+            mRate.push(parseFloat(global[i].death_rate))
+            cn.push(global[i].country_region)
+          }
+          
+        }
+
+        mRate = mRate.slice(0, 11)
+        cn = cn.slice(0, 11)
+
+
+        this.euCharts.push(
+            this.constChartData("Mortailty Rate", "bar", true, [
+              "#F62E3A",
+              "#949BB5",
+            ], this.constChartSeries([["Mortailty Rate", mRate]]), cn)
+        )
+
         this.globalDataLoaded = true
 
       })

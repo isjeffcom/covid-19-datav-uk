@@ -30,16 +30,16 @@
 
                         <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
                         
-                            <span v-if="value == '---'">{{value}}</span>
-                            <span v-if="value != '---' && isNaN(value)">{{value}}</span>
+                            <span>{{value}}</span>
+                            <!--span v-if="value != '---' && isNaN(value)">{{value}}</span-->
 
                             <!-- count up animation, provided by vue-countup package -->
-                            <ICountUp
+                            <!--ICountUp
                                 :delay="100"
                                 :endVal="value"
                                 :options="countUpOptions"
                                 v-if="value!='---' && !isNaN(value)"
-                            ></ICountUp>
+                            ></ICountUp-->
                         
                         </div>
 
@@ -68,7 +68,7 @@
 
 <script>
 import { getDateFromTs } from '../../utils'
-import ICountUp from 'vue-countup-v2'
+//import ICountUp from 'vue-countup-v2'
 
 import { putCN } from '../../translate'
 import { putColor } from './color'
@@ -100,7 +100,7 @@ export default {
         }
     },*/
     components:{
-        ICountUp,
+        //ICountUp,
     },
 
     data(){

@@ -28,6 +28,11 @@
         <transition name="fade">
             <div v-if="currentChartView == 0">
                 <charts :datas="euData" :showRange="false"></charts>
+                <div class="notice" style="font-size: 10px; width: 95%; margin-top: 20px; margin-bottom:20px; margin-left: auto;margin-right:auto;">
+                    <span style="opacity: 0.5;"> {{getLang("Global mortailty rate calcuated by @vincent zhang")}}</span>
+                    <br><br>
+                    <a href="https://github.com/isjeffcom/coronavirusDataGlobal" target="_blank">COVID19-Global-API</a>
+                </div>
             </div>
         </transition>
 
@@ -42,8 +47,6 @@
             </div>
         </transition>
 
-        
-        <!--div style="font-size: 12px; opacity: 0.5;margin-left:auto;marign-right:auto;">https://github.com/isjeffcom/coronavirusDataGlobal</div-->
     </div>
 </template>
 

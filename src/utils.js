@@ -72,21 +72,21 @@ export function clean(s) {
     var pattern = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]"); 
     var rs = ""; 
     for (var i = 0; i < s.length; i++) {
-        rs = rs+s.substr(i, 1).replace(pattern, ''); 
+        rs = rs+s.substr(i, 1).replace(pattern, '')
     } 
     return rs;
 }
 
 // Remove all front and back space
 export function removeFBSpace(str){ 
-    return str.replace(/(^\s*)|(\s*$)/g, ""); 
+    return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
 // Comparision sort function
 export function compare(p){ 
     return function(m,n){
-        var a = parseFloat(m[p]);
-        var b = parseFloat(n[p]);
+        var a = parseFloat(m[p])
+        var b = parseFloat(n[p])
         return b-a
     }
 }

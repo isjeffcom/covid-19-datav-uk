@@ -31,8 +31,8 @@ export default {
     return{
       noticed: false,
       firstAlert:{
-        title: "You need to know",
-        content: "<br>This is a data visualisation for <b>COVID-19</b> in the UK, but just <b>as a reference</b>. <br><br> You need to understand: <br><br> 1. These data might <b>NOT</b> be completely accurate or updated. <br> 2. All marker on the map represent an area, <b>NOT building or street</b>. <br> 3. The developer takes <b>NO responsibility</b> for data accuracy and service stability. <br><br> Please double check with <b>official channel</b> before act on it. Cookie in used for statistical purposes.",
+        title: "THINGS YOU NEED TO KNOW",
+        content: "<br>This data is a visualization for COVID-19 in the UK. <b>For reference purposes only.</b>. <br><br> You need to be aware: <br><br> 1. This data may not be completely <b>accurate or up to date</b>. <br> 2. All the markers on the map represent an area and <b>not buildings or streets</b>. <br> 3. The developer takes <b>no</b> responsibility for the accuracy of the data nor the service's stability. <br><br> Please double check with the <b>official channels<b> before acting on it. Cookies are used for statistical purposes only.",
         submit: "I consent"
       },
       needAlert: false

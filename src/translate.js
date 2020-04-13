@@ -59,6 +59,7 @@ const wording = [
         "Constantly Optimising by @Big-Tree, @Jimmy.",
         "由 @林大树 和 @陆嘉铭 同学持续开发和优化"
     ],
+    ["Global mortailty rate calcuated by @vincent zhang","全球死亡率数据计算由@张盛伟 提供"],
 
     // Full Chart
     ["BACK", "返回"],

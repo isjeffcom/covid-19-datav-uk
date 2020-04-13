@@ -665,8 +665,7 @@ export default {
 
         this.euCharts.push(
             this.constChartData("Mortailty Rate", "bar", true, [
-              "#F62E3A",
-              "#949BB5",
+              "#FFC634",
             ], this.constChartSeries([["Mortailty Rate", mRate]]), cn)
         )
 

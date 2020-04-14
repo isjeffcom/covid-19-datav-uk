@@ -6,7 +6,12 @@ const wording = [
     ["Data", "数据"],
     ["Case", "确诊"],
     ["Death", "死亡"],
+    ["england", "英格兰"],
+    ["scotland", "苏格兰"],
+    ["wales", "威尔士"],
+    ["n. ireland", "北爱尔兰"],
     ["Data might be incompleted", "数据有可能不完整"],
+    ["Rotate your device", "旋转你的设备"],
 
     // Charts
     ["C&D", "确诊/死亡"],

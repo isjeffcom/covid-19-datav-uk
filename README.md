@@ -5,3 +5,5 @@ build by vue.js
 
 npm i
 npm run dev/build
+
+standard vue-cli project

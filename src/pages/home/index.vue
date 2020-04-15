@@ -135,6 +135,7 @@ import { deathCal } from '../../calculate/death'
 import { testCal } from '../../calculate/tested'
 
 
+
 export default {
   name: 'home',
   components:{
@@ -300,7 +301,6 @@ export default {
 
         if(res.status){
           this.allData = res.data.data
-          
 
           // Process Area Data
           if(this.allData[0].area && this.allData[0].area != ""){

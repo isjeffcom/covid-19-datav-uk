@@ -1,4 +1,4 @@
-// Some basic calculation functions
+// Some basic functions
 
 export function numAddZero(num){
 

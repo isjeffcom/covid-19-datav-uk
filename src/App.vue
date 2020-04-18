@@ -200,7 +200,6 @@ input:focus {
 .title{
   width: 90%;
   font-size: 20px;
-  margin-top: 24px;
   margin-bottom: 6px;
   margin-left: auto;
   margin-right: auto;

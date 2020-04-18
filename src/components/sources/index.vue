@@ -1,15 +1,39 @@
 <template>
 
     <div id="sources">
-      <span>{{getLang("References")}}</span>
-      <li v-for="(item, index) in list" :key="index">
-          <a :href="item.url" target="_blank">{{ item.name }}</a>
-      </li>
+        <div class="source-single">
+            <h4>{{getLang("References")}}</h4>
+            <li v-for="(item, index) in list" :key="index">
+                <a :href="item.url" target="_blank">{{ item.name }}</a>
+            </li>
+        </div>
 
-      <br>
+        <div>
+            <h4>Licence</h4>
+            <span><a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target="_blank">Open Government Licence v3.0 (UK)</a></span>
+        </div>
 
-      <h4>Licence</h4>
-      <span><a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target="_blank">Open Government Licence v3.0 (UK)</a></span>
+
+        <!-- AUTHOR INFO -->
+        <div class="source-single">
+            <h4>{{getLang("Author")}}: </h4>
+            <a href="https://www.isjeff.com" target="_blank">@Jeff Wu</a>
+        </div>
+
+        <div class="source-single">
+            <h4>{{getLang("Contributor")}}: </h4>
+            <li><a href="https://github.com/lamharrison" target="_blank">@Big Tree</a></li>
+            <li><a href="https://github.com/lujiammy" target="_blank">@Jimmy Lu</a></li>
+            <li><a href="https://github.com/VincentNevermore" target="_blank">@Vincent Zhang</a></li>
+            <li><a href="https://github.com/commmathree" target="_blank">@commathree</a></li>
+        </div>
+
+        <div class="source-single">
+            <h4>{{getLang("Others")}}: </h4>
+            <li><a href="https://covid19nz.live" target="_blank">New Zealand</a></li>
+        </div>
+
+
     </div>
 
 </template>
@@ -73,6 +97,7 @@ export default {
 <style scoped>
 #sources{
   width: 92%;
+  display:flex;
   margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
@@ -96,16 +121,29 @@ export default {
 }
 
 
-
+.source-single{
+    width: calc(100%/5);
+    margin-left: 20px;
+    margin-right: 20px;
+}
 
 #sources a:active{
   background: #FEB547;
 }
 
 @media only screen and (max-width: 800px) {
+    #sources{
+        display: block;
+    }
     #sources img{
         opacity: 1;
         width: 50%;
+    }
+
+    .source-single{
+        width: auto;
+        margin-left: 0px;
+        margin-right: 0px;
     }
 }
 </style>

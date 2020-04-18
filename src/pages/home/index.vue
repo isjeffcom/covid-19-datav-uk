@@ -8,8 +8,8 @@
       <li>https://spectrum.chat/covid-19-uk-update?tab=posts</li>
     </div>
 
-    <div class="sector-cont" :style="'disply:' + (isPC ? 'flex;' : 'block;')">
-      <div class="sector sector-flex">
+    <div class="sector-cont" :style="'display:' + (isPC ? 'flex;' : 'block;')">
+      <div class="sector" :style="'width:' + (isPC ? 'calc(100%/3);' : '100%;')">
         <overall 
           :allData="allData" 
           :renderData="renderData"
@@ -28,9 +28,12 @@
         </cdata>
       </div>
 
-      <div class="sector sector-flex">
+      <div class="sector" :style="'width:' + (isPC ? 'calc(100%/3);' : '100%;')">
         <world :euData="euCharts" :preData="preCharts" v-if="worldLoaded"></world>
+        <keydata v-if="keyDataLoaded" :allData="allKeyData"></keydata>
+      </div>
 
+      <div class="sector" :style="'width:' + (isPC ? 'calc(100%/3);' : '100%;')">
         <carea 
           :renderArea="renderArea"
           :mapData="mapData"
@@ -41,43 +44,16 @@
       </div>
     </div>
 
-    
-
-    
-
-    
+    <timeheat v-if="tlLoaded"></timeheat>
 
     <more></more>
-
-    <keydata v-if="keyDataLoaded" :allData="allKeyData"></keydata>
-
-    <timeheat v-if="tlLoaded"></timeheat>
 
     <groupup></groupup>
     <sources></sources>
 
     <!--tweet></tweet-->
 
-    <!-- AUTHOR INFO -->
-    <div class="author">
-      <div class="author-inner">
-        <h3>{{getLang("Author")}}: </h3><br>
-        <a href="https://www.isjeff.com" target="_blank">@Jeff Wu</a>
-      </div>
-    </div>
-
-    <div class="author coworker">
-      <h3>{{getLang("Contributor")}}: </h3><br>
-      <li><a href="https://github.com/lamharrison" target="_blank">@Big Tree</a></li>
-      <li><a href="https://github.com/lujiammy" target="_blank">@Jimmy Lu</a></li>
-      <li><a href="https://github.com/VincentNevermore" target="_blank">@Vincent Zhang</a></li>
-      <li><a href="https://github.com/commmathree" target="_blank">@commathree</a></li>
-    </div>
-
-    <div class="author">
-      <h3>{{getLang("Others")}}: </h3><br>
-      <a href="https://covid19nz.live" target="_blank">New Zealand</a>
-    </div>
+    
 
     
     <!-- DONATION FOOTER -->
@@ -277,10 +253,10 @@ export default {
 
   mounted(){
 
-    this.isPC = screen.width > 700 ? true : false
+    this.isPC = screen.width > 800 ? true : false
 
-    addEventListener("resize", (e)=>{
-      this.isPC = screen.width > 700 ? true : false
+    document.addEventListener("resize", (e)=>{
+      this.isPC = screen.width > 800 ? true : false
     })
 
     // On start get data
@@ -792,11 +768,6 @@ export default {
 
 .sector-cont{
   width: 100%;
-}
-
-.sector{
-  width: 100%;
-  max-width: 350px;
 }
 
 

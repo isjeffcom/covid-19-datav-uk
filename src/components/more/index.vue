@@ -2,7 +2,7 @@
     <!-- MORE INFO BUTTON -->
     <div id="more">
 
-      <div style="margin-bottom:20px;">
+      <div class="more-single">
 
         <router-link to="/store">
           <img src="https://i.ibb.co/4jKPx0N/sc.png" alt="go to store checker">
@@ -10,15 +10,7 @@
 
       </div>
 
-      <!--div style="margin-bottom:20px;">
-
-        <a href="https://www.google.com/maps/d/u/0/embed?mid=1yCPR-ukAgE55sROnmBUFmtLN6riVLTu3&ll=54.019029244689136%2C-1.956174250177014&z=7" target="_blank">
-          <img src="https://i.ibb.co/GnR4nCt/yessdg.png" alt="Cases explorer">
-        </a>
-
-      </div-->
-
-      <div>
+      <div class="more-single">
 
         <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank">
           <img src="https://i.ibb.co/RNJTwnx/btn2.png" alt="to NHS official website for more help and information">
@@ -48,15 +40,24 @@ export default {
   margin-right: auto;
   margin-top: 50px;
   text-align: center;
+  display: flex;
 }
 
 #more img{
-  width: 70%;
+  width: 400px;
+}
+
+.more-single{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 @media only screen and (max-width: 800px) {
     #more{
         width: 92%;
+        display: block;
     }
 
     #more img{

@@ -123,7 +123,7 @@ const wording = [
 ]
 
 const alert = {
-    en: "<br>This is a data visualisation for <b>COVID-19</b> in the UK, but just <b>as a reference</b>. <br><br> You need to understand: <br><br> 1. These data might <b>NOT</b> be completely accurate or updated. <br> 2. All marker on the map represent an area, <b>NOT building or street</b>. <br> 3. The developer takes <b>NO responsibility</b> for data accuracy and service stability. <br><br> Please double check with <b>official channel</b> before act on it. Cookie in used for statistical purposes.",
+    en: "<br>This data is a visualization for COVID-19 in the UK. <b>For reference purposes only.</b>. <br><br> You need to be aware: <br><br> 1. This data may not be completely <b>accurate or up to date</b>. <br> 2. All the markers on the map represent an area and <b>not buildings or streets</b>. <br> 3. The developer takes <b>no</b> responsibility for the accuracy of the data nor the service's stability. <br><br> Please double check with the <b>official channels<b> before acting on it. Cookies are used for statistical purposes only.",
     cn: "<br>本页面展示<b>COVID-19</b>英国疫情实时数据可视化, 所有数据及内容<b>仅供参考</b>。 <br><br> 你必须了解以下条款: <br><br> 1. 这些数据可能 <b>不是</b> 最新的或者精确的。 <br> 2. 区域数据中的标记<b>表示区域，不代表街道或建筑</b>。 <br> 3. 开发者<b>没有义务</b>去保证数据的精确及服务的稳定性。 <br><br> 在您基于本数据采取任何行动之前，请参考 <b>官方渠道和指引</b>。 因统计原因浏览器Cookie将被使用。"
 }
 

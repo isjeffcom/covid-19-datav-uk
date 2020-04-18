@@ -75,12 +75,15 @@ const wording = [
     ["death", "死亡"],
     ["cured", "治愈"],
     ["negative", "阴性"],
-    ["tested", "测试"],
+    ["tested", "测试人次"],
     ["D. Posi.", "日检出"],
     ["Posi. Rate", "检出率"],
     ["mortality", "死亡率"],
     ["serious", "危重"],
     ["suspected", "疑似"],
+    ["tests count", "测试总量"],
+    ["Countries data might have delay from the cases data", "各国数据可能有延迟"],
+    
 
     // Cases Map
     ["Cases Map", "周边疫情"],

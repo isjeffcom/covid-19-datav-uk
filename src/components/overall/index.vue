@@ -61,6 +61,8 @@
 
                     </div>
 
+                    <div style="width: 100%;opacity: 0.3;font-size: 14px;text-align:center;">{{ getLang('Countries data might have delay from the cases data') }}</div>
+
                 </div>
 
                 <div class="overall-expand" v-on:click="hiddenShow = !hiddenShow">
@@ -68,7 +70,7 @@
                 </div>
 
                 <!-- update date -->
-                <div id="update">
+                <div id="update" :style="'margin-top:' + (hiddenShow ? 30 : 10) + 'px;'">
                     <div>{{getLang("Update")}}: {{update}}</div>
                 </div>
 
@@ -166,10 +168,11 @@ export default {
                 death: all.death,
                 tested: all.negative != 0 ? all.confirmed + all.negative : "---",
                 negative: all.negative == 0 ? "---" : all.negative,
+                "tests count": all.test_done != 0 ? all.test_done : "---",
                 "Posi. Rate": (((all.confirmed / (all.confirmed + all.negative))*100).toFixed(2)) + "%",
                 mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%",
                 cured: "---",
-                serious: "---"
+                //serious: "---"
                 
                 
                 //suspected: all.suspected == 0 ? "---" : all.suspected,
@@ -192,11 +195,21 @@ export default {
         compare(value, name){
 
             if(this.historyData.length > 0){
+                
                 let res = parseInt(value - this.historyData[this.historyData.length - 1][name])
 
                 // HARD FIX
                 if(name == "tested"){
                     res = parseInt(value - (this.historyData[this.historyData.length - 1].confirmed + this.historyData[this.historyData.length - 1].negative))
+                }
+
+                if(name == "n. ireland"){
+                    res = parseInt(value - this.historyData[this.historyData.length - 1].nireland)
+                }
+
+                // HARD FIX
+                if(name == "tests count"){
+                    res = parseInt(value - (this.historyData[this.historyData.length - 1].test_done))
                 }
 
                 if(name == "serious"){
@@ -235,7 +248,6 @@ export default {
     padding-bottom: 20px;
     color: #CED3D6;
     opacity: 0.2;
-    margin-top: 10px;
 }
 
 #overall{

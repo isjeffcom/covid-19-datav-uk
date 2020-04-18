@@ -5,6 +5,11 @@
       <li v-for="(item, index) in list" :key="index">
           <a :href="item.url" target="_blank">{{ item.name }}</a>
       </li>
+
+      <br>
+
+      <h4>Licence</h4>
+      <span><a href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" target="_blank">Open Government Licence v3.0 (UK)</a></span>
     </div>
 
 </template>

@@ -123,6 +123,9 @@ import donate from '../../components/widgets/donate'
 // Event Bus
 import { EventBus } from '../../bus'
 
+// Utils
+import { compare } from '../../utils'
+
 // Custom
 import { putCN } from '../../translate'
 
@@ -130,6 +133,7 @@ import { putCN } from '../../translate'
 import { confirmCal } from '../../calculate/confirmed'
 import { deathCal } from '../../calculate/death'
 import { testCal } from '../../calculate/tested'
+
 
 
 export default {
@@ -161,6 +165,7 @@ export default {
       areaLoaded: false,
       worldLoaded: false,
       keyDataLoaded: false,
+      globalDataLoaded: false,
       tlLoaded: false,
 
       // List search input var
@@ -172,6 +177,7 @@ export default {
       api_locations: "/locations",
       api_eu: "https://global.covid19uk.live/majoreu",
       api_global_status: "https://global.covid19uk.live/status",
+      api_global_current: "https://global.covid19uk.live/current",
       api_prediction: "./uk.json",
 
       // Data storage variable
@@ -295,7 +301,6 @@ export default {
 
         if(res.status){
           this.allData = res.data.data
-          
 
           // Process Area Data
           if(this.allData[0].area && this.allData[0].area != ""){
@@ -460,7 +465,7 @@ export default {
         // UK
         let ukCoSe = ["UK", []]
         let ukDeSe = ["UK", []]
-
+ 
         for(let i=0;i<this.historyData.length;i++){
           ukCoSe[1].push(this.historyData[i].confirmed)
           
@@ -468,9 +473,8 @@ export default {
           if(this.historyData[i].death > 0) ukDeSe[1].push(this.historyData[i].death)
         }
 
-        confirmed.push(ukCoSe)
+        confirmed.push(ukCoSe)	         
         death.push(ukDeSe)
-
 
         // 4 Country
         for (const prop in d){
@@ -542,12 +546,14 @@ export default {
             this.worldLoaded = true
         })
 
+        this.getGlobeDRate(this.api_global_current)
+
         
 
       })
     },
 
-    // Generate labels by length
+    // Generate labels by length, generate days
     // 辅助方法：使用长度生成labels，用于在不完整数据集中获取labels
     getLabels(len){
       let labels = []
@@ -583,6 +589,88 @@ export default {
         ] 
 
         this.keyDataLoaded = true
+      })
+
+      
+    },
+    
+    getGlobeDRate(api){
+
+      let global = []
+
+      genGet(api, [], true, (res) => {
+        let a = res.data.data
+        
+        let id = 0
+        // sort the data by country region
+        a.sort(function(a,b){
+          return a.country_region.localeCompare(b.country_region)
+        })
+
+
+        global.push({
+          id: id,
+          country_region: a[0].country_region,
+          confirmed: a[0].confirmed,
+          death: a[0].death
+        })
+        
+        for(let i=1;i<a.length;i++){
+          if (a[i].country_region == a[i-1].country_region) {
+            
+              global[id].confirmed += a[i].confirmed
+              global[id].death += a[i].death
+          }
+          else {
+
+            if(a[i].country_region != "United Kingdom"){
+              id +=1
+              global.push({
+                id: id,
+                country_region: a[i].country_region,
+                confirmed: a[i].confirmed,
+                death: a[i].death
+              })
+
+            }
+            
+          }
+        }
+
+        global.push({
+          id: global[global.length-1].id + 1,
+          country_region: "United Kingdom",
+          confirmed: this.allData[0].confirmed,
+          death: this.allData[0].death
+        })
+
+        
+        global = global.map(v => ({...v, "death_rate": (Number((v.death/v.confirmed)*100).toFixed(2))}))
+        global.sort(compare("death_rate"))
+        global = global.map(v => ({...v, "death_rate": v.death_rate}))
+
+        let mRate = []
+        let cn = []
+        for(let i=0;i<global.length;i++){
+          if(global[i].confirmed > 5000){
+            mRate.push(parseFloat(global[i].death_rate))
+            cn.push(global[i].country_region)
+          }
+          
+        }
+
+        mRate = mRate.slice(0, 11)
+        cn = cn.slice(0, 11)
+
+
+        this.euCharts.push(
+            this.constChartData("Mortailty Rate", "bar", true, [
+              "#FFC634",
+            ], this.constChartSeries([["Mortailty Rate", mRate]]), cn)
+        )
+
+        this.globalDataLoaded = true
+
       })
 
       

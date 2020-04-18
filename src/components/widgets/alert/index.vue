@@ -18,7 +18,7 @@
             
 
             <div id="alert-submit">
-                <button v-on:click="go()">{{submit}}</button>
+                <button v-on:click="go()" style="padding-top: 7px;">{{submit}}</button>
             </div>
         </div>
     </div>
@@ -242,7 +242,7 @@ animation-name: bgClose;
     }
 
     #alert-title{
-        font-size: 36px;
+        font-size: 32px;
     }
 
     #alert-content{
@@ -251,7 +251,7 @@ animation-name: bgClose;
 
     #alert-submit button{
         height: 64px;
-        font-size: 20px;
+        font-size: 18px;
     }
 }
 

@@ -1,64 +1,75 @@
 <template>
     <div id="overall">
-        <!-- CURRENT FIGURES -->
-        <!-- current figure switcher -->
-        <!--div class="tab-switcher">
-            <div 
-                class="ds-single" 
-                v-for="(item, index) in allData" 
-                :key="item.id" :style="'width:calc(100%/' + allData.length + ');'" 
-                v-on:click="switchData(index)">
-
-                <div class="ds-text">
-                    <span>{{item.source}}</span>
-                </div>
-
-                <div class="ds-ids" v-if="index == selected"></div>
-                
-            </div>
-        </div-->
 
         <!-- current figure container -->
         <div id="overall">
             <div id="overall-inner">
 
-                <div id="overall-show">
+                <div class="overall-show">
                     <div 
                         class="overall-single" 
                         v-for="(value, name) in renderData" 
                         :key="name">
 
-                        <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
-                        
-                            <span v-if="value == '---'">{{value}}</span>
-                            <span v-if="value != '---' && isNaN(value)">{{value}}</span>
+                        <div>
+                            <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
+                                <span>{{value}}</span>
+                            
+                            </div>
 
-                            <!-- count up animation, provided by vue-countup package -->
-                            <ICountUp
-                                :delay="100"
-                                :endVal="value"
-                                :options="countUpOptions"
-                                v-if="value!='---' && !isNaN(value)"
-                            ></ICountUp>
-                        
-                        </div>
+                            <div class="overall-single-title">
+                                <span>{{getLang(name)}}</span>
+                            </div>
 
-                        <div class="overall-single-title">
-                            <span>{{getLang(name)}}</span>
-                        </div>
+                            <div class="overall-single-compare">
+                                <span :style="'color:' + getColor(name) + ';font-weight: bold; font-size: 14px;opacity: 0.8;'">{{  compare(value, name) }}</span>
+                            </div>
 
-                        <div class="overall-single-compare">
-                            <span :style="'color:' + getColor(name) + ';font-weight: bold; font-size: 14px;opacity: 0.8;'">{{  compare(value, name) }}</span>
                         </div>
 
                     </div>
 
                 </div>
 
+                <div v-if="hiddenShow" style="position: absolute; opacity: 0.05; width: 100%; margin-top: -40px; max-width: 700px;">
+                    <hr>
+                </div>
+
+                
+
+                <div class="overall-show" v-if="hiddenShow" style="margin-top: -10px;padding-top: 0px;">
+                    <div 
+                        class="overall-single" 
+                        v-for="(value, name) in hiddenData" 
+                        :key="name">
+
+                        <div>
+                            <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
+                                <span>{{value}}</span>
+                            
+                            </div>
+
+                            <div class="overall-single-title">
+                                <span>{{getLang(name)}}</span>
+                            </div>
+
+                            <div class="overall-single-compare">
+                                <span :style="'color:' + getColor(name) + ';font-weight: bold; font-size: 14px;opacity: 0.8;'">{{  compare(value, name) }}</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="overall-expand" v-on:click="hiddenShow = !hiddenShow">
+                    <div><img :src="'./img/arrow.svg'" :style="'transform: rotate(' + (hiddenShow ? 180 : 0) + 'deg);'"></div>
+                </div>
+
                 <!-- update date -->
                 <div id="update">
                     <div>{{getLang("Update")}}: {{update}}</div>
-                    <!--div>Due to the statistical changes, test data appears not lining up with the government's figure. Our calculation method will reconsider and reconstruct after midnight.</div-->
                 </div>
 
             </div>
@@ -68,7 +79,7 @@
 
 <script>
 import { getDateFromTs } from '../../utils'
-import ICountUp from 'vue-countup-v2'
+//import ICountUp from 'vue-countup-v2'
 
 import { putCN } from '../../translate'
 import { putColor } from './color'
@@ -100,16 +111,19 @@ export default {
         }
     },*/
     components:{
-        ICountUp,
+        //ICountUp,
     },
 
     data(){
         return{
             // Update time var
             update:"",
+            more: false,
             // Selected data sources on figure section
             selected: 0,
             renderData: {},
+            hiddenData: {},
+            hiddenShow: false,
             // Render options Count-up package 
             countUpOptions:{
                 useEasing: true,
@@ -154,17 +168,24 @@ export default {
                 negative: all.negative == 0 ? "---" : all.negative,
                 "Posi. Rate": (((all.confirmed / (all.confirmed + all.negative))*100).toFixed(2)) + "%",
                 mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%",
-                cured: this.allData[1].cured == 0 ? "---" : this.allData[1].cured,
-                serious: this.allData[1].serious == 0 ? "---" : this.allData[1].serious,
+                cured: "---",
+                serious: "---"
+                
+                
                 //suspected: all.suspected == 0 ? "---" : all.suspected,
             }
 
-            //console.log(all.confirmed / all.confirmed + all.negative)
+            this.hiddenData = {
+                england: all.england,
+                wales: all.wales,
+                scotland: all.scotland,
+                'n. ireland': all.nireland,
+            }
 
-            /*if(this.selected == 0){
-                this.renderData['D. Posi.'] = this.DPosi + "%"
-            }*/
+        },
 
+        showHidden(){
+            this.hiddenShow = !this.hiddenShow
         },
 
         //  顶上八大金刚，对比昨日的数据，没有则显示---
@@ -183,7 +204,7 @@ export default {
                 }
 
                 if(isNaN(res)){
-                    return '---'
+                    return ''
                 } else {
                     return res >= 0 ? '+' + res : '-' + res
                 }
@@ -208,13 +229,13 @@ export default {
 
 <style scoped>
 #update{
-  width: 100%;
-  text-align: center;
-  font-size: 12px;
-  padding-bottom: 20px;
-  color: #CED3D6;
-  opacity: 0.2;
-  margin-top: -10px;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    padding-bottom: 20px;
+    color: #CED3D6;
+    opacity: 0.2;
+    margin-top: 10px;
 }
 
 #overall{
@@ -235,13 +256,25 @@ export default {
   width: 100%;
 }
 
-#overall-show{
+.overall-show{
   display: flex;
   flex-wrap: wrap;
   width: 90%;
   margin-left: auto;
   margin-right: auto;
   padding-top: 35px;
+}
+
+.overall-expand{
+    width: 100%;
+    margin-top: -50px;
+}
+
+.overall-expand img{
+    width: 18px;
+    opacity: 0.65;
+    cursor: pointer;
+    transition: all 1.3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .overall-single{

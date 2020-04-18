@@ -132,7 +132,7 @@ export default {
 
             genPost(this.api, postReady, true, (res)=>{
                 if(res.status){
-                    alert("Successfully updated. You've done a grate help!")
+                    alert("Successfully updated. You've done a great help!")
                     this.$router.replace({path: "/store"})
                 } else {
                     alert("unknow error")

@@ -1,5 +1,23 @@
 <template>
     <div id="fullchart" v-if="loaded">
+
+        <div class="scroll-notice" v-if="scrollNotice">
+            <div class="sn-inner">
+                <div class="sn-inner-img">
+                    <img :src="'./img/cscroll.gif'" alt="scroll your phone" width="80px">
+                </div>
+
+                <div class="sn-inner-txt">
+                    <span>{{getLang("Rotate your device")}}</span>
+                </div>
+
+                <div class="fc-back" style="margin-top: 10px;">
+                    <span v-on:click="back()">{{getLang("BACK")}}</span>
+                </div>
+            </div>
+            
+        </div>
+
         <apexchart width="100%" :height="ch + 'px'" :ref="'chart-'+d.name" :type="d.type" :options="d.options" :series="d.data"></apexchart>
         <div class="fc-notice">({{getLang("Built for PC")}})</div>
         <div class="fc-back">
@@ -18,14 +36,26 @@ export default {
         return{
             d: {},
             ch: 0,
-            loaded: false
+            loaded: false,
+            scrollNotice: false
         }
     },
+
     mounted(){
+
+        this.screenCheck()
+
         this.ch = Math.floor(window.innerHeight) - 110
 
+        // Display datalabel
+        if(this.d.options){
+            this.d.options.dataLabels.enabled = true
+        }
+        
+
         window.addEventListener('resize', ()=>{
-            this.ch = Math.floor(window.innerHeight) - 110
+            this.screenCheck()
+            //this.ch = Math.floor(window.innerHeight) - 110
         })
     },
     created(){
@@ -43,8 +73,6 @@ export default {
                 this.loaded = true
             }
 
-            
-
         } else {
             console.log("no data")
         }
@@ -53,6 +81,15 @@ export default {
     methods:{
         back(){
             this.$router.go(-1)
+        },
+
+        screenCheck(){
+            if(window.innerHeight > window.innerWidth && window.innerWidth < 800){
+                this.scrollNotice = true
+            } else {
+                this.ch = Math.floor(window.innerHeight) - 110
+                this.scrollNotice = false
+            }
         },
 
         // 翻译，由translate.js提供字典
@@ -68,6 +105,24 @@ export default {
 </script>
 
 <style scoped>
+
+.scroll-notice{
+    position: fixed;
+    top:0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 999;
+}
+
+.sn-inner{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    margin-top: 60%;
+    transform: translateY(-40%);
+}
 
 #fullchart{
     position: absolute;

@@ -18,6 +18,8 @@
         :attribution="attribution"
       ></l-tile-layer>
 
+      <l-geo-json :geojson="geojson" :options="gJStyle"></l-geo-json>
+
       <l-marker 
         v-for="(item, index) in mapData"
         :key="index"
@@ -42,7 +44,7 @@
 
 <script>
 import L from "leaflet"
-import { LMap, LTileLayer, LMarker, LPopup } from "vue2-leaflet"
+import { LMap, LTileLayer, LMarker, LPopup, LGeoJson } from "vue2-leaflet"
 import { genGet } from '../../../request'
 import { EventBus } from '../../../bus'
 
@@ -52,7 +54,8 @@ export default {
     LMap,
     LTileLayer,
     LMarker,
-    LPopup
+    LPopup,
+    LGeoJson
   },
   props:{
     mapData: {
@@ -67,7 +70,10 @@ export default {
   data() {
     return {
         api_geoToPo: "https://api.postcodes.io/postcodes/",
-        iconResize: 0.08,
+        api_geoJson: "./geojson/utla.geojson",
+        geojson: {},
+        mready: false,
+        iconResize: 0.07,
         minSize: 16,
         maxSize: 90,
         zoom: 6,
@@ -87,18 +93,27 @@ export default {
         }),
         mapOptions: {
             zoomSnap: 0.5,
-            minZoom: 6,
-            maxZoom: 11,
+            minZoom: 5,
+            maxZoom: 13,
             easeLinearity: true,
             zoomAnimation: true,
             fadeAnimation: true,
             markerZoomAnimation: true
         },
-        showMap: true
+        showMap: false,
+        gJStyle: {
+          style: {
+            weight: 4,
+            fillOpacity: 0,
+            color: '#333333',
+            fillColor: '#000'
+          }
+        }
     };
   },
 
   watch: {
+
     "tlMode": function (){
 
       // Set icon size
@@ -123,9 +138,19 @@ export default {
     EventBus.$on("getLoc", ()=>{
       that.getUserGeo()
     })
+
+    this.getGeo()
   },
 
   methods: {
+
+    // Get UTLA Geo Json
+    getGeo(){
+      genGet(this.api_geoJson, [], true, (res)=>{
+        this.geojson = res.data
+        this.showMap = true
+      })
+    },
 
     // Get user geo by location api
     getUserGeo(){

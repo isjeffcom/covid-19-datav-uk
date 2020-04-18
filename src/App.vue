@@ -189,7 +189,6 @@ input:focus {
   -moz-osx-font-smoothing: grayscale;
   background: #1F2224;
   color: #CED3D6;
-  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
@@ -308,7 +307,6 @@ input:focus {
   bottom: 40px;
   height: 30px;
   width: 100%;
-  max-width: 700px;
   color: #FFEAEA;
   text-align: center;
   margin-top: 20px;

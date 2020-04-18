@@ -103,9 +103,9 @@ export default {
         showMap: false,
         gJStyle: {
           style: {
-            weight: 4,
+            weight: 2,
             fillOpacity: 0,
-            color: '#333333',
+            color: '#444444',
             fillColor: '#000'
           }
         }

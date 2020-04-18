@@ -8,44 +8,44 @@
       <li>https://spectrum.chat/covid-19-uk-update?tab=posts</li>
     </div>
 
-    <overall 
-      :allData="allData" 
-      :renderData="renderData"
-      :historyData="historyData"
-      :DPosi="DPosi"
-      v-if="loaded">
-    </overall>
-    
-    <!-- HERD IMMUNITY -->
-    <!--div id="herd" style="margin-top:40px;margin-bottom:40px;" v-if="loaded">
-      <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
-        <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
-          <span>{{getLang("Herd Immunity")}}</span><br>
-          <div style="font-size: 12px; opacity: 0.5;">{{getLang("UK Population")}}: 66.44 {{getLang("Million")}} | {{getLang("Immunity Point")}}: 60%</div>
-        </div>
+    <div class="sector-cont" :style="'disply:' + (isPC ? 'flex;' : 'block;')">
+      <div class="sector sector-flex">
+        <overall 
+          :allData="allData" 
+          :renderData="renderData"
+          :historyData="historyData"
+          :DPosi="DPosi"
+          v-if="loaded">
+        </overall>
+      
+
+        <cdata 
+            :allCharts="allCharts" 
+            :confirmCharts="confirmCharts" 
+            :deathCharts="deathCharts"
+            :testedCharts="testedCharts" 
+            v-if="chartLoaded">
+        </cdata>
       </div>
 
-      <ptg :mData="[allData[0].confirmed, 66440000]" style="margin-top:20px;margin-bottom:20px;"></ptg>
+      <div class="sector sector-flex">
+        <world :euData="euCharts" :preData="preCharts" v-if="worldLoaded"></world>
 
-    </div-->
+        <carea 
+          :renderArea="renderArea"
+          :mapData="mapData"
+          :geoData="geoAll"
+          :unknown="unknown"
+          v-if="areaLoaded">
+        </carea>
+      </div>
+    </div>
 
-    <cdata 
-        :allCharts="allCharts" 
-        :confirmCharts="confirmCharts" 
-        :deathCharts="deathCharts"
-        :testedCharts="testedCharts" 
-        v-if="chartLoaded">
-    </cdata>
+    
 
-    <world :euData="euCharts" :preData="preCharts" v-if="worldLoaded"></world>
+    
 
-    <carea 
-      :renderArea="renderArea"
-      :mapData="mapData"
-      :geoData="geoAll"
-      :unknown="unknown"
-      v-if="areaLoaded">
-    </carea>
+    
 
     <more></more>
 
@@ -158,6 +158,7 @@ export default {
 
       // Language
       lang: "",
+      isPC: false,
 
       // Loaded status for different section, render only if data ready
       loaded: false,
@@ -275,6 +276,12 @@ export default {
   },
 
   mounted(){
+
+    this.isPC = screen.width > 700 ? true : false
+
+    addEventListener("resize", (e)=>{
+      this.isPC = screen.width > 700 ? true : false
+    })
 
     // On start get data
     this.getData(this.api)
@@ -782,6 +789,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.sector-cont{
+  width: 100%;
+}
+
+.sector{
+  width: 100%;
+  max-width: 350px;
+}
+
+
 
 #home{
   color: #CED3D6;

@@ -59,7 +59,7 @@ export default {
     position: relative;
     height: 110px;
     width: 100%;
-    background-color: #17181A;
+    background-color: #24292D;
     color: #ffffff;
     font-weight: bold;
 }

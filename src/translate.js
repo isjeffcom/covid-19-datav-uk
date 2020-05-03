@@ -42,13 +42,14 @@ const wording = [
     ["SUPPORT", "捐赠资助"],
     
     [
-        "We promise free access, however, maintaining this server has costs and it's not cheap.", 
-        "本网站是免费的，但维护和运营均产生高昂费用。如果你觉得不错，请帮助我们做的更好。"
+        "We have collected more than enough donations for the basic need. Welcome to buy us a coffee.", 
+        "我们已经收集到足够的捐赠，如果你依旧喜欢，可以给我们买一杯咖啡。"
     ],
     ["Map", "地图"],
     ["List", "列表"],
     ["Postcode", "邮编"],
-    ["Your Postcode", "输入你的邮编"],
+    ["Search by place", "通过地区关键字搜索"],
+    ["Search by Postcode", "通过邮编搜索"],
     ["Cases Near", "案例临近"],
     
     
@@ -64,7 +65,7 @@ const wording = [
         "Constantly Optimising by @Big-Tree, @Jimmy.",
         "由 @林大树 和 @陆嘉铭 同学持续开发和优化"
     ],
-    ["Global mortailty rate calcuated by @vincent zhang","全球死亡率数据计算由@张盛伟 提供"],
+    ["@Jeff wu @vincent zhang","@Jeff Wu @张盛伟"],
 
     // Full Chart
     ["BACK", "返回"],
@@ -75,16 +76,15 @@ const wording = [
     ["death", "死亡"],
     ["cured", "治愈"],
     ["negative", "阴性"],
-    ["tested", "测试人次"],
+    ["people tested", "测试人次"],
     ["D. Posi.", "日检出"],
     ["Posi. Rate", "检出率"],
     ["mortality", "死亡率"],
     ["serious", "危重"],
     ["suspected", "疑似"],
-    ["tests count", "测试总量"],
+    ["tests done", "测试总量"],
     ["Countries data might have delay from the cases data", "各国数据可能有延迟"],
     
-
     // Cases Map
     ["Cases Map", "周边疫情"],
     ["Data Source", "数据来源"],
@@ -100,7 +100,7 @@ const wording = [
     ["Global data has 1 Day Delay", "全球数据有1天延迟"],
     ["Global Cases", "全球感染"],
     ["Global Death", "全球死亡"],
-    ["Cases to go until herd immunity(UK)", "英国距群体免疫还需"],
+    ["[UK]Cases to go until herd immunity(60%)", "英国距群体免疫还需(60%人口)"],
 
 
     // Group Up

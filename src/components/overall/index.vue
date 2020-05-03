@@ -12,12 +12,19 @@
                         :key="name">
 
                         <div>
+                            <!-- PC View -->
+                            <div class="overall-single-title" v-if="mode == 'pc'">
+                                <span>{{getLang(name)}}</span>
+                                <hr style="width:50%;opacity: 0.1;line-width:1px;">
+                            </div>
+
                             <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
                                 <span>{{value}}</span>
                             
                             </div>
 
-                            <div class="overall-single-title">
+                            <!-- Mobile View -->
+                            <div class="overall-single-title" v-if="mode == 'phone'">
                                 <span>{{getLang(name)}}</span>
                             </div>
 
@@ -37,7 +44,8 @@
 
                 
 
-                <div class="overall-show" v-if="hiddenShow" style="margin-top: -10px;padding-top: 0px;">
+                <div class="overall-show overall-hidden" v-if="hiddenShow" style="margin-top: -10px;padding-top: 0px;">
+                    
                     <div 
                         class="overall-single" 
                         v-for="(value, name) in hiddenData" 
@@ -65,7 +73,7 @@
 
                 </div>
 
-                <div class="overall-expand" v-on:click="hiddenShow = !hiddenShow">
+                <div class="overall-expand" v-on:click="hiddenShow = !hiddenShow" v-if="mode == 'phone'">
                     <div><img :src="'./img/arrow.svg'" :style="'transform: rotate(' + (hiddenShow ? 180 : 0) + 'deg);'"></div>
                 </div>
 
@@ -81,7 +89,6 @@
 
 <script>
 import { getDateFromTs } from '../../utils'
-//import ICountUp from 'vue-countup-v2'
 
 import { putCN } from '../../translate'
 import { putColor } from './color'
@@ -104,6 +111,10 @@ export default {
         DPosi: {
             type: Number,
             default: 0
+        },
+        mode: {
+            type: String,
+            default: "phone"
         }
     },
 
@@ -125,7 +136,7 @@ export default {
             selected: 0,
             renderData: {},
             hiddenData: {},
-            hiddenShow: false,
+            hiddenShow: this.mode == 'phone' ? false : true,
             // Render options Count-up package 
             countUpOptions:{
                 useEasing: true,
@@ -166,16 +177,12 @@ export default {
             this.renderData = {
                 confirmed: all.confirmed,
                 death: all.death,
-                tested: all.negative != 0 ? all.confirmed + all.negative : "---",
+                "people tested": all.negative != 0 ? all.confirmed + all.negative : "---",
+                "tests done": all.test_done != 0 ? all.test_done : "---",
                 negative: all.negative == 0 ? "---" : all.negative,
-                "tests count": all.test_done != 0 ? all.test_done : "---",
                 "Posi. Rate": (((all.confirmed / (all.confirmed + all.negative))*100).toFixed(2)) + "%",
                 mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%",
-                cured: "---",
-                //serious: "---"
-                
-                
-                //suspected: all.suspected == 0 ? "---" : all.suspected,
+                cured: "---"
             }
 
             this.hiddenData = {
@@ -199,16 +206,21 @@ export default {
                 let res = parseInt(value - this.historyData[this.historyData.length - 1][name])
 
                 // HARD FIX
-                if(name == "tested"){
+                if(name == "people tested"){
                     res = parseInt(value - (this.historyData[this.historyData.length - 1].confirmed + this.historyData[this.historyData.length - 1].negative))
                 }
+
+                // HARD FIX
+                /*if(name == "people tested"){
+                    res = parseInt(value - this.historyData[this.historyData.length - 1].tested)
+                }*/
 
                 if(name == "n. ireland"){
                     res = parseInt(value - this.historyData[this.historyData.length - 1].nireland)
                 }
 
                 // HARD FIX
-                if(name == "tests count"){
+                if(name == "tests done"){
                     res = parseInt(value - (this.historyData[this.historyData.length - 1].test_done))
                 }
 
@@ -275,6 +287,11 @@ export default {
   margin-left: auto;
   margin-right: auto;
   padding-top: 35px;
+  margin-bottom: 20px;
+}
+
+.overall-hidden{
+    padding-top: 65px;
 }
 
 .overall-expand{
@@ -290,10 +307,11 @@ export default {
 }
 
 .overall-single{
-  width: calc(100%/4);
   height: 100px;
-  margin-bottom: 5px;
+  margin-bottom: 16px;
   text-transform: uppercase;
+  text-align:left;
+  width: 50%;
 }
 
 .overall-single-bg{
@@ -307,14 +325,15 @@ export default {
 }
 
 .overall-single-title{
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 16px;
+  font-weight: normal;
   opacity: 0.6;
   z-index:2;
+  margin-bottom: 8px;
 }
 
 .overall-single-value{
-  font-size: 20px;
+  font-size: 26px;
   font-weight: bold;
   z-index:2;
 }
@@ -344,16 +363,40 @@ export default {
 
 @media only screen and (max-width: 800px) {
 
-  .overall-source-inner{
-    right: 10px;
-  }
+    .overall-show{
+        margin-bottom: 20px;
+    }
 
-  .overall-single-title{
-    font-size: 10px;
-  }
+    .overall-single{
+        text-align: center;
+        width: calc(100%/4);
+        margin-bottom: 5px;
+    }
 
-  .overall-single-value{
-    font-size: 18px;
-  }
+    .overall-single-title{
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 0px;
+    }
+
+    .overall-single-value{
+        font-size: 20px;
+    }
+
+    .overall-hidden{
+        padding-top: 35px;
+    }
+
+    .overall-source-inner{
+        right: 10px;
+    }
+
+    .overall-single-title{
+        font-size: 10px;
+    }
+
+    .overall-single-value{
+        font-size: 18px;
+    }
 }
 </style>

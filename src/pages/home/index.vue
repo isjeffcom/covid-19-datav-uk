@@ -13,8 +13,33 @@
       :renderData="renderData"
       :historyData="historyData"
       :DPosi="DPosi"
-      v-if="loaded">
+      mode='phone'
+      v-if="loaded && isPhone">
     </overall>
+
+    <div class="PC-View" style="display: flex;" v-if="!isPhone">
+      <overall 
+        :allData="allData" 
+        :renderData="renderData"
+        :historyData="historyData"
+        :DPosi="DPosi"
+        mode="pc"
+        style="width: 40%;"
+        v-if="loaded">
+      </overall>
+
+      <carea 
+        :renderArea="renderArea"
+        :mapData="mapData"
+        :geoData="geoAll"
+        :unknown="unknown"
+        mode="pc-map-only"
+        style="width: 60%;"
+        v-if="areaLoaded">
+      </carea>
+    </div>
+
+    
     
     <!-- HERD IMMUNITY -->
     <!--div id="herd" style="margin-top:40px;margin-bottom:40px;" v-if="loaded">
@@ -34,16 +59,18 @@
         :confirmCharts="confirmCharts" 
         :deathCharts="deathCharts"
         :testedCharts="testedCharts" 
+        :mode="isPhone ? 'phone' : 'pc'"
         v-if="chartLoaded">
     </cdata>
 
-    <world :euData="euCharts" :preData="preCharts" v-if="worldLoaded"></world>
+    <world :euData="euCharts" :preData="preCharts" :mode="isPhone ? 'phone' : 'pc'" v-if="worldLoaded"></world>
 
     <carea 
       :renderArea="renderArea"
       :mapData="mapData"
       :geoData="geoAll"
       :unknown="unknown"
+      :mode="isPhone ? 'phone' : 'pc-region'"
       v-if="areaLoaded">
     </carea>
 
@@ -51,7 +78,7 @@
 
     <keydata v-if="keyDataLoaded" :allData="allKeyData"></keydata>
 
-    <timeheat v-if="tlLoaded"></timeheat>
+    <timeheat :mode="isPhone ? 'phone' : 'pc'" v-if="tlLoaded"></timeheat>
 
     <groupup></groupup>
     <sources></sources>
@@ -74,18 +101,13 @@
       <li><a href="https://github.com/commmathree" target="_blank">@commathree</a></li>
     </div>
 
-    <div class="author">
-      <h3>{{getLang("Others")}}: </h3><br>
-      <a href="https://covid19nz.live" target="_blank">New Zealand</a>
-    </div>
-
     
     <!-- DONATION FOOTER -->
     <div id="donation" v-if="areaLoaded">
       <div id="d-inner">
         <div id="d-cont">
           <div id="d-title">{{getLang("Support Us")}}</div>
-          <div id="d-sub">{{getLang("We promise free access, however, maintaining this server has costs and it's not cheap.")}}</div>
+          <div id="d-sub">{{getLang("We have collected more than enough donations for the basic need. Welcome to buy us a coffee.")}}</div>
         </div>
         
         <div id="d-btn"> 
@@ -105,7 +127,7 @@
 <script>
 // Utils
 import { genGet } from '../../request'
-import { indexOfObjArr, deepCopy } from '../../utils'
+import { indexOfObjArr, deepCopy, isMobile } from '../../utils'
 
 // Components
 import overall from '../../components/overall'
@@ -167,6 +189,7 @@ export default {
       keyDataLoaded: false,
       globalDataLoaded: false,
       tlLoaded: false,
+      isPhone: true,
 
       // List search input var
       listSearch: "",
@@ -285,6 +308,9 @@ export default {
 
   created(){
 
+    // Get if is mobile phone
+    this.isPhone = isMobile()
+
     EventBus.$on("donate-close", ()=>{
       this.donate = false
     })
@@ -361,6 +387,12 @@ export default {
               "#F62E3A"
             ], this.constChartSeries([
               ["Rate", co.coInc]
+            ])))
+
+            this.deathCharts.push(this.constChartData("Death Overall", "area", false, [
+              "#FFC634"
+            ], this.constChartSeries([
+              ["Overall", de.trend], 
             ])))
 
             this.deathCharts.push(this.constChartData("Death Increase", "bar", false, [
@@ -582,7 +614,7 @@ export default {
             color: "rgb(255, 206, 31)"
           },
           { 
-            name: "Cases to go until herd immunity(UK)", 
+            name: "[UK]Cases to go until herd immunity(60%)", 
             num: Math.floor((66440000 * 0.6) - this.allData[0].confirmed),
             color: "rgb(86, 255, 184)"
           }

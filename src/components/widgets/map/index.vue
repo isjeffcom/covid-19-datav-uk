@@ -24,14 +24,14 @@
         v-for="(item, index) in mapData"
         :key="index"
         :icon="setIcon(item.confirmed)"
-        :lat-lng="setLatLng(item.la, item.lo)" >
+        :lat-lng="item.la ? setLatLng(item.la, item.lo) : setLatLng(0,0)" >
 
 
         <l-popup>
-          <div>
-            Area: {{item.name}}
+          <div style="text-align:center;">
+            <span style="font-size: 14px; font-weight: bold;">{{item.name}}</span> 
             <br>
-            Cases: {{item.confirmed}}
+            <span style="font-size: 16px; font-weight: bold; color: #FF535D;">{{item.confirmed}}</span> 
           </div>
 
           <button class="track-btn" v-if="tlMode" v-on:click="track(item.name)">Track</button>
@@ -73,7 +73,7 @@ export default {
         api_geoJson: "./geojson/utla.geojson",
         geojson: {},
         mready: false,
-        iconResize: 0.07,
+        iconResize: 0.04,
         minSize: 16,
         maxSize: 90,
         zoom: 6,
@@ -87,7 +87,7 @@ export default {
         currentCenter: L.latLng(54.275967, -3.234891),
         showParagraph: false,
         icon: L.icon({
-            iconUrl: './img/marker.svg',
+            iconUrl: './img/marker_o.svg',
             iconSize: [0, 0],
             iconAnchor: [0, 0]
         }),
@@ -103,10 +103,10 @@ export default {
         showMap: false,
         gJStyle: {
           style: {
-            weight: 4,
+            weight: 3,
             fillOpacity: 0,
-            color: '#333333',
-            fillColor: '#000'
+            color: '#1C4060',
+            fillColor: '#1B2B39'
           }
         }
     };

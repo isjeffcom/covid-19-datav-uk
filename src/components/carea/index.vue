@@ -1,8 +1,8 @@
 <template>
-    <div id="carea" :style="'padding-bottom:' + (timeline ? '220px' : '100px')">
+    <div id="carea" :style="mode == 'phone' ? 'padding-bottom:' + (timeline ? '220px' : '10px') : ''">
 
         <!-- REGIONAL MAP -->
-        <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;">
+        <div class="title" style="margin-bottom: 0px;" v-if="mode != 'pc-map-only'">
             <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
                 <span>{{getLang("Regions")}}</span><br>
                 <div style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> {{getLang("Unknown Locations")}}</div>
@@ -16,7 +16,7 @@
         </div>
 
         <!-- switch between map or list -->
-        <div class="tab-switcher">
+        <div class="tab-switcher" v-if="mode != 'pc-map-only'">
             <div 
                 class="ds-single" 
                 v-for="(item, index) in areaViews" 
@@ -35,44 +35,50 @@
 
         <!-- IF MAP -->
         <!-- use ccmap from /src/components/widgets/ccmap -->
-            <div id="area-map" v-if="currentAreaView == 'Map'" :style="'opacity:' + (mapLoaded ? 1 : 0.2)">
-                <osmmap :mapData="toMapData" :tlMode="tlMode"></osmmap>
+        <div id="area-map" v-if="currentAreaView == 'Map'" :style="'opacity:' + (mapLoaded ? 1 : 0.2)">
+            <osmmap :mapData="toMapData" :tlMode="tlMode" :style="'height: ' + (mode == 'phone' ? '450px' : '95%' + ';')"></osmmap>
 
-                <div class="notice" style="font-size: 10px; width: 95%; margin-top: 6px; margin-bottom:20px; margin-left: auto;margin-right:auto; opacity: 0.7;text-align: center;">
-                    Map tiles by <a href="http://stamen.com" target="_blank">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0" target="_blank">CC BY 3.0</a>
-                </div>
-                
+            <div 
+                class="notice" 
+                v-if="mode == 'phone'"
+                style="font-size: 10px; width: 95%; margin-top: 6px; margin-bottom:20px; margin-left: auto;margin-right:auto; opacity: 0.7;text-align: center;">
+                Map tiles by <a href="http://stamen.com" target="_blank">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0" target="_blank">CC BY 3.0</a>
+            </div>
+
+            <div>
                 <button v-on:click="openTL" v-if="!timeline">{{ getLang("Timeline") }}</button>
 
                 <div id="area-map-tl" v-if="timeline">
-                    <VueSlideBar
-                        v-model="slider.value"
-                        :data="slider.data"
-                        :range="slider.range"
-                        :labelStyles=" sw < 700 ? { opacity: '0' } : {opacity: '1'}"
-                        :tooltipStyles="{ backgroundColor: '#FFD643', borderColor: '#FFD643', borderRadius: '2px', color: '#000000', fontWeight: 'bold' }"
-                        :processStyle="{ backgroundColor: '#FFD643' }"
-                        :speed="0.3"
-                        @callbackRange="sliderChange">
+                    <div id="area-map-tl-inner">
+                        <VueSlideBar
+                            v-model="slider.value"
+                            :data="slider.data"
+                            :range="slider.range"
+                            :labelStyles=" sw < 700 ? { opacity: '0' } : {opacity: '1'}"
+                            :tooltipStyles="{ backgroundColor: '#FFD643', borderColor: '#FFD643', borderRadius: '2px', color: '#000000', fontWeight: 'bold' }"
+                            :processStyle="{ backgroundColor: '#FFD643' }"
+                            :speed="0.3"
+                            @callbackRange="sliderChange">
 
-                    </VueSlideBar>
+                        </VueSlideBar>
 
-                    <span>{{ getLang("All") }}: {{ sliderConf }}</span>
-                    <br>
-                    <span v-if="tlTracking != ''">{{ tlTracking }}: {{ getTLAreaData(tlTracking) }}</span>
+                        <span>{{ getLang("All") }}: {{ sliderConf }}</span>
+                        <br>
+                        <span v-if="tlTracking != ''">{{ tlTracking }}: {{ getTLAreaData(tlTracking) }}</span>
 
-                    <button v-on:click="closeTL">{{ getLang("BACK") }}</button>
+                        <button v-on:click="closeTL">{{ getLang("BACK") }}</button>
+                    </div>
+                    
                 </div>
-
-                
-                
             </div>
 
+        </div>
+
         <!-- IF LIST -->
-            <div v-if="currentAreaView == 'List'" style="margin-top:20px;">
+        <div v-if="currentAreaView == 'List'" style="margin-top:20px;">
 
             <div class="area-list-search">
-                <input type="text" placeholder="Search by place" v-model="listSearch">
+                <input type="text" :placeholder="getLang('Search by place')" v-model="listSearch">
             </div>
             
 
@@ -86,13 +92,13 @@
                     <td>{{item.number}}</td>
                 </tr>
             </table>
-            </div>
+        </div>
 
         <!-- IF LIST -->
-            <div v-if="currentAreaView == 'Postcode'" style="margin-top:20px;">
+        <div v-if="currentAreaView == 'Postcode'" style="margin-top:20px;">
 
             <div class="area-po-search">
-                <input type="text" :placeholder="getLang('Your Postcode')" v-model="poSearch" style="width: 70%;"><br>
+                <input type="text" :placeholder="getLang('Search by Postcode')" v-model="poSearch" style="width: 70%;"><br>
                 <input type="submit" style="margin-left: 5%;width: 25%;" v-on:click="searchPO" />
             </div>
 
@@ -103,7 +109,8 @@
             </div>
             
 
-            </div>
+        </div>
+
     </div>
 </template>
 
@@ -145,6 +152,10 @@ export default {
         unknown:{
             type: Number,
             default: 0
+        },
+        mode:{
+            type: String,
+            default: "phone"
         }
     },
     data(){
@@ -163,8 +174,8 @@ export default {
             tlTracking: "",
             listSearch: "",
             poSearch: "",
-            areaViews: ["Map", "List", "Postcode"],
-            currentAreaView: "Map",
+            areaViews: this.mode == 'pc-region' ? ["Postcode", "List"] : ["Map", "Postcode", "List"],
+            currentAreaView: this.mode == 'pc-region' ? "Postcode" : "Map",
             areaList: [],
             timelineData: [],
             rangeValue: {},
@@ -182,6 +193,7 @@ export default {
         }
     },
     created(){
+        //this.areaViews = this.mode == 'pc' ? ["List", "Postcode"] : ["Map", "List", "Postcode"],
         this.toMapData = this.mapData
         this.sw = screen.width
 
@@ -406,12 +418,14 @@ export default {
 <style scoped>
 
 button{
-    height: 58px;
+    height: 44px;
     width:100%;
-    margin-top:10px;
-    padding-bottom: 16px;
+    margin-top:0px;
+    padding-top: 14px;
+    padding-bottom: 14px;
     margin-left: 0px;
     margin-right: 0px;
+    border-radius: 0px;
 }
 
 .fade-enter-active {
@@ -442,11 +456,12 @@ tr:nth-child(even) {
 
 #carea{
   width: 100%;
+  z-index: 999;
 }
 
 #area-map{
-  width: 92%;
-  height: 700px;
+  width: 100%;
+  height: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -459,11 +474,20 @@ tr:nth-child(even) {
 }
 
 #area-map-tl{
-    width: 88%;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.05);
+    background: #292E31;
+    box-shadow: 0px 4px 24px #121314;
+    z-index: 999;
+    padding-bottom: 10px;
+}
+
+#area-map-tl-inner{
+    width: 92%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .area-po-search{
@@ -492,10 +516,26 @@ tr:nth-child(even) {
 
 @media only screen and (max-width: 800px) {
 
-  #area-map{
-    width: 100%;
-    height: 450px;
-  }
+    button{
+        height: 58px;
+        border-radius: 10px;
+        margin-top: 10px;
+        padding-top: 20px;
+        padding-bottom: 16px;
+    }
+
+    #area-map-tl{
+        width: 88%;
+        border: none;
+        box-shadow: none;
+        background: rgba(0,0,0,0);
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    #area-map-tl-inner{
+        width: 100%;
+    }
 }
 </style>
 

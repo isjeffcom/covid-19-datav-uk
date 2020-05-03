@@ -72,7 +72,7 @@ export default {
 }
 
 body{
-  background: #131618;
+  background: #1C2024;
 }
 
 a{
@@ -187,9 +187,8 @@ input:focus {
   font-family:  Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #1F2224;
+  background: #1C2024;
   color: #CED3D6;
-  max-width: 700px;
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
@@ -199,12 +198,15 @@ input:focus {
 
 /* TITLE */
 .title{
-  width: 90%;
+  width: 100%;
   font-size: 20px;
+  background: #24292D !important;
   margin-top: 24px;
   margin-bottom: 6px;
   margin-left: auto;
   margin-right: auto;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-top: 1px solid rgba(255,255,255,0.05);
 }
 
 .title-right{
@@ -216,13 +218,15 @@ input:focus {
 
 /* TAB */
 .tab-switcher{
-  width: 100%;
+  width: 30%;
   display: flex;
   color: #CED3D6;
   text-align: center;
   margin-bottom: 0px;
   font-size: 16px;
-  background: #1D1F21;
+  border-radius: 0px 0px 44px 0px;
+  margin-top: -1px;
+  background: #24292D;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -336,10 +340,12 @@ input:focus {
   animation-iteration-count: infinite;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
     /* TAB */
   .tab-switcher{
+    width: 100%;
     font-size: 14px;
+    border-radius: 0px;
   }
 
   .ds-ids{

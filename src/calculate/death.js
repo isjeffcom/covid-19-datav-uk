@@ -1,6 +1,7 @@
 export function deathCal (history, today) {
     return new Promise(resolve => {
         let res = {
+            trend: [],
             inc: [],
             rate: []
         }
@@ -8,8 +9,11 @@ export function deathCal (history, today) {
         // Loop
         history.forEach((el, index) => {
 
+            
             let increse
             let rate
+
+            res.trend.push(el.death)
 
             if(index == 0){
                 increse = el.death-0
@@ -34,6 +38,8 @@ export function deathCal (history, today) {
 
         let tod = parseFloat((today.death)/today.confirmed).toFixed(4)*100
         res.rate.push(tod.toFixed(4))
+
+        res.trend.push(today.death)
         
         
         resolve(res)

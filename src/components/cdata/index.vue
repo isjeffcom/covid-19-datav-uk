@@ -5,7 +5,7 @@
         <div id="chart">
 
             <!-- Sector Title -->
-            <div class="title" style="background: #1D1F21; width: 100%; margin-bottom: 0px;margin-top:2px;">
+            <div class="title" style="margin-bottom: 0px;margin-top:2px;">
                 <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
                     <span>{{getLang("Data")}}</span><br>
                     <div style="font-size: 12px; opacity: 0.5;">* {{getLang("Data might be incompleted")}}</div>
@@ -18,11 +18,11 @@
                 <div 
                     class="ds-single" 
                     v-for="(item, index) in allCharts" 
-                    :key="index" :style="'width:calc(100%/' + allCharts.length + ');'" 
+                    :key="index" :style="'width:' + 'calc(100%/' + allCharts.length + ');'" 
                     v-on:click="switchChartView(index)">
 
                     <div class="ds-text">
-                    <span>{{getLang(item)}}</span>
+                        <span>{{getLang(item)}}</span>
                     </div>
 
                     <div class="ds-ids" v-if="index == currentChartView"></div>
@@ -35,19 +35,19 @@
             <div id="chart-inner">
                 <transition name="fade">
                     <div v-show="currentChartView == 0">
-                        <charts :datas="confirmCharts"></charts>
+                        <charts :datas="confirmCharts" :mode="mode"></charts>
                     </div>
                 </transition>
                 
                 <transition name="fade">
                     <div v-show="currentChartView == 1">
-                        <charts :datas="deathCharts"></charts>
+                        <charts :datas="deathCharts" :mode="mode"></charts>
                     </div>
                 </transition>
 
                 <transition name="fade">
                     <div v-show="currentChartView == 2">
-                        <charts :datas="testedCharts"></charts>
+                        <charts :datas="testedCharts" :mode="mode"></charts>
                     </div>
                 </transition>
 
@@ -91,6 +91,11 @@ export default {
             default(){
                 return []
             }
+        },
+
+        mode: {
+            type: String,
+            default:"phone"
         }
     },
 

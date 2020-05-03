@@ -2,10 +2,10 @@
     <!-- MORE INFO BUTTON -->
     <div id="more">
 
-      <div style="margin-bottom:20px;">
+      <div class="more-s" style="margin-bottom:20px;">
 
         <router-link to="/store">
-          <img src="https://i.ibb.co/4jKPx0N/sc.png" alt="go to store checker">
+          <img :src="'./img/stockchecker.png'" alt="go to store checker">
         </router-link>
 
       </div>
@@ -18,10 +18,18 @@
 
       </div-->
 
-      <div>
+      <div class="more-s" style="margin-bottom:20px;">
 
         <a href="https://www.nhs.uk/conditions/coronavirus-covid-19/" target="_blank">
-          <img src="https://i.ibb.co/RNJTwnx/btn2.png" alt="to NHS official website for more help and information">
+          <img :src="'./img/helpandinfo.png'" alt="to NHS official website for more help and information">
+        </a>
+
+      </div>
+
+      <div class="more-s">
+
+        <a href="https://playground.isjeff.com/relaxgame" target="_blank">
+          <img :src="'./img/playgame.png'" alt="play stress release game">
         </a>
 
       </div>
@@ -48,19 +56,30 @@ export default {
   margin-right: auto;
   margin-top: 50px;
   text-align: center;
+  display: flex;
 }
 
 #more img{
-  width: 70%;
+  width: 400px;
+}
+
+
+.more-s{
+  width: calc(100%/3);
 }
 
 @media only screen and (max-width: 800px) {
     #more{
-        width: 92%;
+      width: 92%;
+      display: block;
     }
 
     #more img{
         width: 100%;
+    }
+
+    .more-s{
+      width: 100%;
     }
 }
 </style>

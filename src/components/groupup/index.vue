@@ -69,7 +69,7 @@ export default {
 
 #groupup img{
   opacity: 0.8;
-  width: 100%;
+  width: 200px;
   transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 

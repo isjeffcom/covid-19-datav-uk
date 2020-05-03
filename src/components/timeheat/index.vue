@@ -7,8 +7,8 @@
             </div>
         </div>
 
-        <div id="chart" v-if="loaded">
-            <apexchart type="heatmap" height="250" :options="opts" :series="cd"></apexchart>
+        <div id="chart" style="margin-top:10px;" v-if="loaded">
+            <apexchart type="heatmap" :height=" mode == 'phone' ? 250 : 360" :options="opts" :series="cd"></apexchart>
         </div>
     </div>
 </template>
@@ -19,6 +19,12 @@ import { putCN } from '../../translate'
 
 export default {
     name: "timeheat",
+    props:{
+        mode: {
+            type: String,
+            default: "phone"
+        }
+    },
     data(){
         return{
             api: "/timeline",
@@ -73,7 +79,7 @@ export default {
                     },
                 },
                 fill: {
-                    color: "#1F2224",
+                    color: "#1C2024",
                     pattern: {
                         strokeWidth: 0,
                     },
@@ -84,7 +90,7 @@ export default {
                     width: 1, 
                 },
                 grid: {
-                    borderColor: 'rgba(55,61,65,1)',
+                    borderColor: 'rgba(55,61,65,0.4)',
                 },
                 plotOptions: {
                     heatmap: {
@@ -97,7 +103,7 @@ export default {
                                     from: 1,
                                     to: 2,
                                     name: '',
-                                    color: '#1F2224'
+                                    color: '#1C2024'
                                 },
                                 {
                                     from: 2,
@@ -123,7 +129,9 @@ export default {
                     let tl = res.data.timeline
                     tl = tl.reverse()
 
-                    tl.splice(0, tl.length - 30)
+                    let reduceLength = this.mode == 'phone' ? 30 : 120
+
+                    tl.splice(0, tl.length - reduceLength)
 
                     let last
 

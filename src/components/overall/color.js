@@ -1,27 +1,31 @@
 const colors = [
     {
         txt: "confirmed",
-        color: "#CD3C3C"
+        color: "#FF535D"
     },
     {
         txt: "death",
-        color: "#E4BA25"
+        color: "#FFD076"
     },
     {
         txt: "mortality",
-        color: "#FA7D55"
+        color: "#E98565"
     },
     {
         txt: "cured",
         color: "#31DA93"
     },
     {
-        txt: "tested",
-        color: "#3DAFE0"
+        txt: "people tested",
+        color: "#65A3FF"
+    },
+    {
+        txt: "tests done",
+        color: "#AAD6FF"
     },
     {
         txt: "negative",
-        color: "#2CC585"
+        color: "#51ECAB"
     },
     {
         txt: "serious",
@@ -33,7 +37,7 @@ const colors = [
     },*/
     {
         txt: "Posi. Rate",
-        color: "#9289FF"
+        color: "#B592FF"
     },
     /*{
         txt: "suspected",
@@ -45,15 +49,15 @@ const colors = [
     },
     {
         txt: "wales",
-        color: "#00AB39"
+        color: "#52B071"
     },
     {
         txt: "scotland",
-        color: "#0065BD"
+        color: "#4198E4"
     },
     {
         txt: "n. ireland",
-        color: "#C60C30"
+        color: "#EE5774"
     },
 ]
 

@@ -142,7 +142,7 @@ export default {
         color: #FFC634;
     }
 
-    @media only screen and (max-width: 800px) {
+    @media only screen and (max-width: 700px) {
         img{
             width: 70%;
         }

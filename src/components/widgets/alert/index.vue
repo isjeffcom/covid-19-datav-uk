@@ -178,7 +178,6 @@ animation-name: bgClose;
     position: fixed;
     bottom: 0px;
     width: 100%;
-    max-width: 800px;
     height: 640px;
     animation-duration: 0.5s;
     animation-iteration-count: 1;

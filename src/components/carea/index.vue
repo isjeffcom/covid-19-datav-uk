@@ -267,7 +267,10 @@ export default {
                 if(res.status){
 
                     let allTl = res.data.data
-                    allTl = allTl.splice(37, allTl.length - 1)
+                    //allTl = allTl.splice(30, allTl.length - 1)
+                    if(this.mode == 'phone'){
+                        allTl = allTl.splice(30, allTl.length - 1)
+                    }
 
                     for(let i=0;i<allTl.length;i++){
 
@@ -514,7 +517,7 @@ tr:nth-child(even) {
     line-height:24px;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
 
     button{
         height: 58px;

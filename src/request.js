@@ -45,6 +45,29 @@ export function genPost(api, data, noBase, callback){
       })
 }
 
+export function genPostJSON(api, data, noBase, callback){
+    api = noBase ? api : baseUrl + api
+
+    const postData = JSON.stringify(data)
+
+    //console.log(postData)
+
+    axios.post(api, postData, {headers: {'Content-Type': 'application/json'}})
+      .then(function (response) {
+          if(response){
+            callback({status: true, data: response.data}, false)
+            return 
+          }else{
+            callback({status: false, data: response.data})
+            return 
+          }
+      })
+      .catch(function (error) {
+        callback({status: false, data: null, err: error})
+        return 
+      })
+}
+
 export function getLocByPO(po, callback){
     genGet(api_pos + po, [], true, (res)=>{
         if(res.status){

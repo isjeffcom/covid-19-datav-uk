@@ -912,7 +912,7 @@ export default {
 }
 
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
 
   .overall-source-inner{
     right: 10px;

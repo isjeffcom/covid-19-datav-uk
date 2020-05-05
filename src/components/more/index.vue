@@ -68,7 +68,7 @@ export default {
   width: calc(100%/3);
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
     #more{
       width: 92%;
       display: block;

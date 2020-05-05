@@ -361,7 +361,7 @@ export default {
 }
 
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
 
     .overall-show{
         margin-bottom: 20px;

@@ -87,7 +87,7 @@ export default {
     width: 160px;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
 
     #chead{
         height: 100%;

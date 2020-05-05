@@ -224,7 +224,7 @@ input:focus {
   text-align: center;
   margin-bottom: 0px;
   font-size: 16px;
-  border-radius: 0px 0px 44px 0px;
+  border-radius: 0px 0px 8px 0px;
   margin-top: -1px;
   background: #24292D;
   border-bottom: 1px solid rgba(255,255,255,0.05);

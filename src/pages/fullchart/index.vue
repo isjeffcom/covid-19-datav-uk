@@ -84,7 +84,7 @@ export default {
         },
 
         screenCheck(){
-            if(window.innerHeight > window.innerWidth && window.innerWidth < 800){
+            if(window.innerHeight > window.innerWidth && window.innerWidth < 700){
                 this.scrollNotice = true
             } else {
                 this.ch = Math.floor(window.innerHeight) - 110

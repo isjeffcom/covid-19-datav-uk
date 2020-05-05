@@ -102,7 +102,7 @@ export default {
   background: #FEB547;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 700px) {
     #sources img{
         opacity: 1;
         width: 50%;

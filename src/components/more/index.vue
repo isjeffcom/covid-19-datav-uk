@@ -26,10 +26,18 @@
 
       </div>
 
-      <div class="more-s">
+      <div class="more-s" style="margin-bottom:20px;">
 
         <a href="https://playground.isjeff.com/relaxgame" target="_blank">
           <img :src="'./img/playgame.png'" alt="play stress release game">
+        </a>
+
+      </div>
+
+      <div class="more-s">
+
+        <a href="https://opendigitalstudio.eca.ed.ac.uk/" target="_blank">
+          <img :src="'./img/dmsp.png'" alt="open digital studio by university of edinburgh">
         </a>
 
       </div>
@@ -42,8 +50,7 @@
 
 <script>
 export default {
-    name: "more",
-    
+    name: "more"
 }
 </script>
 
@@ -60,12 +67,13 @@ export default {
 }
 
 #more img{
-  width: 400px;
+  width: 100%;
 }
 
 
 .more-s{
   width: calc(100%/3);
+  margin-right: 20px;
 }
 
 @media only screen and (max-width: 700px) {

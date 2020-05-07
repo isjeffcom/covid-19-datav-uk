@@ -89,7 +89,9 @@
     <div class="author">
       <div class="author-inner">
         <h3>{{getLang("Author")}}: </h3><br>
-        <a href="https://www.isjeff.com" target="_blank">@Jeff Wu</a>
+        <a href="https://www.isjeff.com" target="_blank">Design and Devlopment: @Jeff Wu</a>
+        <br><br>
+        <a href="https://github.com/isjeffcom/coronvirusFigureUK" target="_blank">Open Data API</a>
       </div>
     </div>
 
@@ -99,6 +101,7 @@
       <li><a href="https://github.com/lujiammy" target="_blank">@Jimmy Lu</a></li>
       <li><a href="https://github.com/VincentNevermore" target="_blank">@Vincent Zhang</a></li>
       <li><a href="https://github.com/commmathree" target="_blank">@commathree</a></li>
+      <li><a href="#" target="_blank">@Yulia Serbenenko</a></li>
     </div>
 
     
@@ -696,9 +699,9 @@ export default {
 
 
         this.euCharts.push(
-            this.constChartData("Mortailty Rate", "bar", true, [
+            this.constChartData("Mortality Rate", "bar", true, [
               "#FFC634",
-            ], this.constChartSeries([["Mortailty Rate", mRate]]), cn)
+            ], this.constChartSeries([["Mortality Rate", mRate]]), cn)
         )
 
         this.globalDataLoaded = true

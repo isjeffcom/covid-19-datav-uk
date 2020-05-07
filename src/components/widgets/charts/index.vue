@@ -259,6 +259,7 @@ export default {
 .charts-cont-s{
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 52px;
 }
 .chart-range{
     width: 100%;
@@ -328,5 +329,11 @@ export default {
     border-radius: 4px;
     padding: 12px;
     margin-right: 40px;
+}
+
+@media only screen and (max-width: 700px) {
+    .charts-cont-s{
+        margin-bottom: 0px;
+    }
 }
 </style>

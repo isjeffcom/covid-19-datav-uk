@@ -85,7 +85,10 @@ export default {
   font-weight: bold;
 }
 
-
+#sources li a{
+    font-size: 14px;
+    line-height: 36px;
+}
 
 #sources img{
   opacity: 0.8;

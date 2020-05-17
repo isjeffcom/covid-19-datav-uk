@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import VueApexCharts from 'vue-apexcharts'
-import 'leaflet/dist/leaflet.css';
 import router from './router.js'
 
 

@@ -51,6 +51,12 @@
                     </div>
                 </transition>
 
+                <transition name="fade">
+                    <div v-show="currentChartView == 3">
+                        <charts :datas="hospitalCharts" :mode="mode"></charts>
+                    </div>
+                </transition>
+
             </div>
 
         </div>
@@ -87,6 +93,12 @@ export default {
             }
         },
         testedCharts: {
+            type: Array,
+            default(){
+                return []
+            }
+        },
+        hospitalCharts:{
             type: Array,
             default(){
                 return []

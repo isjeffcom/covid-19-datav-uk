@@ -12,8 +12,8 @@ const colors = [
         color: "#E98565"
     },
     {
-        txt: "cured",
-        color: "#31DA93"
+        txt: "hospital",
+        color: "#FF7D95"
     },
     {
         txt: "people tested",

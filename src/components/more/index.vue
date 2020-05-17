@@ -26,18 +26,10 @@
 
       </div>
 
-      <div class="more-s" style="margin-bottom:20px;">
+      <div class="more-s">
 
         <a href="https://playground.isjeff.com/relaxgame" target="_blank">
           <img :src="'./img/playgame.png'" alt="play stress release game">
-        </a>
-
-      </div>
-
-      <div class="more-s">
-
-        <a href="https://opendigitalstudio.eca.ed.ac.uk/" target="_blank">
-          <img :src="'./img/dmsp.png'" alt="open digital studio by university of edinburgh">
         </a>
 
       </div>

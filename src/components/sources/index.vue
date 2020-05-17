@@ -47,6 +47,10 @@ export default {
                     url: "https://gov.wales/written-statement-coronavirus-covid-19-1"
                 },
                 {
+                    name: "[Gov]Slides and datasets to accompany coronavirus press conference",
+                    url: "https://www.gov.uk/government/publications/slides-and-datasets-to-accompany-coronavirus-press-conference-7-may-2020"
+                },
+                {
                     name: "[Gov]DHSCgovuk Official Twitter",
                     url: "https://twitter.com/DHSCgovuk"
                 },
@@ -81,6 +85,8 @@ export default {
   font-weight: bold;
 }
 
+
+
 #sources img{
   opacity: 0.8;
   width: 300px;
@@ -95,9 +101,6 @@ export default {
   opacity: 0.6;
 }
 
-
-
-
 #sources a:active{
   background: #FEB547;
 }
@@ -106,6 +109,11 @@ export default {
     #sources img{
         opacity: 1;
         width: 50%;
+    }
+
+    #sources li a{
+        font-size: 10px;
+        line-height: auto;
     }
 }
 </style>

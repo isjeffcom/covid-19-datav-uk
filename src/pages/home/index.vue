@@ -58,7 +58,8 @@
         :allCharts="allCharts" 
         :confirmCharts="confirmCharts" 
         :deathCharts="deathCharts"
-        :testedCharts="testedCharts" 
+        :testedCharts="testedCharts"
+        :hospitalCharts="hospitalCharts"
         :mode="isPhone ? 'phone' : 'pc'"
         v-if="chartLoaded">
     </cdata>
@@ -158,7 +159,7 @@ import { putCN } from '../../translate'
 import { confirmCal } from '../../calculate/confirmed'
 import { deathCal } from '../../calculate/death'
 import { testCal } from '../../calculate/tested'
-
+import { hospitalCal } from '../../calculate/hospital'
 
 
 export default {
@@ -289,11 +290,12 @@ export default {
       confirmCharts:[],
       deathCharts:[],
       testedCharts:[],
+      hospitalCharts:[],
       euCharts: [],
       preCharts: [],
 
       // Charts switcher
-      allCharts:["Case", "Death", "Test"],
+      allCharts:["Case", "Death", "Test", "Hospital"],
 
       // Donation popup open or close
       donate: false
@@ -367,6 +369,7 @@ export default {
           let co = await confirmCal(this.historyData, this.allData[0])
           let de = await deathCal(this.historyData, this.allData[0])
           let te = await testCal(this.historyData, this.allData[0])
+          let ho = await hospitalCal(this.historyData, this.allData[0])
 
           this.$nextTick(()=>{
             this.chartOptions.xaxis.categories = co.cates
@@ -422,6 +425,12 @@ export default {
               "#46DEFF"
             ], this.constChartSeries([
               ["Positive Rate", te.pRate],
+            ])))
+
+            this.hospitalCharts.push(this.constChartData("Patient Hospitalized", "area", false, [
+              "#FF7D95"
+            ], this.constChartSeries([
+              ["Patients", ho.trend],
             ])))
 
 

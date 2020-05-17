@@ -6,6 +6,7 @@ const wording = [
     ["Data", "数据"],
     ["Case", "确诊"],
     ["Death", "死亡"],
+    ['hospital', '住院中'],
     ["england", "英格兰"],
     ["scotland", "苏格兰"],
     ["wales", "威尔士"],

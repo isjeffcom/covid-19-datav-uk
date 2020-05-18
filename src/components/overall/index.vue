@@ -19,7 +19,7 @@
                             </div>
 
                             <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
-                                <span>{{value}}</span>
+                                <span>{{value.toLocaleString()}}</span>
                             
                             </div>
 
@@ -53,7 +53,7 @@
 
                         <div>
                             <div class="overall-single-value" :style="value=='---' ? 'opacity: 0.2;font-weight:bold;' : 'opacity: 1;font-weight:bold;color:' + getColor(name)">
-                                <span>{{value}}</span>
+                                <span>{{value.toLocaleString()}}</span>
                             
                             </div>
 
@@ -192,6 +192,23 @@ export default {
                 'n. ireland': all.nireland,
             }
 
+            //this.renderData = this.formatNums(this.renderData)
+            //this.historyData = this.formatNums(this.historyData)
+
+        },
+
+        formatNums(obj){
+            let res = obj
+
+            for(const p in res){
+
+                if(!isNaN(res[p])){
+                    res[p] = new Intl.NumberFormat().format(res[p])
+                }
+                
+            }
+
+            return res
         },
 
         showHidden(){

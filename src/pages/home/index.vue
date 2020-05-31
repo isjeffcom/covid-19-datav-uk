@@ -17,6 +17,11 @@
       v-if="loaded && isPhone">
     </overall>
 
+    <board
+      :content="boardData"
+      v-if="boardOpen">
+    </board>
+
     <div class="PC-View" style="display: flex;" v-if="!isPhone">
       <overall 
         :allData="allData" 
@@ -135,6 +140,7 @@ import { indexOfObjArr, deepCopy, isMobile } from '../../utils'
 
 // Components
 import overall from '../../components/overall'
+import board from '../../components/widgets/board'
 import world from '../../components/world'
 import carea from '../../components/carea'
 import cdata from '../../components/cdata'
@@ -166,6 +172,7 @@ export default {
   name: 'home',
   components:{
     overall,
+    board,
     cdata,
     donate,
     world,
@@ -187,6 +194,7 @@ export default {
 
       // Loaded status for different section, render only if data ready
       loaded: false,
+      boardOpen: false,
       chartLoaded: false,
       areaLoaded: false,
       worldLoaded: false,
@@ -202,6 +210,7 @@ export default {
       api: "/",
       api_history: "/historyfigures",
       api_locations: "/locations",
+      api_board: "/board",
       api_eu: "https://global.covid19uk.live/majoreu",
       api_global_status: "https://global.covid19uk.live/status",
       api_global_current: "https://global.covid19uk.live/current",
@@ -209,6 +218,7 @@ export default {
 
       // Data storage variable
       allData: [],
+      boardData: "",
       renderData: {},
       renderArea: {},
       mapData: [],
@@ -306,6 +316,7 @@ export default {
 
     // On start get data
     this.getData(this.api)
+    this.getBoard(this.api_board)
     this.getKeyData(this.api_global_status)
     this.lang = window.navigator.language
 
@@ -492,6 +503,16 @@ export default {
       })
 
       this.getEU()
+    },
+
+    getBoard(api){
+      genGet(api, [], false, (res)=>{
+        if(res.data.open){
+          this.boardOpen = true
+          this.boardData = res.data.content
+        }
+        
+      })
     },
 
     // Get EU data and compare

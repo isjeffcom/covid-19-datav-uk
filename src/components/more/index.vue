@@ -2,13 +2,13 @@
     <!-- MORE INFO BUTTON -->
     <div id="more">
 
-      <div class="more-s" style="margin-bottom:20px;">
+      <!--div class="more-s" style="margin-bottom:20px;">
 
         <router-link to="/store">
           <img :src="'./img/stockchecker.png'" alt="go to store checker">
         </router-link>
 
-      </div>
+      </div-->
 
       <!--div style="margin-bottom:20px;">
 

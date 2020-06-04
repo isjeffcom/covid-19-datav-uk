@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <!-- 3 charts, confirmed, death, tested -->
+            <!-- 4 charts, confirmed, death, tested， hospital -->
             <!-- use charts components in /src/components/charts -->
             <div id="chart-inner">
                 <transition name="fade">
@@ -54,6 +54,7 @@
                 <transition name="fade">
                     <div v-show="currentChartView == 3">
                         <charts :datas="hospitalCharts" :mode="mode"></charts>
+                        <div style="margin-top:10px; font-size: 14px;">Current: {{ allData.hospital }}, England: {{ hospitalArea.england }}, Scotland: {{ hospitalArea.scotland }}, Wales: {{ hospitalArea.wales }}, Northern Ireland: {{ hospitalArea.nIreland }}</div>
                     </div>
                 </transition>
 
@@ -67,6 +68,7 @@
 <script>
 import charts from '../widgets/charts'
 import { putCN } from '../../translate'
+import { stripSlashes } from '../../utils'
 
 export default {
     name: "cdata",
@@ -74,6 +76,11 @@ export default {
         charts
     },
     props:{
+        allData:{
+            type: Object,
+            value: {}
+        },
+
         allCharts: {
             type: Array,
             default(){
@@ -111,6 +118,10 @@ export default {
         }
     },
 
+    created(){
+        this.hospitalArea = JSON.parse(stripSlashes(this.allData.hospitalArea))
+    },
+
     data(){
         return{
             currentChartView: 0,
@@ -118,6 +129,7 @@ export default {
             swiperOptions:{
                 allowTouchMove: false
             },
+            hospitalArea: {}
         }
     },
     methods:{

@@ -60,6 +60,7 @@
     </div-->
 
     <cdata 
+        :allData="allData[0]"
         :allCharts="allCharts" 
         :confirmCharts="confirmCharts" 
         :deathCharts="deathCharts"

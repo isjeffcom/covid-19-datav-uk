@@ -179,7 +179,7 @@ export default {
                 death: all.death,
                 "people tested": all.negative != 0 ? all.confirmed + all.negative : "---",
                 "tests done": all.test_done != 0 ? all.test_done : "---",
-                negative: all.negative == 0 ? "---" : all.negative,
+                //negative: all.negative == 0 ? "---" : all.negative,
                 hospital: all.hospital,
                 "Posi. Rate": (((all.confirmed / (all.confirmed + all.negative))*100).toFixed(2)) + "%",
                 mortality: (((all.death / all.confirmed)*100).toFixed(2)) + "%"

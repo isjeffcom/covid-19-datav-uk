@@ -78,9 +78,9 @@ export default {
         maxSize: 90,
         zoom: 6,
         center: L.latLng(54.275967, -3.234891),
-        //url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        url: 'https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
-        //url: "	https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        //url: 'https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+        //url: "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
         attribution:
             '&copy; <a href="http://osm.org/copyright">OSM</a>',
         currentZoom: 5,
@@ -248,7 +248,7 @@ export default {
       }
 
       return L.icon({
-          iconUrl: './img/marker.svg',
+          iconUrl: './img/marker_r.svg',
           iconSize: [size, size],
           iconAnchor: [size/2, size/2]
       })

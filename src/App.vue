@@ -1,5 +1,76 @@
 <template>
   <div id="app">
+    <div id="end" v-if="noticeOpen">
+
+      <div id="end-inner">
+        <div>
+            <p style="font-size: 24px; font-weight: bold;">End of service notice:</p><br>
+        </div>
+        <div>
+            <p>
+                This website started to provide COVID-19 UK information since the 6th of March 2020 at the very beginning of the lockdown. The COVID-19 epidemic has gradually eased. Unlike four months ago, the official channel now provides better quality and much more reliable data than most of the third-party trackers. 
+            </p>
+        </div>
+
+        <br>
+
+        <div>
+            <p>
+                I've made a hard decision: COVID19UK.LIVE website should soon stop maintaining. For API users, please try to find an alternative as quickly as possible or you can download my scaper source code from <a href="https://github.com/isjeffcom/coronvirusFigureUK">here</a>.
+            </p>
+        </div>
+
+        <br>
+
+        <div>
+            <p>
+                Thank you for your support. Stay safe.
+            </p>
+        </div>
+
+        <br><br><br>
+
+        <div>
+            <p>The Offical Data Sources:</p><br>
+        </div>
+
+        <div>
+
+            <div>
+                <p><a href="https://coronavirus.data.gov.uk/">UK National Dashboard / England Dashboard</a></p>
+            </div>
+
+            <br>
+
+            <div>
+                <p><a href="https://public.tableau.com/profile/public.health.wales.health.protection#!/vizhome/RapidCOVID-19virology-Public/Headlinesummary">Wales Dashboard</a></p>
+            </div>
+
+            <br>
+
+            <div>
+                <p><a href="https://www.publichealthscotland.scot/our-areas-of-work/sharing-our-data-and-intelligence/coronavirus-covid-19-data/">Scotland Dashboards and Statistic Reports</a></p>
+            </div>
+
+            <br>
+
+            <div>
+                <p><a href="https://www.publichealthscotland.scot/our-areas-of-work/sharing-our-data-and-intelligence/coronavirus-covid-19-data/">North Ireland Dashboard</a></p>
+            </div>
+
+        </div>
+
+        <br><br><br><br><br><br><br><br><br>
+
+        <button v-if="noticeOpen" v-on:click="noticeOpen = false">CONTINUE</button>
+      </div>
+
+        
+
+        
+    </div>
+    
+
     <!-- Popup alert when user first enter -->
     <alert :title="firstAlert.title" :content="firstAlert.content" :submit="firstAlert.submit" v-if="needAlert"></alert>
     <chead></chead>
@@ -35,7 +106,8 @@ export default {
         content: "<br>This data is a visualization for COVID-19 in the UK. <b>For reference purposes only.</b>. <br><br> You need to be aware: <br><br> 1. This data may not be completely <b>accurate or up to date</b>. <br> 2. All the markers on the map represent an area and <b>not buildings or streets</b>. <br> 3. The developer takes <b>no</b> responsibility for the accuracy of the data nor the service's stability. <br><br> Please double check with the <b>official channels<b> before acting on it. Cookies are used for statistical purposes only.",
         submit: "I consent"
       },
-      needAlert: false
+      needAlert: false,
+      noticeOpen: true,
     }
   },
 
@@ -65,6 +137,40 @@ export default {
 </script>
 
 <style>
+
+#end{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    text-align: left;
+    padding: 24px;
+    background: rgba(0,0,0,0.95);
+    color: #ffffff;
+    z-index: 999999;
+    word-wrap: break-word;
+}
+
+#end-inner{
+  width: 90%;
+}
+
+#end-inner a{
+  font-size: 18px;
+}
+
+#end-inner button{
+  position: absolute;
+  bottom: 80px;
+  background: #ffffff;
+  color: #000;
+  font-weight: bold;
+  font-size: 18px;
+  padding-top: 2px;
+  height: 50px;
+  width: 170px;
+}
 
 *{
   padding: 0;

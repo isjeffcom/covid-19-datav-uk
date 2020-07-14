@@ -5,7 +5,7 @@
         <div class="title" style="margin-bottom: 0px;" v-if="mode != 'pc-map-only'">
             <div class="title-area inner" style="width: 92%; padding-top: 20px; padding-bottom:20px; margin-left:auto; margin-right: auto;">
                 <span>{{getLang("Regions")}}</span><br>
-                <div style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> {{getLang("Unknown Locations")}}</div>
+                <!--div style="font-size: 16px;"><b style="color: #7DA5B5;">{{unknown}}</b> {{getLang("Unknown Locations")}}</div-->
                 <div style="font-size: 16px;"  v-if="nearbyShow"><b style="color: #F62E3A;">{{nearby.num}}</b> {{getLang("Cases Near")}} <b style="color: #FFC634;">{{nearby.name}}</b></div>
                 <div style="font-size: 12px; opacity: 0.5;">* {{getLang("At least 1 day in arrears")}}</div>
             </div>
